@@ -2,6 +2,8 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 pydantic
+pydantic-settings
+psycopg[binary]
 httpx
 python-multipart
 google-analytics-data
