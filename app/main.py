@@ -30,6 +30,26 @@ async def lifespan(app: FastAPI):
     print("🛑 Sistem Kapatılıyor...")
 
 app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    lifespan=lifespan
+)
+
+# --- CORS AYARLARI ---
+# Vercel deployment'ları için (preview URL'leri dahil) şimdilik tüm originlere izin veriyoruz.
+# Prodüksiyonda burayı spesifik domainlerle kısıtlamak daha güvenlidir.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
+
+# --- ARTIK GÜVENLİ: Resim Dosyalarını Sunma ---
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 async def root():
