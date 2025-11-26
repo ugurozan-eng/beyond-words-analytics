@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+httpx
+python-multipart
+google-analytics-data
+python-dotenv
+google-generativeai
+requests
+aiofiles
+python-jose[cryptography]
+passlib[bcrypt]

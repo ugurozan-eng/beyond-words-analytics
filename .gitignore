@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.venv
+env/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Project
+uploads/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.DS_Store
