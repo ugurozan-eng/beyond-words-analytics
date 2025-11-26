@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Clock, RotateCw, Save, Edit2, ShieldAlert, Target, Sparkles, Calendar, Tag, Copy, Info, TrendingUp } from 'lucide-react';
+import { Zap, Clock, RotateCw, Save, Edit2, ShieldAlert, Target, Sparkles, Calendar, Tag, Copy, Info, TrendingUp, LayoutDashboard, Search } from 'lucide-react';
 import PricingCard from './PricingCard';
 import TagManager from './TagManager';
 import SeasonalityChart from './SeasonalityChart';
+import TrafficSourceChart from './TrafficSourceChart';
 import AttributeBadge from '../common/AttributeBadge';
 
 const copyToClipboard = async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch (err) { console.error('Hata:', err); return false; } };
@@ -10,6 +11,7 @@ const formatDate = (dateString) => { if (!dateString) return "Henüz yok"; const
 
 const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpdate, onAnalyzeClick, isAnalyzing, listingType, onShowReport }) => {
     const [isEditing, setIsEditing] = useState(false);
+    const [activeTab, setActiveTab] = useState('overview');
     const [editData, setEditData] = useState({ suggested_title: "", suggested_description: "", suggested_materials: "", suggested_styles: "", suggested_colors: "", suggested_occasions: "", suggested_recipients: "", suggested_faqs: "", tags_focus: "", tags_long_tail: "", tags_aesthetic: "", tags_creative: "" });
 
     useEffect(() => {
@@ -71,7 +73,7 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
 
     return (
         <div className={`mt-0 p-8 rounded-3xl shadow-xl border transition-all ${isCompetitor ? 'bg-orange-50/50 border-orange-200 ring-4 ring-orange-50' : 'bg-white/90 backdrop-blur-md border-white/50'}`}>
-            <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-100">
+            <div className="flex justify-between items-center mb-6 pb-6 border-b border-gray-100">
                 <h3 className={`text-2xl font-black flex items-center tracking-tight ${isCompetitor ? 'text-orange-800' : 'text-indigo-900'}`}>
                     {isCompetitor ? <><ShieldAlert className="w-8 h-8 mr-3" /> Rakip Analiz Raporu</> : <><Zap className="w-8 h-8 mr-3 text-indigo-600" /> Analiz Sonuçları (2026)</>}
                 </h3>
@@ -82,95 +84,146 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
                 </div>
             </div>
 
-            <div className="space-y-8">
-                {/* RAKİP STRATEJİ NOTU */}
-                {isCompetitor && analysisResult.competitor_analysis && (
-                    <div className="bg-white p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm">
-                        <h4 className="text-base font-bold text-orange-800 flex items-center mb-3"><Target className="w-5 h-5 mr-2" /> Rakip Stratejisi & Zayıf Yönler</h4>
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{analysisResult.competitor_analysis}</p>
-                    </div>
-                )}
+            {/* TAB NAVIGATION */}
+            <div className="flex space-x-2 mb-8 bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100">
+                <button
+                    onClick={() => setActiveTab('overview')}
+                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'overview' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                >
+                    <LayoutDashboard className="w-4 h-4 mr-2" />
+                    Genel Bakış & Fiyat
+                </button>
+                <button
+                    onClick={() => setActiveTab('seo')}
+                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'seo' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                >
+                    <Tag className="w-4 h-4 mr-2" />
+                    SEO & Etiketler
+                </button>
+                <button
+                    onClick={() => setActiveTab('details')}
+                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'details' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                >
+                    <Search className="w-4 h-4 mr-2" />
+                    Rakip & Detaylar
+                </button>
+            </div>
 
-                {/* --- NEURO PRICING KART --- */}
-                {avgP > 0 && (
-                    <PricingCard
-                        min={minP}
-                        max={maxP}
-                        optimal={analysisResult.predicted_price_optimal || avgP}
-                        reason={analysisResult.price_reason}
-                    />
-                )}
-                {/* -------------------------- */}
+            <div className="space-y-8 min-h-[400px]">
+                {/* TAB 1: GENEL BAKIŞ & FİYAT */}
+                {activeTab === 'overview' && (
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* --- NEURO PRICING KART --- */}
+                        {avgP > 0 && (
+                            <PricingCard
+                                min={minP}
+                                max={maxP}
+                                optimal={analysisResult.predicted_price_optimal || avgP}
+                                reason={analysisResult.price_reason}
+                            />
+                        )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-sm font-bold text-orange-800 flex items-center uppercase tracking-wider"><Sparkles className={`w-4 h-4 mr-2 ${trendColor}`} /> Trend Radarı (2026)</h4>
-                            <span className={`text-2xl font-black ${trendColor}`}>{trendScore}</span>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-4 min-h-[40px] leading-relaxed">{analysisResult.trend_reason || "Trend verisi yok"}</p>
-                        <div className="w-full bg-gray-100 rounded-full h-3 mb-2">
-                            <div className="bg-gradient-to-r from-orange-400 to-red-500 h-3 rounded-full shadow-sm" style={{ width: `${trendScore * 10}%` }}></div>
-                        </div>
-                        <p className="text-right text-xs font-bold text-orange-600">{trendText}</p>
-                    </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h4 className="text-sm font-bold text-orange-800 flex items-center uppercase tracking-wider"><Sparkles className={`w-4 h-4 mr-2 ${trendColor}`} /> Trend Radarı (2026)</h4>
+                                    <span className={`text-2xl font-black ${trendColor}`}>{trendScore}</span>
+                                </div>
+                                <p className="text-sm text-gray-600 mb-4 min-h-[40px] leading-relaxed">{analysisResult.trend_reason || "Trend verisi yok"}</p>
+                                <div className="w-full bg-gray-100 rounded-full h-3 mb-2">
+                                    <div className="bg-gradient-to-r from-orange-400 to-red-500 h-3 rounded-full shadow-sm" style={{ width: `${trendScore * 10}%` }}></div>
+                                </div>
+                                <p className="text-right text-xs font-bold text-orange-600">{trendText}</p>
+                            </div>
 
-                    <div className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
-                        <h4 className="text-sm font-bold text-blue-800 flex items-center mb-2 uppercase tracking-wider"><Calendar className="w-4 h-4 mr-2 text-blue-600" /> Sezonluk Satış Potansiyeli</h4>
-                        <SeasonalityChart dataString={analysisResult.monthly_popularity} />
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                    {isEditing ? (<><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_materials} onChange={e => setEditData({ ...editData, suggested_materials: e.target.value })} placeholder="Materyaller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_styles} onChange={e => setEditData({ ...editData, suggested_styles: e.target.value })} placeholder="Stiller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_colors} onChange={e => setEditData({ ...editData, suggested_colors: e.target.value })} placeholder="Renkler" /></>) : (<><AttributeBadge label="Materyal" value={analysisResult.suggested_materials} colorClass="text-amber-700" /><AttributeBadge label="Stil" value={analysisResult.suggested_styles} colorClass="text-purple-700" /><AttributeBadge label="Renkler" value={analysisResult.suggested_colors} colorClass="text-pink-700" /></>)}
-                </div>
-
-                <TagManager result={analysisResult} isEditing={isEditing} editData={editData} setEditData={setEditData} onCopy={(txt) => handleCopyClick(txt, "Etiketler")} />
-
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <div className="w-full">
-                            <span className="text-xs font-bold text-gray-400 uppercase mb-3 block flex items-center tracking-wider"><Target className="w-3 h-3 mr-1.5 text-red-500" /> {isCompetitor ? "Rakibin Kullandığı En İyi Etiketler" : "Yapay Zeka'nın Seçtiği En İyi 13"}</span>
-                            <div className="flex flex-wrap gap-2 pr-10">
-                                {displayTags.length > 0 ? displayTags.map((tag, i) => (
-                                    <span key={i} className="group/tag bg-gray-50 border border-gray-200 text-gray-800 text-xs px-3 py-1.5 rounded-full shadow-sm font-bold flex items-center hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-default">
-                                        <Tag className="w-3 h-3 mr-1.5 opacity-50" />
-                                        {tag}
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleCopyClick(tag, tag); }}
-                                            className="ml-2 p-0.5 rounded-full hover:bg-indigo-200 text-gray-400 hover:text-indigo-700 opacity-0 group-hover/tag:opacity-100 transition-opacity"
-                                            title="Kopyala"
-                                        >
-                                            <Copy className="w-3 h-3" />
-                                        </button>
-                                    </span>
-                                )) : <span className="text-gray-400 text-sm italic">Henüz seçilmedi</span>}
+                            <div className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+                                <h4 className="text-sm font-bold text-blue-800 flex items-center mb-2 uppercase tracking-wider"><Calendar className="w-4 h-4 mr-2 text-blue-600" /> Sezonluk Satış Potansiyeli</h4>
+                                <SeasonalityChart dataString={analysisResult.monthly_popularity} />
                             </div>
                         </div>
-                        {!isEditing && <button onClick={() => handleCopyClick(displayTags.join(", "), "En İyi 13")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}
-                    </div>
-                </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm"><div className="flex justify-between items-start"><div className="w-full"><span className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-wider">Önerilen Başlık</span>{isEditing ? (<textarea className="w-full mt-1 p-3 border rounded-xl bg-white text-gray-900 font-medium focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm" rows="2" value={editData.suggested_title} onChange={(e) => setEditData({ ...editData, suggested_title: e.target.value })} />) : (<p className="text-gray-900 font-bold text-xl leading-tight pr-10">{analysisResult.suggested_title || "Başlık yok"}</p>)}</div>{!isEditing && <button onClick={() => handleCopyClick(analysisResult.suggested_title, "Başlık")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}</div></div>
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm"><div className="flex justify-between items-start"><div className="w-full"><span className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-wider">Önerilen Açıklama</span>{isEditing ? (<textarea className="w-full mt-1 p-3 border rounded-xl bg-white text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm" rows="4" value={editData.suggested_description} onChange={(e) => setEditData({ ...editData, suggested_description: e.target.value })} />) : (<p className="text-sm text-gray-600 leading-relaxed pr-10 whitespace-pre-line">{analysisResult.suggested_description || "Açıklama yok"}</p>)}</div>{!isEditing && <button onClick={() => handleCopyClick(analysisResult.suggested_description, "Açıklama")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}</div></div>
+                        <div className="pt-6 border-t border-gray-200">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="font-bold text-gray-800 text-lg">{isCompetitor ? "Rakip Tehdit Skoru" : "LQS (Liste Kalite Skoru)"}</span>
+                                <span className={`text-4xl font-black ${analysisResult.lqs_score >= 8 ? 'text-green-600' : analysisResult.lqs_score >= 5 ? 'text-yellow-600' : 'text-red-600'}`}>{analysisResult.lqs_score}</span>
+                            </div>
+                            {analysisResult.lqs_reason && (<div className="flex items-start text-sm text-gray-700 bg-yellow-50 p-4 rounded-xl border border-yellow-100/50 leading-relaxed"><Info className="w-5 h-5 mr-3 mt-0.5 text-yellow-600 flex-shrink-0" /><span>{analysisResult.lqs_reason}</span></div>)}
+                        </div>
 
-                <div className="pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-between mb-4">
-                        <span className="font-bold text-gray-800 text-lg">{isCompetitor ? "Rakip Tehdit Skoru" : "LQS (Liste Kalite Skoru)"}</span>
-                        <span className={`text-4xl font-black ${analysisResult.lqs_score >= 8 ? 'text-green-600' : analysisResult.lqs_score >= 5 ? 'text-yellow-600' : 'text-red-600'}`}>{analysisResult.lqs_score}</span>
+                        <div className="mt-4 pt-4 flex justify-center">
+                            <button
+                                onClick={() => onShowReport(listingId, analysisResult.suggested_title)}
+                                className="flex items-center px-8 py-3.5 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors font-bold text-sm shadow-sm hover:shadow-md"
+                            >
+                                <TrendingUp className="w-4 h-4 mr-2" />
+                                Gelişim Raporunu İncele
+                            </button>
+                        </div>
                     </div>
-                    {analysisResult.lqs_reason && (<div className="flex items-start text-sm text-gray-700 bg-yellow-50 p-4 rounded-xl border border-yellow-100/50 leading-relaxed"><Info className="w-5 h-5 mr-3 mt-0.5 text-yellow-600 flex-shrink-0" /><span>{analysisResult.lqs_reason}</span></div>)}
-                </div>
-                {/* --- RAPOR BUTONU EKLENDİ --- */}
-                <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center">
-                    <button
-                        onClick={() => onShowReport(listingId, analysisResult.suggested_title)}
-                        className="flex items-center px-8 py-3.5 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors font-bold text-sm shadow-sm hover:shadow-md"
-                    >
-                        <TrendingUp className="w-4 h-4 mr-2" />
-                        Gelişim Raporunu İncele
-                    </button>
-                </div>
+                )}
+
+                {/* TAB 2: SEO & ETİKETLER */}
+                {activeTab === 'seo' && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm"><div className="flex justify-between items-start"><div className="w-full"><span className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-wider">Önerilen Başlık</span>{isEditing ? (<textarea className="w-full mt-1 p-3 border rounded-xl bg-white text-gray-900 font-medium focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm" rows="2" value={editData.suggested_title} onChange={(e) => setEditData({ ...editData, suggested_title: e.target.value })} />) : (<p className="text-gray-900 font-bold text-xl leading-tight pr-10">{analysisResult.suggested_title || "Başlık yok"}</p>)}</div>{!isEditing && <button onClick={() => handleCopyClick(analysisResult.suggested_title, "Başlık")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}</div></div>
+
+                        <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm"><div className="flex justify-between items-start"><div className="w-full"><span className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-wider">Önerilen Açıklama</span>{isEditing ? (<textarea className="w-full mt-1 p-3 border rounded-xl bg-white text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm" rows="4" value={editData.suggested_description} onChange={(e) => setEditData({ ...editData, suggested_description: e.target.value })} />) : (<p className="text-sm text-gray-600 leading-relaxed pr-10 whitespace-pre-line">{analysisResult.suggested_description || "Açıklama yok"}</p>)}</div>{!isEditing && <button onClick={() => handleCopyClick(analysisResult.suggested_description, "Açıklama")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}</div></div>
+
+                        <TagManager result={analysisResult} isEditing={isEditing} editData={editData} setEditData={setEditData} onCopy={(txt) => handleCopyClick(txt, "Etiketler")} />
+
+                        <div className="bg-white p-6 rounded-2xl border border-gray-200 relative group hover:border-indigo-300 transition-all shadow-sm">
+                            <div className="flex justify-between items-start">
+                                <div className="w-full">
+                                    <span className="text-xs font-bold text-gray-400 uppercase mb-3 block flex items-center tracking-wider"><Target className="w-3 h-3 mr-1.5 text-red-500" /> {isCompetitor ? "Rakibin Kullandığı En İyi Etiketler" : "Yapay Zeka'nın Seçtiği En İyi 13"}</span>
+                                    <div className="flex flex-wrap gap-2 pr-10">
+                                        {displayTags.length > 0 ? displayTags.map((tag, i) => (
+                                            <span key={i} className="group/tag bg-gray-50 border border-gray-200 text-gray-800 text-xs px-3 py-1.5 rounded-full shadow-sm font-bold flex items-center hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-default">
+                                                <Tag className="w-3 h-3 mr-1.5 opacity-50" />
+                                                {tag}
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); handleCopyClick(tag, tag); }}
+                                                    className="ml-2 p-0.5 rounded-full hover:bg-indigo-200 text-gray-400 hover:text-indigo-700 opacity-0 group-hover/tag:opacity-100 transition-opacity"
+                                                    title="Kopyala"
+                                                >
+                                                    <Copy className="w-3 h-3" />
+                                                </button>
+                                            </span>
+                                        )) : <span className="text-gray-400 text-sm italic">Henüz seçilmedi</span>}
+                                    </div>
+                                </div>
+                                {!isEditing && <button onClick={() => handleCopyClick(displayTags.join(", "), "En İyi 13")} className="text-gray-400 hover:text-indigo-600 p-2 absolute right-2 top-2 hover:bg-indigo-50 rounded-lg transition-colors"><Copy className="w-5 h-5" /></button>}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* TAB 3: RAKİP & DETAYLAR */}
+                {activeTab === 'details' && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* RAKİP STRATEJİ NOTU */}
+                        {isCompetitor && analysisResult.competitor_analysis && (
+                            <div className="bg-white p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm">
+                                <h4 className="text-base font-bold text-orange-800 flex items-center mb-3"><Target className="w-5 h-5 mr-2" /> Rakip Stratejisi & Zayıf Yönler</h4>
+                                <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{analysisResult.competitor_analysis}</p>
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-3 gap-4">
+                            {isEditing ? (<><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_materials} onChange={e => setEditData({ ...editData, suggested_materials: e.target.value })} placeholder="Materyaller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_styles} onChange={e => setEditData({ ...editData, suggested_styles: e.target.value })} placeholder="Stiller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_colors} onChange={e => setEditData({ ...editData, suggested_colors: e.target.value })} placeholder="Renkler" /></>) : (<><AttributeBadge label="Materyal" value={analysisResult.suggested_materials} colorClass="text-amber-700" /><AttributeBadge label="Stil" value={analysisResult.suggested_styles} colorClass="text-purple-700" /><AttributeBadge label="Renkler" value={analysisResult.suggested_colors} colorClass="text-pink-700" /></>)}
+                        </div>
+
+                        {/* TRAFİK KAYNAKLARI GRAFİĞİ */}
+                        {analysisResult.traffic_data && (
+                            <TrafficSourceChart data={analysisResult.traffic_data} />
+                        )}
+
+                        {!analysisResult.traffic_data && (
+                            <div className="bg-gray-50 p-8 rounded-2xl text-center border border-gray-200 border-dashed">
+                                <p className="text-gray-400">Trafik verisi bulunamadı.</p>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
