@@ -12,3 +12,4 @@ requests
 email-validator
 typing-extensions
 gunicorn
+google-generativeai

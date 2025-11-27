@@ -25,33 +25,57 @@ const CreateListing = () => {
     // Validation
     const isDescriptionValid = description.trim().length >= 20;
 
-    const handleGenerate = () => {
+    const handleGenerate = async () => {
         if (!isDescriptionValid && !imagePreview) return;
 
         setIsGenerating(true);
         setGeneratedData(null);
         setGeneratedPrompts(null);
 
-        // Mock API call delay
-        setTimeout(() => {
-            const baseData = {
-                title: "Boho Minimalist Wall Art Printable, Abstract Line Art, Neutral Tone Decor, Modern Living Room Poster, Digital Download",
-                tags: [
-                    "boho wall art", "minimalist print", "abstract line art", "neutral decor",
-                    "digital download", "living room art", "modern poster", "printable art",
-                    "scandi decor", "beige aesthetic", "instant download", "wall decor", "gift for her"
-                ],
-                description: "Elevate your space with this stunning Boho Minimalist Wall Art. Featuring fluid abstract lines and a calming neutral color palette, this digital print brings a touch of modern elegance to any room. Perfect for your living room, bedroom, or office, this artwork blends seamlessly with Scandinavian and contemporary decor styles. Simply download, print, and frame to instantly refresh your home atmosphere.",
+        try {
+            const formData = new FormData();
+            formData.append('description', description);
+
+            if (fileInputRef.current && fileInputRef.current.files[0]) {
+                formData.append('image', fileInputRef.current.files[0]);
+            }
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/generate/`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Generation failed');
+            }
+
+            const data = await response.json();
+
+            // Transform API response to match component state structure
+            const transformedData = {
+                title: data.seo_title,
+                tags: data.tags,
+                description: data.description,
                 price: {
-                    min: 5.00,
-                    max: 12.00,
-                    recommended: 8.99
+                    min: data.price_suggestion.min,
+                    max: data.price_suggestion.max,
+                    recommended: data.price_suggestion.recommended
                 }
             };
 
-            setGeneratedData(baseData);
+            setGeneratedData(transformedData);
+
+            // Also set the image prompt if available
+            if (data.image_prompt) {
+                setGeneratedPrompts([data.image_prompt]);
+            }
+
+        } catch (error) {
+            console.error("Generation error:", error);
+            // Optional: Show error message to user
+        } finally {
             setIsGenerating(false);
-        }, 2000);
+        }
     };
 
     const handleGeneratePrompts = () => {
