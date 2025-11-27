@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -12,7 +13,6 @@ import traceback
 
 from app.api.deps import get_db
 from app.models import Listing, ListingSnapshot
-from app.core.lqs_engine import LQSInput, calculate_lqs_3_1
 from app.core.lqs_engine import LQSInput, calculate_lqs_3_1
 from app.core.pricing import PricingEngine
 from app.core.traffic_engine import TrafficIntelligence
@@ -118,34 +118,9 @@ def validate_and_fix_tags(raw_tags: List[str], title: str) -> List[str]:
 async def analyze_listing(request: AnalysisRequest, db: Session = Depends(get_db)):
     
     db_listing = db.query(Listing).filter(Listing.id == request.id).first()
+    if not db_listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
     
-    # --- CACHE MANTIĞI ---
-    should_analyze = True
-    if db_listing and db_listing.is_analyzed and db_listing.last_analyzed_at:
-        if request.force_refresh:
-            should_analyze = True
-        elif db_listing.image_url != request.image_url:
-            should_analyze = True
-        else:
-            now = datetime.now(timezone.utc) if db_listing.last_analyzed_at.tzinfo else datetime.now()
-            time_diff = now - db_listing.last_analyzed_at
-            minutes_passed = time_diff.total_seconds() / 60
-            hours_passed = minutes_passed / 60
-            
-            if hours_passed < 48: return get_cached_result(db_listing)
-
-    if not should_analyze:
-        return get_cached_result(db_listing)
-
-    my_api_key = "AIzaSyBnrS0t2jtZm9_Dooonyq2FU8qwydsw4X8" 
-    target_model = "gemini-flash-latest"
-    
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={my_api_key}"
-    headers = {"Content-Type": "application/json"} 
-
-    # --- JSON YAPISI ---
-    common_structure = """
-    {
         "suggested_title": "SEO Optimized Title...", 
         "suggested_description": "Sales oriented description...",
         "tags_pool_20": ["tag1", "tag2", "tag3", ...], 

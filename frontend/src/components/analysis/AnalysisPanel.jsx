@@ -36,6 +36,12 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
 
     if (!analysisResult || (analysisResult.lqs_score === 0 && !isAnalyzing)) {
         if (isAnalyzing) return (<div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/50 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-8"></div><h3 className="text-2xl font-bold text-gray-900 mb-3">2026 Analizi Yapılıyor...</h3><p className="text-gray-500 max-w-xs text-lg">Semantik Vektör Taraması ve Kelime Fırtınası başlatıldı.</p></div>);
+
+        // Check if it's an error result
+        if (analysisResult && analysisResult.suggested_title === "Error") {
+            return (<div className="bg-red-50/80 backdrop-blur-md rounded-3xl shadow-xl border border-red-100 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="bg-red-100 p-6 rounded-full mb-8"><ShieldAlert className="w-16 h-16 text-red-600" /></div><h3 className="text-2xl font-bold text-red-900 mb-3">Analiz Hatası</h3><p className="text-red-700 max-w-md mb-10 text-lg">{analysisResult.suggested_description}</p><button onClick={() => onAnalyzeClick(true)} className="flex items-center px-10 py-4 bg-red-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:bg-red-700 hover:shadow-2xl transition-all transform hover:-translate-y-1"><RotateCw className="w-6 h-6 mr-2" />Tekrar Dene</button></div>);
+        }
+
         return (<div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/50 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="bg-indigo-50 p-6 rounded-full mb-8"><Sparkles className="w-16 h-16 text-indigo-600" /></div><h3 className="text-2xl font-bold text-gray-900 mb-3">Analiz Bekleniyor</h3><p className="text-gray-500 max-w-xs mb-10 text-lg">Bu ürün henüz analiz edilmedi veya verisi eksik.</p><button onClick={() => onAnalyzeClick(true)} className="flex items-center px-10 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 hover:shadow-2xl transition-all transform hover:-translate-y-1"><Zap className="w-6 h-6 mr-2" />Analizi Başlat</button></div>);
     }
 

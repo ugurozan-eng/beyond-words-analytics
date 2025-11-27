@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import httpx
+import os
 
 router = APIRouter()
 
@@ -14,7 +15,10 @@ class ChatResponse(BaseModel):
 @router.post("/", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     # API Key check
-    my_api_key = "AIzaSyBnrS0t2jtZm9_Dooonyq2FU8qwydsw4X8"
+    my_api_key = os.getenv("GEMINI_API_KEY")
+    if not my_api_key:
+        raise HTTPException(status_code=500, detail="API Key configuration error")
+        
     target_model = "gemini-flash-latest"
     
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent"

@@ -1,9 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Search, ShieldAlert, Settings, LogOut, Crown, Wand2, Calculator, BarChart2, Eye } from 'lucide-react';
+import { LayoutDashboard, Search, ShieldAlert, Settings, LogOut, Crown, Wand2, Calculator, BarChart2, Eye, Store } from 'lucide-react';
 
 const Sidebar = ({ activeView, onNavigate, onLogout, userPlan, onUpgrade }) => {
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'my-shop', label: 'Mağazam', icon: Store },
         { id: 'create-listing', label: 'AI Ürün Sihirbazı', icon: Wand2 },
         { id: 'competitor', label: 'Rakip Takibi', icon: ShieldAlert },
         { id: 'tag-spy', label: 'Tag Spy', icon: Eye },

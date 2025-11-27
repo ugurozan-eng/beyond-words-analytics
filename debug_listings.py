@@ -19,14 +19,8 @@ def check_listings():
         
         for listing in listings:
             print(f"ID: {listing.id}")
-            # Check if etsy_listing_id exists dynamically
-            if hasattr(listing, 'etsy_listing_id'):
-                print(f"Etsy ID: {listing.etsy_listing_id}")
-            else:
-                print(f"Etsy ID: (Not found in model)")
-                
             print(f"Title: {listing.title}")
-            # print(f"Created At: {listing.created_at}") # created_at might also be missing
+            print(f"Image URL: {listing.image_url}")
             print("-" * 20)
     except Exception as e:
         print(f"Error: {e}")

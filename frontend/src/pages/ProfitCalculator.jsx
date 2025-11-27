@@ -225,7 +225,7 @@ const ProfitCalculator = () => {
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {/* Product Cost */}
                                     <div>
                                         <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Ürün Maliyeti</label>
@@ -291,7 +291,7 @@ const ProfitCalculator = () => {
                 {/* RIGHT PANEL: RESULTS */}
                 <div className="flex-1 flex flex-col gap-6">
                     {/* BIG STATS */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-lg shadow-emerald-200">
                             <p className="text-emerald-100 text-sm font-bold uppercase tracking-wider mb-1">Net Kâr</p>
                             <h3 className="text-4xl font-black">${results.netProfit.toFixed(2)}</h3>
