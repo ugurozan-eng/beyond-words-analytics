@@ -18,8 +18,30 @@ def get_model():
         return None
     
     genai.configure(api_key=api_key)
-    # En stabil modeli kullanıyoruz
-    return genai.GenerativeModel('gemini-1.5-flash')
+    
+    try:
+        # 1. Google'dan mevcut modelleri iste
+        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        print(f"📋 Mevcut Modeller: {available_models}")
+
+        # 2. Tercih sırasına göre kontrol et
+        preferences = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-1.0-pro', 'gemini-pro']
+        
+        for pref in preferences:
+            for model_name in available_models:
+                if pref in model_name:
+                    print(f"✅ Seçilen Model: {model_name}")
+                    return genai.GenerativeModel(model_name)
+        
+        # 3. Hiçbiri yoksa listedeki ilkini al
+        if available_models:
+            return genai.GenerativeModel(available_models[0])
+            
+    except Exception as e:
+        print(f"⚠️ Model listeleme hatası: {e}. Fallback 'gemini-pro' deneniyor.")
+    
+    # 4. En kötü durum senaryosu
+    return genai.GenerativeModel('gemini-pro')
 
 class GenerateRequest(BaseModel):
     description: str
