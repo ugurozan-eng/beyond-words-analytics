@@ -1,90 +1,98 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import List, Optional
 import google.generativeai as genai
 import os
 import json
-import traceback
+import re
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 
+# Güvenli Model Seçimi
+def get_model():
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        print("🛑 API Key bulunamadı!")
+        return None
+    
+    genai.configure(api_key=api_key)
+    # En stabil modeli kullanıyoruz
+    return genai.GenerativeModel('gemini-1.5-flash')
+
 class GenerateRequest(BaseModel):
     description: str
-    image_base64: Optional[str] = None
 
-class PriceSuggestion(BaseModel):
-    min: float
-    max: float
-    recommended: float
-
-class GenerateResponse(BaseModel):
-    seo_title: str
-    tags: List[str]
-    description: str
-    price_suggestion: PriceSuggestion
-    image_prompt: str
-
-@router.post("/", response_model=GenerateResponse)
-async def generate_listing(
-    description: str = Form(...),
-    image: Optional[UploadFile] = File(None)
-):
+@router.post("/")
+async def generate_listing(request: GenerateRequest):
     try:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not found")
+        model = get_model()
+        if not model:
+            raise HTTPException(status_code=500, detail="API Key Missing")
 
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # GÜÇLENDİRİLMİŞ SİSTEM TALİMATI
+        prompt = f"""
+        Act as an expert Etsy SEO and Midjourney Prompt Engineer.
+        
+        INPUT PRODUCT: "{request.description}"
 
-        prompt = """
-        Sen bir Etsy SEO uzmanısın. Aşağıdaki ürün için SEO uyumlu İngilizce Başlık, 13 Etiket, Satış Odaklı Açıklama, Fiyat Tahmini ve Görsel Promptu oluştur. Yanıtı SADECE geçerli bir JSON formatında ver.
-
-        JSON Şeması:
-        {
-            "seo_title": "...",
-            "tags": ["tag1", "tag2", ...],
-            "description": "...",
-            "price_suggestion": {
-                "min": 10.0,
-                "max": 20.0,
-                "recommended": 15.0
-            },
-            "image_prompt": "..."
-        }
+        INSTRUCTIONS:
+        1. FIRST, translate the product concept into ENGLISH internally.
+        2. Create SEO content based on the ENGLISH translation.
+        3. Create Image Prompts based on the ENGLISH translation.
+        
+        OUTPUT FORMAT (Strict JSON):
+        {{
+            "seo_title": "SEO Optimized English Title (Max 140 chars)",
+            "tags": ["tag1", "tag2", "tag3", ... 13 tags total],
+            "description": "Sales oriented description in English...",
+            "price_suggestion": "$XX.XX",
+            "image_prompt": {{
+                "image_prompt_a": "Professional studio photography of [ENGLISH OBJECT], 8k, soft lighting --ar 4:3",
+                "image_prompt_b": "Lifestyle mockup of [ENGLISH OBJECT] on a wooden desk, cozy aesthetic --ar 4:3"
+            }}
+        }}
         """
 
-        content = [prompt, f"Ürün Açıklaması: {description}"]
+        response = model.generate_content(prompt)
+        
+        # TEMİZLİK (Sanitizer)
+        raw_text = response.text.replace("```json", "").replace("```", "").strip()
+        
+        # JSON PARSING (Güvenli Blok)
+        try:
+            start = raw_text.find('{')
+            end = raw_text.rfind('}') + 1
+            json_str = raw_text[start:end]
+            data = json.loads(json_str)
+        except:
+            # Eğer JSON bozuksa manuel düzeltme dene veya hata fırlat
+            print(f"JSON Parse Hatası. Ham metin: {raw_text}")
+            raise ValueError("AI geçerli JSON üretmedi.")
 
-        if image:
-            # Read image content
-            image_content = await image.read()
-            content.append({
-                "mime_type": image.content_type,
-                "data": image_content
-            })
+        # KEY MAPPING (Hata Toleransı)
+        # AI bazen farklı key isimleri kullanabilir, hepsini yakala.
+        final_data = {
+            "seo_title": data.get("seo_title") or data.get("title") or "AI Title Generated",
+            "tags": data.get("tags") or data.get("keywords") or [],
+            "description": data.get("description") or "Description generated.",
+            "price_suggestion": data.get("price_suggestion") or data.get("price") or "$10.00",
+            "image_prompt": data.get("image_prompt") or {
+                "image_prompt_a": "Error creating prompt A",
+                "image_prompt_b": "Error creating prompt B"
+            }
+        }
 
-        response = model.generate_content(content)
-        
-        # Clean response text to ensure valid JSON
-        text = response.text.strip()
-        if text.startswith("```json"):
-            text = text[7:]
-        if text.endswith("```"):
-            text = text[:-3]
-        
-        data = json.loads(text.strip())
-        
-        return GenerateResponse(**data)
+        return final_data
 
     except Exception as e:
-        print(f"Generation Error: {str(e)}")
-        traceback.print_exc()
-        # Fallback to mock data on error
-        return GenerateResponse(
-            seo_title="Error generating content - Fallback Title",
-            tags=["error", "fallback"],
-            description="An error occurred while generating content. Please try again.",
-            price_suggestion={"min": 0, "max": 0, "recommended": 0},
-            image_prompt="Error generating prompt"
-        )
+        print(f"🛑 CRITICAL ERROR: {str(e)}")
+        # Frontend'in çökmemesi için hata mesajını JSON olarak dön
+        return {
+            "seo_title": f"Hata: {str(e)}",
+            "tags": ["error"],
+            "description": "Lütfen tekrar deneyin.",
+            "price_suggestion": "$0",
+            "image_prompt": {"image_prompt_a": "Error", "image_prompt_b": "Error"}
+        }

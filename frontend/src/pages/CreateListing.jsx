@@ -33,16 +33,12 @@ const CreateListing = () => {
         setGeneratedPrompts(null);
 
         try {
-            const formData = new FormData();
-            formData.append('description', description);
-
-            if (fileInputRef.current && fileInputRef.current.files[0]) {
-                formData.append('image', fileInputRef.current.files[0]);
-            }
-
             const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/generate/`, {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ description: description })
             });
 
             if (!response.ok) {
@@ -57,22 +53,24 @@ const CreateListing = () => {
                 tags: data.tags,
                 description: data.description,
                 price: {
-                    min: data.price_suggestion.min,
-                    max: data.price_suggestion.max,
-                    recommended: data.price_suggestion.recommended
+                    min: 0, // Backend doesn't return min/max in this version
+                    max: 0,
+                    recommended: parseFloat(data.price_suggestion.replace('$', '')) || 0
                 }
             };
 
             setGeneratedData(transformedData);
 
-            // Also set the image prompt if available
+            // Set the image prompts if available
             if (data.image_prompt) {
-                setGeneratedPrompts([data.image_prompt]);
+                const prompts = [];
+                if (data.image_prompt.image_prompt_a) prompts.push(data.image_prompt.image_prompt_a);
+                if (data.image_prompt.image_prompt_b) prompts.push(data.image_prompt.image_prompt_b);
+                setGeneratedPrompts(prompts);
             }
 
         } catch (error) {
             console.error("Generation error:", error);
-            // Optional: Show error message to user
         } finally {
             setIsGenerating(false);
         }

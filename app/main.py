@@ -1,4 +1,3 @@
-# app/main.py
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +7,9 @@ from app.db.session import engine
 from app.db.base import Base
 from app.api.v1.api import api_router
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- KRİTİK DÜZELTME: KLASÖR KONTROLÜ EN BAŞTA YAPILMALI ---
 # Uygulama "mount" etmeden önce klasörün var olduğundan emin oluyoruz.
