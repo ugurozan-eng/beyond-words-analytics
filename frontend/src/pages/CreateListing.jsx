@@ -325,15 +325,20 @@ const CreateListing = () => {
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">13 Altın Etiket</h3>
-                                <button onClick={() => copyToClipboard(generatedData.tags.join(', '), 'tags')} className="text-gray-400 hover:text-indigo-600 transition-colors">
-                                    {copiedField === 'tags' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-                                </button>
+
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {generatedData.tags.map((tag, i) => (
-                                    <span key={i} className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold border border-gray-200">
-                                        {tag}
-                                    </span>
+                                    <div key={i} className="group flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 text-gray-600 hover:text-indigo-700 rounded-full text-xs font-bold border border-gray-200 hover:border-indigo-200 transition-all cursor-default">
+                                        <span>{tag}</span>
+                                        <button
+                                            onClick={() => copyToClipboard(tag, `tag-${i}`)}
+                                            className="text-gray-400 hover:text-indigo-600 transition-colors p-0.5 rounded-full hover:bg-indigo-100"
+                                            title="Kopyala"
+                                        >
+                                            {copiedField === `tag-${i}` ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                                        </button>
+                                    </div>
                                 ))}
                             </div>
                         </div>

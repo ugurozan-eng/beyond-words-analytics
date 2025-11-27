@@ -53,17 +53,21 @@ async def generate_listing(request: GenerateRequest):
         if not model:
             raise HTTPException(status_code=500, detail="API Key Missing")
 
-        # GÜÇLENDİRİLMİŞ SİSTEM TALİMATI
+        # ZENGİNLEŞTİRİLMİŞ & EVRENSEL SİSTEM TALİMATI
         prompt = f"""
-        Act as an expert Etsy SEO and Midjourney Prompt Engineer.
-        
-        INPUT PRODUCT: "{request.description}"
+        YOU ARE AN ELITE AI ART DIRECTOR & SEO EXPERT. Your task is to take a simple product concept and convert it into professional, high-converting assets for Etsy.
+
+        INPUT PRODUCT (Turkish): "{request.description}"
 
         INSTRUCTIONS:
-        1. FIRST, translate the product concept into ENGLISH internally.
-        2. Create SEO content based on the ENGLISH translation.
-        3. Create Image Prompts based on the ENGLISH translation.
-        
+        1.  **TRANSLATE FIRST:** Translate the input concept into English mentally.
+        2.  **SEO CONTENT (English):** Create optimization titles, tags, and a persuasive description.
+        3.  **IMAGE PROMPTS (English - CRITICAL):**
+            * **NEVER** write simple prompts. You must hallucinate details.
+            * **Style A (Photorealistic):** Describe a high-end commercial photoshoot. Mention camera type (e.g., Sony A7IV), lens (e.g., 50mm f/1.4), lighting (e.g., softbox, natural window light), textures, and background setting explicitly.
+            * **Style B (Lifestyle Mockup):** Describe a cozy, aspirational real-life setting. Place the product naturally in a beautiful home. Mention vibes (e.g., "hygge", "minimalist", "boho"), time of day, and atmospheric details.
+            * **ASPECT RATIO:** Do NOT use `--ar 4:3`. Instead, write exactly "The image is a horizontal photograph with a 4:3 aspect ratio." at the end of each prompt sentence.
+
         OUTPUT FORMAT (Strict JSON):
         {{
             "seo_title": "SEO Optimized English Title (Max 140 chars)",
@@ -71,8 +75,8 @@ async def generate_listing(request: GenerateRequest):
             "description": "Sales oriented description in English...",
             "price_suggestion": "$XX.XX",
             "image_prompt": {{
-                "image_prompt_a": "Professional studio photography of [ENGLISH OBJECT], 8k, soft lighting --ar 4:3",
-                "image_prompt_b": "Lifestyle mockup of [ENGLISH OBJECT] on a wooden desk, cozy aesthetic --ar 4:3"
+                "image_prompt_a": "A detailed, professional studio photograph of [ENGLISH OBJECT] with [SPECIFIC DETAILS, LIGHTING, CAMERA INFO]. The image is a horizontal photograph with a 4:3 aspect ratio.",
+                "image_prompt_b": "A warm, candid lifestyle photograph of [ENGLISH OBJECT] placed in a [SPECIFIC SETTING, VIBE, ATMOSPHERE]. The image is a horizontal photograph with a 4:3 aspect ratio."
             }}
         }}
         """
