@@ -367,6 +367,16 @@ const CreateListing = () => {
                             </div>
                         </div>
 
+                        {/* Disclaimer */}
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">
+                            <div className="bg-yellow-100 p-1.5 rounded-full mt-0.5">
+                                <span className="text-yellow-600 text-xs font-bold">i</span>
+                            </div>
+                            <p className="text-xs text-yellow-700 leading-relaxed">
+                                <span className="font-bold">⚠️ Yasal Uyarı:</span> Bu fiyatlar ve içerikler Yapay Zeka (AI) tarafından pazar trendlerine göre tahmin edilmiştir. Nihai fiyatlandırma stratejisi ve kullanım kararı tamamen satıcının sorumluluğundadır.
+                            </p>
+                        </div>
+
                         {/* AI IMAGE STUDIO CARD */}
                         <div className="bg-gradient-to-br from-indigo-600 to-violet-600 p-6 rounded-xl shadow-lg border border-indigo-500/30 text-white relative overflow-hidden">
                             {/* Decorative Background Elements */}

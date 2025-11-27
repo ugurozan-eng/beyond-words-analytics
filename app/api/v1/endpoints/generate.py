@@ -62,7 +62,8 @@ async def generate_listing(request: GenerateRequest):
         INSTRUCTIONS:
         1.  **TRANSLATE FIRST:** Translate the input concept into English mentally.
         2.  **SEO CONTENT (English):** Create optimization titles, tags, and a persuasive description.
-        3.  **IMAGE PROMPTS (English - CRITICAL):**
+        3.  **PRICING STRATEGY (Neuro-Pricing):** ANALYZE PRODUCT TYPE FOR PRICING: If it's a digital/impulse product, use 'Charm Pricing' (ending in .90, .95, .99). If it's luxury/art, use whole numbers. Provide a range.
+        4.  **IMAGE PROMPTS (English - CRITICAL):**
             * **NEVER** write simple prompts. You must hallucinate details.
             * **Style A (Photorealistic):** Describe a high-end commercial photoshoot. Mention camera type (e.g., Sony A7IV), lens (e.g., 50mm f/1.4), lighting (e.g., softbox, natural window light), textures, and background setting explicitly.
             * **Style B (Lifestyle Mockup):** Describe a cozy, aspirational real-life setting. Place the product naturally in a beautiful home. Mention vibes (e.g., "hygge", "minimalist", "boho"), time of day, and atmospheric details.
