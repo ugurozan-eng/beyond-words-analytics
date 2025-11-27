@@ -137,8 +137,8 @@ async def analyze_listing(request: AnalysisRequest, db: Session = Depends(get_db
     if not should_analyze:
         return get_cached_result(db_listing)
 
-    my_api_key = "AIzaSyBpRW4NwWrtj09rFTIfyMlGVJVyrvIwPQY" 
-    target_model = "gemini-2.5-flash"
+    my_api_key = "AIzaSyBnrS0t2jtZm9_Dooonyq2FU8qwydsw4X8" 
+    target_model = "gemini-flash-latest"
     
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={my_api_key}"
     headers = {"Content-Type": "application/json"} 

@@ -43,7 +43,7 @@ const LoginPage = ({ onLogin }) => {
                 </div>
 
                 <h1 className="text-4xl font-black text-white mb-3 tracking-tight drop-shadow-md">
-                    Beyond Words
+                    Cyclear
                     <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 text-2xl mt-1 font-bold">Analytics</span>
                 </h1>
 
@@ -106,7 +106,7 @@ const LoginPage = ({ onLogin }) => {
                 </div>
 
                 <p className="mt-8 text-indigo-200/60 text-xs">
-                    &copy; 2025 Beyond Words Analytics. All rights reserved.
+                    &copy; 2025 Klindar Analytics. All rights reserved.
                 </p>
             </div>
         </div>

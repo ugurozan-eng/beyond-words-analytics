@@ -11,3 +11,4 @@ python-dotenv
 requests
 email-validator
 typing-extensions
+gunicorn

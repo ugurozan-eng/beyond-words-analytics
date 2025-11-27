@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Clock, RotateCw, Save, Edit2, ShieldAlert, Target, Sparkles, Calendar, Tag, Copy, Info, TrendingUp, LayoutDashboard, Search } from 'lucide-react';
+import { Zap, Clock, RotateCw, Save, Edit2, ShieldAlert, Target, Sparkles, Calendar, Tag, Copy, Info, TrendingUp, LayoutDashboard, BarChart3 } from 'lucide-react';
 import PricingCard from './PricingCard';
 import TagManager from './TagManager';
 import SeasonalityChart from './SeasonalityChart';
 import TrafficSourceChart from './TrafficSourceChart';
+import HistoryList from './HistoryList';
 import AttributeBadge from '../common/AttributeBadge';
 
 const copyToClipboard = async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch (err) { console.error('Hata:', err); return false; } };
@@ -33,9 +34,9 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
         }
     }, [analysisResult]);
 
-    if (!analysisResult) {
+    if (!analysisResult || (analysisResult.lqs_score === 0 && !isAnalyzing)) {
         if (isAnalyzing) return (<div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/50 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-8"></div><h3 className="text-2xl font-bold text-gray-900 mb-3">2026 Analizi Yapılıyor...</h3><p className="text-gray-500 max-w-xs text-lg">Semantik Vektör Taraması ve Kelime Fırtınası başlatıldı.</p></div>);
-        return (<div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/50 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="bg-indigo-50 p-6 rounded-full mb-8"><Sparkles className="w-16 h-16 text-indigo-600" /></div><h3 className="text-2xl font-bold text-gray-900 mb-3">Analiz Bekleniyor</h3><p className="text-gray-500 max-w-xs mb-10 text-lg">Bu ürün henüz analiz edilmedi.</p><button onClick={() => onAnalyzeClick(false)} className="flex items-center px-10 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 hover:shadow-2xl transition-all transform hover:-translate-y-1"><Zap className="w-6 h-6 mr-2" />Analizi Başlat</button></div>);
+        return (<div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/50 p-10 flex flex-col items-center justify-center h-full min-h-[600px] text-center sticky top-6"><div className="bg-indigo-50 p-6 rounded-full mb-8"><Sparkles className="w-16 h-16 text-indigo-600" /></div><h3 className="text-2xl font-bold text-gray-900 mb-3">Analiz Bekleniyor</h3><p className="text-gray-500 max-w-xs mb-10 text-lg">Bu ürün henüz analiz edilmedi veya verisi eksik.</p><button onClick={() => onAnalyzeClick(true)} className="flex items-center px-10 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 hover:shadow-2xl transition-all transform hover:-translate-y-1"><Zap className="w-6 h-6 mr-2" />Analizi Başlat</button></div>);
     }
 
     const handleSave = async () => {
@@ -85,27 +86,28 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
             </div>
 
             {/* TAB NAVIGATION */}
-            <div className="flex space-x-2 mb-8 bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100">
+            {/* TAB NAVIGATION */}
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mb-8 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm">
                 <button
                     onClick={() => setActiveTab('overview')}
-                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'overview' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                    className={`flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeTab === 'overview' ? 'bg-gradient-to-r from-blue-100 to-indigo-100 text-indigo-800 shadow-md border border-indigo-200 scale-[1.02]' : 'bg-indigo-50 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 border border-transparent'}`}
                 >
-                    <LayoutDashboard className="w-4 h-4 mr-2" />
+                    <LayoutDashboard className={`w-4 h-4 mr-2 ${activeTab === 'overview' ? 'text-indigo-700' : 'text-indigo-400'}`} />
                     Genel Bakış & Fiyat
                 </button>
                 <button
                     onClick={() => setActiveTab('seo')}
-                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'seo' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                    className={`flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeTab === 'seo' ? 'bg-gradient-to-r from-fuchsia-100 to-pink-100 text-pink-800 shadow-md border border-pink-200 scale-[1.02]' : 'bg-pink-50 text-pink-400 hover:bg-pink-100 hover:text-pink-600 border border-transparent'}`}
                 >
-                    <Tag className="w-4 h-4 mr-2" />
+                    <Tag className={`w-4 h-4 mr-2 ${activeTab === 'seo' ? 'text-pink-700' : 'text-pink-400'}`} />
                     SEO & Etiketler
                 </button>
                 <button
                     onClick={() => setActiveTab('details')}
-                    className={`flex-1 flex items-center justify-center py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'details' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:bg-white/50 hover:text-gray-700'}`}
+                    className={`flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeTab === 'details' ? 'bg-gradient-to-r from-amber-100 to-orange-100 text-orange-800 shadow-md border border-orange-200 scale-[1.02]' : 'bg-orange-50 text-orange-400 hover:bg-orange-100 hover:text-orange-600 border border-transparent'}`}
                 >
-                    <Search className="w-4 h-4 mr-2" />
-                    Rakip & Detaylar
+                    <BarChart3 className={`w-4 h-4 mr-2 ${activeTab === 'details' ? 'text-orange-700' : 'text-orange-400'}`} />
+                    Detaylar & Trafik
                 </button>
             </div>
 
@@ -200,6 +202,17 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
                 {/* TAB 3: RAKİP & DETAYLAR */}
                 {activeTab === 'details' && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* TRAFİK KAYNAKLARI GRAFİĞİ */}
+                        {analysisResult.traffic_data && (
+                            <TrafficSourceChart data={analysisResult.traffic_data} />
+                        )}
+
+                        {!analysisResult.traffic_data && (
+                            <div className="bg-gray-50 p-8 rounded-2xl text-center border border-gray-200 border-dashed">
+                                <p className="text-gray-400">Trafik verisi bulunamadı.</p>
+                            </div>
+                        )}
+
                         {/* RAKİP STRATEJİ NOTU */}
                         {isCompetitor && analysisResult.competitor_analysis && (
                             <div className="bg-white p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm">
@@ -212,16 +225,8 @@ const AnalysisPanel = ({ analysisResult, listingId, currentPrice, onCopy, onUpda
                             {isEditing ? (<><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_materials} onChange={e => setEditData({ ...editData, suggested_materials: e.target.value })} placeholder="Materyaller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_styles} onChange={e => setEditData({ ...editData, suggested_styles: e.target.value })} placeholder="Stiller" /><input type="text" className="p-3 text-sm border rounded-xl bg-white text-gray-900 shadow-sm" value={editData.suggested_colors} onChange={e => setEditData({ ...editData, suggested_colors: e.target.value })} placeholder="Renkler" /></>) : (<><AttributeBadge label="Materyal" value={analysisResult.suggested_materials} colorClass="text-amber-700" /><AttributeBadge label="Stil" value={analysisResult.suggested_styles} colorClass="text-purple-700" /><AttributeBadge label="Renkler" value={analysisResult.suggested_colors} colorClass="text-pink-700" /></>)}
                         </div>
 
-                        {/* TRAFİK KAYNAKLARI GRAFİĞİ */}
-                        {analysisResult.traffic_data && (
-                            <TrafficSourceChart data={analysisResult.traffic_data} />
-                        )}
-
-                        {!analysisResult.traffic_data && (
-                            <div className="bg-gray-50 p-8 rounded-2xl text-center border border-gray-200 border-dashed">
-                                <p className="text-gray-400">Trafik verisi bulunamadı.</p>
-                            </div>
-                        )}
+                        {/* GEÇMİŞ ANALİZLER */}
+                        <HistoryList listingId={listingId} />
                     </div>
                 )}
             </div>

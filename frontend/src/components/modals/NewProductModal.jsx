@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { X, Upload, Link as LinkIcon, CheckCircle, RefreshCcw, ShieldAlert, PlusCircle } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 
-const NewProductModal = ({ isOpen, onClose, onAddProduct }) => {
+const NewProductModal = ({ isOpen, onClose, onAddProduct, initialType = 'mine' }) => {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
     const [inputType, setInputType] = useState('upload');
-    const [listingType, setListingType] = useState('mine');
+    const [listingType, setListingType] = useState(initialType);
     const [imageUrl, setImageUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +53,7 @@ const NewProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
             onAddProduct(await response.json());
             onClose();
-            setTitle(''); setPrice(''); setImageUrl(''); setSelectedFile(null); setListingType('mine');
+            setTitle(''); setPrice(''); setImageUrl(''); setSelectedFile(null); setListingType(initialType);
         } catch (error) {
             alert('Hata: ' + error.message);
         } finally {
@@ -63,6 +63,10 @@ const NewProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     console.log("NewProductModal rendered, isOpen:", isOpen);
     if (!isOpen) return null;
+
+    // React.useEffect(() => {
+    //     setListingType(initialType);
+    // }, [isOpen, initialType]);
 
     return (
         <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-md flex items-center justify-center z-[60] p-4">

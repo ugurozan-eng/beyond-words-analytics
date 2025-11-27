@@ -101,7 +101,7 @@ const OptimizationModal = ({ isOpen, onClose, originalListing, optimizedData, on
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
                         <div className="flex items-center justify-between mb-6">
-                            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-indigo-200">Beyond AI Önerisi</span>
+                            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-indigo-200">Cyclear AI Önerisi</span>
                             <div className="flex items-center">
                                 <span className="text-indigo-900 font-bold mr-2">Hedef LQS:</span>
                                 <span className="text-3xl font-black text-emerald-500 drop-shadow-sm">{displayNewLqs}</span>

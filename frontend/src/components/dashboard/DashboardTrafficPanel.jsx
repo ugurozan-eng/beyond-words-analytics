@@ -1,7 +1,7 @@
 import React from 'react';
 import { TrendingUp, ArrowRight, BarChart3 } from 'lucide-react';
 
-const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', onUnlockClick }) => {
+const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', onUnlockClick, compact = false }) => {
     // Default mock data if trafficData is missing or empty
     const data = trafficData || {
         total_visits: 0,
@@ -18,10 +18,10 @@ const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', o
     // Calculate percentages for bars
     const getPercent = (val) => total > 0 ? (val / total) * 100 : 0;
 
-    const isLocked = userPlan === 'free';
+    const isLocked = false; // userPlan === 'free';
 
     return (
-        <div className="relative mb-8 group">
+        <div className={`relative group ${compact ? '' : 'mb-8'}`}>
             {/* Lock Overlay for Free Users */}
             {isLocked && (
                 <div
@@ -43,7 +43,7 @@ const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', o
                 </div>
             )}
 
-            <div className={`bg-white rounded-3xl p-6 shadow-lg border border-indigo-50 flex flex-col lg:flex-row items-center justify-start gap-10 relative overflow-hidden transition-all ${isLocked ? 'blur-sm opacity-80 select-none' : ''}`}>
+            <div className={`flex flex-col lg:flex-row items-center justify-start gap-10 relative overflow-hidden transition-all ${isLocked ? 'blur-sm opacity-80 select-none' : ''} ${compact ? '' : 'bg-white rounded-3xl p-6 shadow-lg border border-indigo-50'}`}>
                 {/* Background Decoration */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 pointer-events-none"></div>
 
