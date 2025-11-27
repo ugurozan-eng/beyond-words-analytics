@@ -317,13 +317,13 @@ function App() {
             {/* MOBILE SIDEBAR BACKDROP */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-sm transition-opacity"
+                    className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm transition-opacity"
                     onClick={() => setIsSidebarOpen(false)}
                 />
             )}
 
             {/* SIDEBAR */}
-            <div className={`fixed lg:relative z-40 h-full transition-transform duration-300 ease-in-out transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} w-64 flex-shrink-0 shadow-2xl lg:shadow-none`}>
+            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-indigo-900 transition-transform duration-300 transform md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <Sidebar
                     activeView={activeView}
                     onNavigate={(view) => {
@@ -347,7 +347,7 @@ function App() {
                         {/* Hamburger Button (Mobile Only) */}
                         <button
                             onClick={() => setIsSidebarOpen(true)}
-                            className="lg:hidden p-2 mr-4 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                            className="md:hidden p-2 mr-4 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                         >
                             <List className="w-6 h-6" />
                         </button>
@@ -377,7 +377,7 @@ function App() {
                 </div>
 
                 {/* CONTENT AREA */}
-                <main className="flex-1 overflow-y-auto p-4 lg:p-8 scroll-smooth">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
                     {activeView === 'dashboard' && renderDashboard()}
                     {activeView === 'my-shop' && (
                         <MyShop
