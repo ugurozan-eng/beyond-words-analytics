@@ -121,6 +121,21 @@ async def analyze_listing(request: AnalysisRequest, db: Session = Depends(get_db
     if not db_listing:
         raise HTTPException(status_code=404, detail="Listing not found")
     
+    
+    # API Key check
+    my_api_key = os.getenv("GEMINI_API_KEY")
+    if not my_api_key:
+        print("❌ API Key bulunamadı! .env dosyasını kontrol edin.")
+        raise HTTPException(status_code=500, detail="API Key configuration error")
+        
+    target_model = "gemini-flash-latest"
+    
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={my_api_key}"
+    headers = {"Content-Type": "application/json"} 
+
+    # --- JSON YAPISI ---
+    common_structure = """
+    {
         "suggested_title": "SEO Optimized Title...", 
         "suggested_description": "Sales oriented description...",
         "tags_pool_20": ["tag1", "tag2", "tag3", ...], 
