@@ -12,6 +12,12 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         // 1. Get current session
+        // 1. Get current session
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
+
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUser(session?.user ?? null);
             if (session?.user) {
@@ -37,6 +43,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchProfile = async (userId) => {
         try {
+            if (!supabase) return;
             const { data, error } = await supabase
                 .from('profiles')
                 .select('*')
@@ -56,6 +63,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signUp = async (email, password, fullName) => {
+        if (!supabase) throw new Error("Supabase client not initialized");
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
@@ -70,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signIn = async (email, password) => {
+        if (!supabase) throw new Error("Supabase client not initialized");
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -79,6 +88,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signOut = async () => {
+        if (!supabase) return;
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
     };

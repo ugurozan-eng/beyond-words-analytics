@@ -4,6 +4,18 @@ import { X, Check, Crown, Zap, Shield, BarChart3, Search } from 'lucide-react';
 const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     if (!isOpen) return null;
 
+    const handleUpgrade = () => {
+        // 1. Get User ID from Local Storage or Auth Context (passed as prop ideally, but for now we use localStorage as fallback or assume parent handles it)
+        // Ideally, onUpgrade should be passed from App.jsx where user context is available.
+        // Let's assume onUpgrade is passed and handles the redirection.
+
+        // If we want to handle it here directly:
+        // const userId = user?.id;
+        // window.location.href = `https://store.lemonsqueezy.com/checkout/buy/...?checkout[custom][user_id]=${userId}`;
+
+        onUpgrade();
+    };
+
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden relative">
@@ -92,7 +104,7 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                             </ul>
 
                             <button
-                                onClick={onUpgrade}
+                                onClick={handleUpgrade}
                                 className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                             >
                                 Pro'ya Geç 🚀

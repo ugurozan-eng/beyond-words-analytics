@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import listings, analyze, shop_import, keywords, tag_spy, generate
+from app.api.v1.endpoints import listings, analyze, shop_import, keywords, tag_spy, generate, webhooks
 
 api_router = APIRouter()
 
@@ -12,3 +12,4 @@ api_router.include_router(tag_spy.router, prefix="/spy", tags=["spy"])
 
 # EKSİK OLAN VE ŞİMDİ EKLENEN ROTA:
 api_router.include_router(generate.router, prefix="/generate", tags=["generate"])
+api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
