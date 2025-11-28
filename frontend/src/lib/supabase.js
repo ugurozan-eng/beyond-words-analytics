@@ -1,27 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = 'https://hupzfkchkusckjdzleme.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1cHpma2Noa3VzY2tqZHpsZW1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMTE3ODIsImV4cCI6MjA3OTg4Nzc4Mn0.-Ez0CIcEqilRmnRzlgdiLyVEDJHmLc_p3VFvhBznjnU';
 
-console.log('--- SPY CODE START ---');
-console.log('Full Env Object:', import.meta.env);
-console.log('VITE_SUPABASE_URL Raw:', import.meta.env.VITE_SUPABASE_URL);
-console.log('VITE_SUPABASE_ANON_KEY Raw:', import.meta.env.VITE_SUPABASE_ANON_KEY);
-console.log('Mode:', import.meta.env.MODE);
-console.log('Is Dev?', import.meta.env.DEV);
-console.log('Is Prod?', import.meta.env.PROD);
-console.log('--- SPY CODE END ---');
-
-console.log('Supabase Config Check:', {
-    urlExists: !!supabaseUrl,
-    keyExists: !!supabaseAnonKey,
-    mode: import.meta.env.MODE
-});
-
-if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('CRITICAL: Supabase URL or Anon Key is missing in environment variables!');
-}
-
-export const supabase = (supabaseUrl && supabaseAnonKey)
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : null;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
