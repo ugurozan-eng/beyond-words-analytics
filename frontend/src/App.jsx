@@ -26,9 +26,19 @@ import ProfitCalculator from './pages/ProfitCalculator';
 import TagSpy from './pages/TagSpy';
 import MyShop from './pages/MyShop';
 import { API_BASE_URL } from './config';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true); // Temporary bypass for testing
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
+    );
+}
+
+function AppContent() {
+    const { user, loading } = useAuth();
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Managed by AuthContext now
     const [isDemoMode, setIsDemoMode] = useState(false);
     const [listings, setListings] = useState([]);
     const [analyzedProducts, setAnalyzedProducts] = useState([]); // State for newly imported products
@@ -48,10 +58,13 @@ function App() {
     const [isOptimizationOpen, setIsOptimizationOpen] = useState(false);
     const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
     const [initialModalType, setInitialModalType] = useState('mine');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'create-listing', 'keyword-explorer', 'profit-calculator', 'tag-spy', 'my-shop'
 
-    // Navigation State
-    const [activeView, setActiveView] = useState('dashboard');
+    useEffect(() => {
+        if (!loading) {
+            setIsLoggedIn(!!user);
+        }
+    }, [user, loading]);
 
     // Freemium Logic States
     const [userPlan, setUserPlan] = useState('free');
@@ -103,6 +116,25 @@ function App() {
         return result;
     };
     const filteredListings = getProcessedListings();
+
+    const handleUpgrade = () => {
+        if (!user) {
+            alert("Lütfen önce giriş yapın.");
+            return;
+        }
+
+        // Lemon Squeezy Checkout URL (Real Product)
+        const checkoutUrl = `https://cyclear.lemonsqueezy.com/buy/a2d23b5d-7bf0-4911-8df8-ff7ac3eb0ba5?checkout[custom][user_id]=${user.id}`;
+
+        console.log("Opening Lemon Squeezy Checkout:", checkoutUrl);
+
+        // Use Lemon Squeezy Overlay if available, otherwise fallback to redirect
+        if (window.LemonSqueezy) {
+            window.LemonSqueezy.Url.Open(checkoutUrl);
+        } else {
+            window.location.href = checkoutUrl;
+        }
+    };
 
     const handleExportCSV = () => { if (!listings.length) return; const csvContent = ["ID,Type,Title,Price,Analyzed,LQS,LQS Reason,LastAnalyzed,Tags,SuggestedTitle,SuggestedDesc,Materials,Styles,Colors,Occasions,Recipients,PredictedPriceMin,PredictedPriceMax,PriceReason,FAQs,TrendScore,TrendReason,BestSellingMonths,CompetitorAnalysis", ...listings.map(i => `${i.id},${i.listing_type},"${i.title.replace(/"/g, '""')}",${i.price},${i.is_analyzed},${i.lqs_score},"${(i.lqs_reason || "").replace(/"/g, '""')}",${i.last_analyzed_at},"${i.tags.join(",")}", "${(i.suggested_title || "").replace(/"/g, '""')}", "${(i.suggested_description || "").replace(/"/g, '""')}", "${(i.suggested_materials || "")}", "${(i.suggested_styles || "")}", "${(i.suggested_colors || "")}", "${(i.suggested_occasions || "")}", "${(i.suggested_recipients || "")}",${i.predicted_price_min},${i.predicted_price_max},"${(i.price_reason || "").replace(/"/g, '""')}","${(i.suggested_faqs || "").replace(/"/g, '""')}",${i.trend_score},"${(i.trend_reason || "").replace(/"/g, '""')}","${(i.best_selling_months || "").replace(/"/g, '""')}","${(i.competitor_analysis || "").replace(/"/g, '""')}"`)].join("\n"); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })); link.download = "etsy_export.csv"; link.click(); };
 
@@ -449,12 +481,7 @@ function App() {
             <SubscriptionModal
                 isOpen={isSubscriptionOpen}
                 onClose={() => setIsSubscriptionOpen(false)}
-                onUpgrade={() => {
-                    setUserPlan('pro');
-                    setIsSubscriptionOpen(false);
-                    setStatusMessage({ type: 'success', text: '🎉 Tebrikler! Artık PRO üyesiniz. Tüm özellikler açıldı!' });
-                    setTimeout(() => setStatusMessage(null), 5000);
-                }}
+                onUpgrade={handleUpgrade}
             />
             {deleteConfirmation && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
