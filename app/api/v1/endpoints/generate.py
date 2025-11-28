@@ -68,7 +68,7 @@ async def generate_listing(request: GenerateRequest):
             * **Style A (Photorealistic):** Describe a high-end commercial photoshoot. Mention camera type (e.g., Sony A7IV), lens (e.g., 50mm f/1.4), lighting (e.g., softbox, natural window light), textures, and background setting explicitly.
             * **Style B (Lifestyle Mockup):** Describe a cozy, aspirational real-life setting. Place the product naturally in a beautiful home. Mention vibes (e.g., "hygge", "minimalist", "boho"), time of day, and atmospheric details.
             * **ASPECT RATIO:** Do NOT use `--ar 4:3`. Instead, write exactly "The image is a horizontal photograph with a 4:3 aspect ratio." at the end of each prompt sentence.
-        5.  **COMPETITOR SIMULATION:** Based on your knowledge of Etsy trends, generate 3 REALISTIC competitor listings that would rank high for this product. Estimate their monthly sales based on market demand.
+        5.  **COMPETITOR SIMULATION:** Generate 3 REALISTIC competitor listings. Include shop name, price, and monthly sales estimate.
 
         OUTPUT FORMAT (Strict JSON):
         {{
@@ -83,12 +83,11 @@ async def generate_listing(request: GenerateRequest):
             }},
             "competitors": [
                 {{
-                    "shop_name": "ExampleShopName",
-                    "title": "Short Competitor Title...",
+                    "shop_name": "ShopName",
+                    "title": "Short Title...",
                     "price": "$15.00",
                     "sales_estimate": "120 sales/mo",
-                    "tags": ["tag1", "tag2", "tag3"],
-                    "differentiator": "Why this sells well (e.g. 'Great photography')"
+                    "tags": ["tag1", "tag2"]
                 }},
                 ... (Total 3 items)
             ],

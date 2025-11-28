@@ -383,32 +383,28 @@ const CreateListing = () => {
                             </p>
                         </div>
 
-                        {/* Competitor Analysis */}
+                        {/* RAKİP ANALİZİ KARTLARI */}
                         {generatedData.competitors && generatedData.competitors.length > 0 && (
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                                <h3 className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-4">📊 En İyi 3 Benzer Rakip (AI Tahmini)</h3>
-                                <div className="grid grid-cols-1 gap-4">
-                                    {generatedData.competitors.map((comp, idx) => (
-                                        <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:border-indigo-200 transition-all">
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                                    📊 En İyi 3 Benzer Rakip <span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded-full">AI Tahmini</span>
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {generatedData.competitors.map((comp, index) => (
+                                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-gray-50">
                                             <div className="flex justify-between items-start mb-2">
-                                                <h4 className="font-bold text-gray-800 text-sm line-clamp-2 flex-1 mr-2">{comp.title}</h4>
-                                                <span className="text-xs font-medium text-gray-400 whitespace-nowrap">{comp.shop_name}</span>
+                                                <span className="text-xs font-bold text-indigo-600 uppercase tracking-wide">{comp.shop_name}</span>
+                                                <span className="text-xs text-green-600 font-medium bg-green-100 px-2 py-0.5 rounded">{comp.sales_estimate}</span>
                                             </div>
-                                            <div className="flex items-center justify-between mb-3">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-black text-gray-900">{comp.price}</span>
-                                                    <span className="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">{comp.sales_estimate}</span>
-                                                </div>
+                                            <h4 className="font-medium text-gray-800 text-sm mb-3 line-clamp-2" title={comp.title}>{comp.title}</h4>
+                                            <div className="flex justify-between items-center mt-auto">
+                                                <span className="font-bold text-gray-900">{comp.price}</span>
                                             </div>
-                                            <div className="flex flex-wrap gap-1.5 mb-3">
-                                                {comp.tags.slice(0, 3).map((tag, tIdx) => (
-                                                    <span key={tIdx} className="text-[10px] bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full">{tag}</span>
+                                            <div className="mt-3 flex flex-wrap gap-1">
+                                                {comp.tags?.slice(0, 2).map((tag, i) => (
+                                                    <span key={i} className="text-[10px] text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">{tag}</span>
                                                 ))}
                                             </div>
-                                            <p className="text-xs text-indigo-600 italic border-t border-gray-200 pt-2 mt-2">
-                                                <span className="font-bold not-italic text-indigo-400 mr-1">💡 Neden Satıyor?</span>
-                                                {comp.differentiator}
-                                            </p>
                                         </div>
                                     ))}
                                 </div>
