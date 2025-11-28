@@ -59,6 +59,7 @@ function AppContent() {
     const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
     const [initialModalType, setInitialModalType] = useState('mine');
     const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'create-listing', 'keyword-explorer', 'profit-calculator', 'tag-spy', 'my-shop'
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         if (!loading) {
