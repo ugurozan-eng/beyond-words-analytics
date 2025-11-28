@@ -364,10 +364,10 @@ const CreateListing = () => {
                                     <span className="text-sm font-bold text-gray-400 mb-2 ml-2">Önerilen</span>
                                 </div>
 
-                                <div className="w-full">
+                                <div className="w-fit">
                                     <span className="text-xs font-bold text-gray-400 uppercase mb-1.5 block">Pazar Aralığı</span>
-                                    <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-center">
-                                        <span className="text-xl font-bold text-gray-700 tracking-tight">${generatedData.price.min} - ${generatedData.price.max}</span>
+                                    <div className="w-auto min-w-[120px] px-4 py-2 border border-gray-300 rounded text-center font-medium bg-white">
+                                        <span className="text-lg font-bold text-gray-700 tracking-tight">${generatedData.price.min} - ${generatedData.price.max}</span>
                                     </div>
                                 </div>
                             </div>
