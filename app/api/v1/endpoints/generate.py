@@ -120,6 +120,13 @@ async def generate_listing(request: GenerateRequest):
         # Fiyat verisi güvenliği
         price_data = data.get("pricing") or {}
 
+        # Fallback Competitors (Eğer AI üretmezse)
+        default_competitors = [
+            {"shop_name": "MarketLeader", "title": "Similar Product Example A", "price": "$15.00", "sales_estimate": "High Demand", "tags": ["example"]},
+            {"shop_name": "TrendSetter", "title": "Similar Product Example B", "price": "$12.50", "sales_estimate": "Medium Demand", "tags": ["example"]},
+            {"shop_name": "BestValue", "title": "Similar Product Example C", "price": "$9.99", "sales_estimate": "Rising Star", "tags": ["example"]}
+        ]
+
         final_data = {
             "seo_title": data.get("seo_title") or data.get("title") or "AI Title Generated",
             "tags": data.get("tags") or data.get("keywords") or [],
@@ -130,7 +137,7 @@ async def generate_listing(request: GenerateRequest):
                 "max": price_data.get("max") or "12.00",
                 "currency": price_data.get("currency") or "$"
             },
-            "competitors": data.get("competitors") or [],
+            "competitors": data.get("competitors") or default_competitors,
             "image_prompt": data.get("image_prompt") or {
                 "image_prompt_a": "Error creating prompt A",
                 "image_prompt_b": "Error creating prompt B"
