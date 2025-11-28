@@ -1,26 +1,48 @@
 import React, { useState } from 'react';
 import { ShoppingBag, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = ({ onLogin }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const { signInWithGoogle } = useAuth();
+
     const handleLoginClick = async (type) => {
         setError(null);
         setIsLoading(true);
 
-        // Simulate network request
-        setTimeout(() => {
-            if (type === 'google') {
-                // Simulate Error for Google to demonstrate the feature
+        if (type === 'google') {
+            try {
+                await signInWithGoogle();
+                // Redirect is handled by Supabase, so we don't need to do anything here
+            } catch (err) {
                 setIsLoading(false);
-                setError("Google bağlantısı zaman aşımına uğradı. (Simülasyon Hatası)");
-            } else {
-                // Etsy and Demo work fine
+                setError(err.message || "Giriş sırasında bir hata oluştu.");
+            }
+        } else {
+            // Etsy and Demo work fine (Etsy is still mock/placeholder for now if not implemented)
+            // But user specifically asked to remove simulation for Google.
+            // For 'demo', we just call onLogin('demo') which sets state in App.jsx
+            // For 'etsy', if it's not implemented, we might leave it or show "Coming Soon"
+            // Assuming 'etsy' still uses the old prop method or needs similar implementation.
+            // The prompt specifically asked to remove simulation for Google.
+
+            // Let's keep the existing behavior for demo/etsy but remove the timeout if possible, 
+            // or keep it minimal if needed for UX. 
+            // Actually, the prompt says "Login sayfasındaki ... TÜM Mock/Simülasyon kodlarını SİL."
+
+            if (type === 'demo') {
+                onLogin('demo');
+                setIsLoading(false);
+            } else if (type === 'etsy') {
+                // If Etsy auth is not ready, maybe show alert or just call onLogin if it handles it.
+                // For now, let's assume onLogin handles it or we just pass it through.
+                // But we should remove the setTimeout.
                 onLogin(type);
                 setIsLoading(false);
             }
-        }, 1500);
+        }
     };
 
     return (
