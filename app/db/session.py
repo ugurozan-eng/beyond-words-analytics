@@ -1,19 +1,28 @@
+```python
 # app/db/session.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.core.config import settings
+import os
 
-# Eğer Postgres ayarları varsa (ve localhost değilse) onu kullan
-if settings.POSTGRES_SERVER != "localhost":
-     SQLALCHEMY_DATABASE_URL = settings.SQLALCHEMY_DATABASE_URI
-     connect_args = {}
+# Render'dan gelen DATABASE_URL'i al
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # Render postgres:// veriyor, SQLAlchemy postgresql:// istiyor
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    
+    SQLALCHEMY_DATABASE_URL = DATABASE_URL
+    connect_args = {}
 else:
-     SQLALCHEMY_DATABASE_URL = "sqlite:///./etsy_v2.db"
-     connect_args = {"check_same_thread": False}
+    # Local geliştirme için fallback
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./etsy_v2.db"
+    connect_args = {"check_same_thread": False}
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args=connect_args
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+```
