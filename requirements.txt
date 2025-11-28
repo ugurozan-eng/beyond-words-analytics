@@ -11,5 +11,5 @@ python-dotenv
 requests
 email-validator
 typing-extensions
-gunicorn
+gunicorn==22.0.0
 google-generativeai
