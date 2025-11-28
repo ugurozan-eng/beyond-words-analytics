@@ -68,6 +68,7 @@ async def generate_listing(request: GenerateRequest):
             * **Style A (Photorealistic):** Describe a high-end commercial photoshoot. Mention camera type (e.g., Sony A7IV), lens (e.g., 50mm f/1.4), lighting (e.g., softbox, natural window light), textures, and background setting explicitly.
             * **Style B (Lifestyle Mockup):** Describe a cozy, aspirational real-life setting. Place the product naturally in a beautiful home. Mention vibes (e.g., "hygge", "minimalist", "boho"), time of day, and atmospheric details.
             * **ASPECT RATIO:** Do NOT use `--ar 4:3`. Instead, write exactly "The image is a horizontal photograph with a 4:3 aspect ratio." at the end of each prompt sentence.
+        5.  **COMPETITOR SIMULATION:** Based on your knowledge of Etsy trends, generate 3 REALISTIC competitor listings that would rank high for this product. Estimate their monthly sales based on market demand.
 
         OUTPUT FORMAT (Strict JSON):
         {{
@@ -80,6 +81,17 @@ async def generate_listing(request: GenerateRequest):
                 "max": "12.00",
                 "currency": "$"
             }},
+            "competitors": [
+                {{
+                    "shop_name": "ExampleShopName",
+                    "title": "Short Competitor Title...",
+                    "price": "$15.00",
+                    "sales_estimate": "120 sales/mo",
+                    "tags": ["tag1", "tag2", "tag3"],
+                    "differentiator": "Why this sells well (e.g. 'Great photography')"
+                }},
+                ... (Total 3 items)
+            ],
             "image_prompt": {{
                 "image_prompt_a": "A detailed, professional studio photograph of [ENGLISH OBJECT] with [SPECIFIC DETAILS, LIGHTING, CAMERA INFO]. The image is a horizontal photograph with a 4:3 aspect ratio.",
                 "image_prompt_b": "A warm, candid lifestyle photograph of [ENGLISH OBJECT] placed in a [SPECIFIC SETTING, VIBE, ATMOSPHERE]. The image is a horizontal photograph with a 4:3 aspect ratio."
@@ -119,6 +131,7 @@ async def generate_listing(request: GenerateRequest):
                 "max": price_data.get("max") or "12.00",
                 "currency": price_data.get("currency") or "$"
             },
+            "competitors": data.get("competitors") or [],
             "image_prompt": data.get("image_prompt") or {
                 "image_prompt_a": "Error creating prompt A",
                 "image_prompt_b": "Error creating prompt B"

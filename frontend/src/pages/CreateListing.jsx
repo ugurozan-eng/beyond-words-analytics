@@ -383,6 +383,38 @@ const CreateListing = () => {
                             </p>
                         </div>
 
+                        {/* Competitor Analysis */}
+                        {generatedData.competitors && generatedData.competitors.length > 0 && (
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                                <h3 className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-4">📊 En İyi 3 Benzer Rakip (AI Tahmini)</h3>
+                                <div className="grid grid-cols-1 gap-4">
+                                    {generatedData.competitors.map((comp, idx) => (
+                                        <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:border-indigo-200 transition-all">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h4 className="font-bold text-gray-800 text-sm line-clamp-2 flex-1 mr-2">{comp.title}</h4>
+                                                <span className="text-xs font-medium text-gray-400 whitespace-nowrap">{comp.shop_name}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between mb-3">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-black text-gray-900">{comp.price}</span>
+                                                    <span className="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">{comp.sales_estimate}</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap gap-1.5 mb-3">
+                                                {comp.tags.slice(0, 3).map((tag, tIdx) => (
+                                                    <span key={tIdx} className="text-[10px] bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full">{tag}</span>
+                                                ))}
+                                            </div>
+                                            <p className="text-xs text-indigo-600 italic border-t border-gray-200 pt-2 mt-2">
+                                                <span className="font-bold not-italic text-indigo-400 mr-1">💡 Neden Satıyor?</span>
+                                                {comp.differentiator}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* AI IMAGE STUDIO CARD */}
                         <div className="bg-gradient-to-br from-indigo-600 to-violet-600 p-6 rounded-xl shadow-lg border border-indigo-500/30 text-white relative overflow-hidden">
                             {/* Decorative Background Elements */}
