@@ -110,11 +110,12 @@ const LoginPage = ({ onLogin }) => {
                         className="w-full bg-white text-gray-700 py-3 rounded-xl font-bold text-sm hover:bg-gray-50 transition-colors flex items-center justify-center border border-gray-200 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 mr-2" alt="Google" />
-                        Google ile Devam Et
+                        Google ile Devam Et (v2)
                     </button>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-white/10 flex flex-col items-center">
+                    {console.log("Login Page Loaded - v2")}
                     <p className="text-indigo-200/80 text-sm mb-3 font-medium">
                         Platformun tüm yeteneklerini üye olmadan keşfetmek için
                     </p>
