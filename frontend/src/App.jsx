@@ -62,9 +62,7 @@ function AppContent() {
 
     useEffect(() => {
         if (!loading) {
-            // Auto-login: If user exists, use it. If not, default to Demo Mode.
-            setIsLoggedIn(true);
-            if (!user) setIsDemoMode(true);
+            setIsLoggedIn(!!user);
         }
     }, [user, loading]);
 
@@ -256,7 +254,7 @@ function AppContent() {
 
     const handleLogin = (type) => { if (type === 'demo') setIsDemoMode(true); else setIsDemoMode(false); setIsLoggedIn(true); };
 
-    // if (!isLoggedIn) return <LoginPage onLogin={handleLogin} />;
+    if (!isLoggedIn) return <LoginPage onLogin={handleLogin} />;
 
     // --- RENDER HELPERS ---
     const renderDashboard = () => (
