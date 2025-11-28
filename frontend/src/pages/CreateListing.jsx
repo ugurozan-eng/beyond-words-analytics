@@ -366,12 +366,8 @@ const CreateListing = () => {
 
                                 <div className="w-full">
                                     <span className="text-xs font-bold text-gray-400 uppercase mb-1.5 block">Pazar Aralığı</span>
-                                    <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
-                                        <span className="text-lg font-bold text-gray-700">${generatedData.price.min}</span>
-                                        <div className="h-1 flex-1 mx-4 bg-gray-200 rounded-full overflow-hidden">
-                                            <div className="h-full bg-indigo-200 w-1/2 mx-auto rounded-full"></div>
-                                        </div>
-                                        <span className="text-lg font-bold text-gray-700">${generatedData.price.max}</span>
+                                    <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-center">
+                                        <span className="text-xl font-bold text-gray-700 tracking-tight">${generatedData.price.min} - ${generatedData.price.max}</span>
                                     </div>
                                 </div>
                             </div>
