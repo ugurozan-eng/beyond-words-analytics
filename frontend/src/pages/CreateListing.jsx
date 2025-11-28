@@ -358,13 +358,22 @@ const CreateListing = () => {
                         {/* Price */}
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                             <h3 className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-4">Fiyat Önerisi</h3>
-                            <div className="flex items-end">
-                                <span className="text-3xl font-black text-gray-900">${generatedData.price.recommended}</span>
-                                <span className="text-xs text-gray-400 mb-1.5 ml-2">Önerilen</span>
-                            </div>
-                            <div className="mt-2 flex justify-between text-xs text-gray-500 font-medium">
-                                <span>Min: ${generatedData.price.min}</span>
-                                <span>Max: ${generatedData.price.max}</span>
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-end">
+                                    <span className="text-5xl font-black text-gray-900 tracking-tight">${generatedData.price.recommended}</span>
+                                    <span className="text-sm font-bold text-gray-400 mb-2 ml-2">Önerilen</span>
+                                </div>
+
+                                <div className="w-full">
+                                    <span className="text-xs font-bold text-gray-400 uppercase mb-1.5 block">Pazar Aralığı</span>
+                                    <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
+                                        <span className="text-lg font-bold text-gray-700">${generatedData.price.min}</span>
+                                        <div className="h-1 flex-1 mx-4 bg-gray-200 rounded-full overflow-hidden">
+                                            <div className="h-full bg-indigo-200 w-1/2 mx-auto rounded-full"></div>
+                                        </div>
+                                        <span className="text-lg font-bold text-gray-700">${generatedData.price.max}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
