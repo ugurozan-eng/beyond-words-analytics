@@ -1,47 +1,56 @@
 import React, { useState } from 'react';
-import { ShoppingBag, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import { ShoppingBag, ArrowRight, AlertCircle, Loader2, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = ({ onLogin }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        fullName: ''
+    });
 
-    const { signInWithGoogle } = useAuth();
+    const { signIn, signUp, signInWithGoogle } = useAuth();
 
-    const handleLoginClick = async (type) => {
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setError(null);
         setIsLoading(true);
 
-        if (type === 'google') {
-            try {
-                await signInWithGoogle();
-                // Redirect is handled by Supabase, so we don't need to do anything here
-            } catch (err) {
-                setIsLoading(false);
-                setError(err.message || "Giriş sırasında bir hata oluştu.");
+        try {
+            if (isSignUp) {
+                await signUp(formData.email, formData.password, formData.fullName);
+                // For Supabase, sign up might require email confirmation or auto-login
+                // If auto-login is enabled, onLogin will be triggered by AuthContext state change
+                // But we can show a success message if confirmation is needed
+                alert("Kayıt başarılı! Lütfen e-postanızı kontrol edin veya giriş yapın.");
+                setIsSignUp(false);
+            } else {
+                await signIn(formData.email, formData.password);
+                // onLogin is triggered by AuthContext state change usually, but we can call it here if needed for immediate feedback
+                // However, App.jsx listens to user state, so it should auto-redirect.
             }
-        } else {
-            // Etsy and Demo work fine (Etsy is still mock/placeholder for now if not implemented)
-            // But user specifically asked to remove simulation for Google.
-            // For 'demo', we just call onLogin('demo') which sets state in App.jsx
-            // For 'etsy', if it's not implemented, we might leave it or show "Coming Soon"
-            // Assuming 'etsy' still uses the old prop method or needs similar implementation.
-            // The prompt specifically asked to remove simulation for Google.
+        } catch (err) {
+            setError(err.message || "İşlem sırasında bir hata oluştu.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-            // Let's keep the existing behavior for demo/etsy but remove the timeout if possible, 
-            // or keep it minimal if needed for UX. 
-            // Actually, the prompt says "Login sayfasındaki ... TÜM Mock/Simülasyon kodlarını SİL."
-
-            if (type === 'demo') {
-                onLogin('demo');
-                setIsLoading(false);
-            } else if (type === 'etsy') {
-                // If Etsy auth is not ready, maybe show alert or just call onLogin if it handles it.
-                // For now, let's assume onLogin handles it or we just pass it through.
-                // But we should remove the setTimeout.
-                onLogin(type);
-                setIsLoading(false);
-            }
+    const handleGoogleLogin = async () => {
+        setError(null);
+        setIsLoading(true);
+        try {
+            await signInWithGoogle();
+        } catch (err) {
+            setIsLoading(false);
+            setError(err.message || "Google girişi başarısız.");
         }
     };
 
@@ -57,80 +66,115 @@ const LoginPage = ({ onLogin }) => {
                 <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"></div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center relative z-10 animate-fade-in-up">
-                <div className="mb-8 flex justify-center">
-                    <div className="bg-white/20 p-4 rounded-2xl shadow-inner ring-1 ring-white/30">
-                        <span className="text-5xl filter drop-shadow-lg">🪆</span>
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl w-full max-w-md text-center relative z-10 animate-fade-in-up">
+                <div className="mb-6 flex justify-center">
+                    <div className="bg-white/20 p-3 rounded-2xl shadow-inner ring-1 ring-white/30">
+                        <span className="text-4xl filter drop-shadow-lg">🪆</span>
                     </div>
                 </div>
 
-                <h1 className="text-4xl font-black text-white mb-3 tracking-tight drop-shadow-md">
+                <h1 className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-md">
                     Cyclear
-                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 text-2xl mt-1 font-bold">Analytics</span>
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 text-xl mt-1 font-bold">Analytics</span>
                 </h1>
 
-                <p className="text-indigo-100 mb-8 text-lg font-medium leading-relaxed drop-shadow-sm">
-                    Etsy Mağazanızı Yapay Zeka ile Büyütün
-                </p>
-
-                {/* Error Message with Smart Fallback */}
+                {/* Error Message */}
                 {error && (
-                    <div className="bg-red-500/90 backdrop-blur-md border border-red-400 text-white p-4 rounded-xl mb-6 text-sm text-left animate-shake">
+                    <div className="bg-red-500/90 backdrop-blur-md border border-red-400 text-white p-3 rounded-xl mb-4 text-sm text-left animate-shake">
                         <div className="flex items-center font-bold mb-1">
                             <AlertCircle className="w-4 h-4 mr-2" />
-                            Bağlantı Hatası
+                            Hata
                         </div>
-                        <p className="opacity-90 mb-3">{error}</p>
-                        <button
-                            onClick={() => onLogin('demo')}
-                            className="bg-white text-red-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wide hover:bg-red-50 transition-colors w-full"
-                        >
-                            Demo Modu ile Devam Et →
-                        </button>
+                        <p className="opacity-90">{error}</p>
                     </div>
                 )}
 
-                <div className="space-y-4">
-                    <button
-                        onClick={() => handleLoginClick('etsy')}
-                        disabled={isLoading}
-                        className="w-full bg-[#F1641E] hover:bg-[#d55618] text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-orange-900/30 transition-all transform hover:-translate-y-1 flex items-center justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                        {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
-                            <>
-                                <ShoppingBag className="w-6 h-6 mr-3 text-white/90 group-hover:scale-110 transition-transform" />
-                                Etsy ile Giriş Yap
-                            </>
-                        )}
-                    </button>
+                <form onSubmit={handleSubmit} className="space-y-4 text-left">
+                    {isSignUp && (
+                        <div>
+                            <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">Ad Soyad</label>
+                            <div className="relative">
+                                <User className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
+                                <input
+                                    type="text"
+                                    name="fullName"
+                                    placeholder="Adınız Soyadınız"
+                                    value={formData.fullName}
+                                    onChange={handleInputChange}
+                                    className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    required={isSignUp}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    <div>
+                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">E-posta Adresi</label>
+                        <div className="relative">
+                            <Mail className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="ornek@email.com"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">Şifre</label>
+                        <div className="relative">
+                            <Lock className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="••••••••"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                                required
+                            />
+                        </div>
+                    </div>
 
                     <button
-                        onClick={() => handleLoginClick('google')}
+                        type="submit"
                         disabled={isLoading}
-                        className="w-full bg-white text-gray-700 py-3 rounded-xl font-bold text-sm hover:bg-gray-50 transition-colors flex items-center justify-center border border-gray-200 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="w-full bg-[#F1641E] hover:bg-[#d55618] text-white py-3 rounded-xl font-bold text-base shadow-lg shadow-orange-900/30 transition-all transform hover:-translate-y-1 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed mt-2"
                     >
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 mr-2" alt="Google" />
-                        Google ile Devam Et (v2)
+                        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isSignUp ? 'Kayıt Ol' : 'Giriş Yap')}
+                    </button>
+                </form>
+
+                <div className="mt-4 flex justify-between items-center text-xs text-indigo-200">
+                    <button onClick={() => setIsSignUp(!isSignUp)} className="hover:text-white underline">
+                        {isSignUp ? 'Zaten hesabın var mı? Giriş Yap' : 'Hesabın yok mu? Kayıt Ol'}
+                    </button>
+                    {!isSignUp && <button className="hover:text-white">Şifremi Unuttum</button>}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/10">
+                    <button
+                        onClick={handleGoogleLogin}
+                        disabled={isLoading}
+                        className="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center border border-white/20"
+                    >
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4 mr-2" alt="Google" />
+                        Google ile Devam Et
                     </button>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/10 flex flex-col items-center">
-                    {console.log("Login Page Loaded - v2")}
-                    <p className="text-indigo-200/80 text-sm mb-3 font-medium">
-                        Platformun tüm yeteneklerini üye olmadan keşfetmek için
-                    </p>
+                <div className="mt-4">
                     <button
                         onClick={() => onLogin('demo')}
-                        className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all flex items-center group hover:shadow-lg hover:shadow-indigo-500/20 backdrop-blur-sm"
+                        className="text-indigo-200 hover:text-white text-xs font-bold flex items-center justify-center w-full py-2"
                     >
-                        Demo Modunu Başlat
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        Demo Modunu Başlat <ArrowRight className="w-3 h-3 ml-1" />
                     </button>
                 </div>
-
-                <p className="mt-8 text-indigo-200/60 text-xs">
-                    &copy; 2025 Klindar Analytics. All rights reserved.
-                </p>
             </div>
         </div>
     );
