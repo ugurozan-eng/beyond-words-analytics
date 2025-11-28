@@ -74,7 +74,12 @@ async def generate_listing(request: GenerateRequest):
             "seo_title": "SEO Optimized English Title (Max 140 chars)",
             "tags": ["tag1", "tag2", "tag3", ... 13 tags total],
             "description": "Sales oriented description in English...",
-            "price_suggestion": "$XX.XX",
+            "pricing": {{
+                "suggested": "9.99",
+                "min": "7.00",
+                "max": "12.00",
+                "currency": "$"
+            }},
             "image_prompt": {{
                 "image_prompt_a": "A detailed, professional studio photograph of [ENGLISH OBJECT] with [SPECIFIC DETAILS, LIGHTING, CAMERA INFO]. The image is a horizontal photograph with a 4:3 aspect ratio.",
                 "image_prompt_b": "A warm, candid lifestyle photograph of [ENGLISH OBJECT] placed in a [SPECIFIC SETTING, VIBE, ATMOSPHERE]. The image is a horizontal photograph with a 4:3 aspect ratio."
@@ -100,11 +105,20 @@ async def generate_listing(request: GenerateRequest):
 
         # KEY MAPPING (Hata Toleransı)
         # AI bazen farklı key isimleri kullanabilir, hepsini yakala.
+        
+        # Fiyat verisi güvenliği
+        price_data = data.get("pricing") or {}
+
         final_data = {
             "seo_title": data.get("seo_title") or data.get("title") or "AI Title Generated",
             "tags": data.get("tags") or data.get("keywords") or [],
             "description": data.get("description") or "Description generated.",
-            "price_suggestion": data.get("price_suggestion") or data.get("price") or "$10.00",
+            "price_info": {
+                "suggested": price_data.get("suggested") or "10.00",
+                "min": price_data.get("min") or "8.00",
+                "max": price_data.get("max") or "12.00",
+                "currency": price_data.get("currency") or "$"
+            },
             "image_prompt": data.get("image_prompt") or {
                 "image_prompt_a": "Error creating prompt A",
                 "image_prompt_b": "Error creating prompt B"

@@ -53,9 +53,10 @@ const CreateListing = () => {
                 tags: data.tags,
                 description: data.description,
                 price: {
-                    min: 0, // Backend doesn't return min/max in this version
-                    max: 0,
-                    recommended: parseFloat(data.price_suggestion.replace('$', '')) || 0
+                    min: data.price_info?.min || 0,
+                    max: data.price_info?.max || 0,
+                    recommended: data.price_info?.suggested || 0,
+                    currency: data.price_info?.currency || '$'
                 }
             };
 
