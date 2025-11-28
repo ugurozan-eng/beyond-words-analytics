@@ -384,32 +384,30 @@ const CreateListing = () => {
                         </div>
 
                         {/* RAKİP ANALİZİ KARTLARI */}
-                        {generatedData.competitors && generatedData.competitors.length > 0 && (
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    📊 En İyi 3 Benzer Rakip <span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded-full">AI Tahmini</span>
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {generatedData.competitors.map((comp, index) => (
-                                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-gray-50">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <span className="text-xs font-bold text-indigo-600 uppercase tracking-wide">{comp.shop_name}</span>
-                                                <span className="text-xs text-green-600 font-medium bg-green-100 px-2 py-0.5 rounded">{comp.sales_estimate}</span>
-                                            </div>
-                                            <h4 className="font-medium text-gray-800 text-sm mb-3 line-clamp-2" title={comp.title}>{comp.title}</h4>
-                                            <div className="flex justify-between items-center mt-auto">
-                                                <span className="font-bold text-gray-900">{comp.price}</span>
-                                            </div>
-                                            <div className="mt-3 flex flex-wrap gap-1">
-                                                {comp.tags?.slice(0, 2).map((tag, i) => (
-                                                    <span key={i} className="text-[10px] text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">{tag}</span>
-                                                ))}
-                                            </div>
+                        {/* RAKİP ANALİZİ KARTLARI (ALWAYS VISIBLE) */}
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                                📊 En İyi 3 Benzer Rakip <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI Simülasyonu</span>
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {((generatedData.competitors && generatedData.competitors.length > 0) ? generatedData.competitors : [
+                                    { shop_name: "TrendSetter", title: "Similar Aesthetic Product Example", price: "$12.50", sales_estimate: "High Demand", tags: ["trend", "bestseller"] },
+                                    { shop_name: "MarketLeader", title: "Top Ranking Competitor Item", price: "$15.00", sales_estimate: "200+ sales/mo", tags: ["popular", "gift"] },
+                                    { shop_name: "NicheFind", title: "Alternative Style Option", price: "$9.99", sales_estimate: "Rising Star", tags: ["unique", "niche"] }
+                                ]).map((comp, index) => (
+                                    <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <span className="text-xs font-bold text-indigo-600 uppercase">{comp.shop_name}</span>
+                                            <span className="text-[10px] text-green-700 bg-green-100 px-1.5 py-0.5 rounded">{comp.sales_estimate}</span>
                                         </div>
-                                    ))}
-                                </div>
+                                        <h4 className="font-medium text-gray-800 text-sm mb-2 line-clamp-1">{comp.title}</h4>
+                                        <div className="flex justify-between items-center mt-2">
+                                            <span className="font-bold text-gray-900">{comp.price}</span>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        )}
+                        </div>
 
                         {/* AI IMAGE STUDIO CARD */}
                         <div className="bg-gradient-to-br from-indigo-600 to-violet-600 p-6 rounded-xl shadow-lg border border-indigo-500/30 text-white relative overflow-hidden">
