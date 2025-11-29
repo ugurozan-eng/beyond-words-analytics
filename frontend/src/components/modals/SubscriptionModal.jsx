@@ -1,42 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Check, Crown, Zap, Shield, BarChart3, Search } from 'lucide-react';
 
 const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
-    if (!isOpen) return null;
-
-    React.useEffect(() => {
+    // Hook kuralı: useEffect her zaman çalışmalı, return'den önce gelmeli.
+    useEffect(() => {
         const handleLemonSqueezy = (event) => {
-            // Gelen veriyi güvenli bir şekilde parse et
-            let eventData = event.data;
+            let data = event.data;
 
-            // Bazen string gelir, bazen obje. İkisini de kontrol et.
-            if (typeof eventData === 'string') {
+            // Veri string gelirse parse etmeye çalış, obje ise direkt kullan
+            if (typeof data === 'string') {
                 try {
-                    // Eğer string JSON ise parse etmeyi dene
-                    eventData = JSON.parse(eventData);
+                    data = JSON.parse(data);
                 } catch (e) {
-                    // JSON değilse olduğu gibi bırak
+                    // Parse edilemeyen stringler (örn: webpack mesajları) yoksayılır
                 }
             }
 
-            // Hata ayıklama için konsola bas (Prod'da kaldırılabilir ama şimdilik kalsın)
-            console.log("LS Event Yakalandı:", eventData);
+            // Olay ismini yakala
+            const eventName = data && (data.event || data);
 
-            const eventName = eventData?.event || eventData;
+            // DEBUG İÇİN KONSOLA BAS
+            if (eventName && typeof eventName === 'string' && eventName.includes('LemonSqueezy')) {
+                console.log("🍋 LS Sinyali:", eventName);
+            }
 
-            // BAŞARI SİNYALİNİ YAKALA
+            // BAŞARI SİNYALİ KONTROLÜ
             if (eventName === 'LemonSqueezy.Payment.Success' || eventName === 'Payment.Success') {
-                console.log("✅ Ödeme Tamamlandı! Otomatik Kapatılıyor...");
+                console.log("✅ Ödeme Bitti! Pencere kapatılıyor...");
 
-                // 1. Overlay'i Kapat
-                if (window.LemonSqueezy) {
+                // 1. Pencereyi Kapat
+                if (window.LemonSqueezy && window.LemonSqueezy.Url) {
                     window.LemonSqueezy.Url.Close();
                 }
 
-                // 2. Sayfayı Yenile (Kullanıcıya hissettirmeden)
+                // 2. Sayfayı Yenile
                 setTimeout(() => {
                     window.location.reload();
-                }, 500); // Yarım saniye bekle ki kullanıcı 'Success' tikini görsün
+                }, 300);
             }
         };
 
@@ -44,17 +44,7 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
         return () => window.removeEventListener('message', handleLemonSqueezy);
     }, []);
 
-    const handleUpgrade = () => {
-        // 1. Get User ID from Local Storage or Auth Context (passed as prop ideally, but for now we use localStorage as fallback or assume parent handles it)
-        // Ideally, onUpgrade should be passed from App.jsx where user context is available.
-        // Let's assume onUpgrade is passed and handles the redirection.
-
-        // If we want to handle it here directly:
-        // const userId = user?.id;
-        // window.location.href = `https://store.lemonsqueezy.com/checkout/buy/...?checkout[custom][user_id]=${userId}`;
-
-        onUpgrade();
-    };
+    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
@@ -70,44 +60,13 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                     <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                         İşletmenizi Bir Üst Seviyeye Taşıyın 🚀
                     </h2>
-                    <p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">
+                    <p className="text-gray-500 text-lg mb-8 max-w-2xl mx-auto">
                         Etsy mağazanızı büyütmek için ihtiyacınız olan tüm profesyonel araçlara erişin.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                        {/* STARTER PLAN */}
-                        <div className="border border-gray-200 rounded-3xl p-8 flex flex-col relative bg-gray-50/50 hover:bg-white transition-colors">
-                            <div className="mb-6">
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">Başlangıç</h3>
-                                <div className="text-4xl font-black text-gray-900">Ücretsiz</div>
-                                <p className="text-gray-500 text-sm mt-2">Yeni başlayanlar için ideal</p>
-                            </div>
-
-                            <ul className="space-y-4 mb-8 flex-1 text-left">
-                                <li className="flex items-center text-gray-700">
-                                    <Check className="w-5 h-5 text-green-500 mr-3 shrink-0" />
-                                    <span>Günde 3 Ürün Analizi</span>
-                                </li>
-                                <li className="flex items-center text-gray-700">
-                                    <Check className="w-5 h-5 text-green-500 mr-3 shrink-0" />
-                                    <span>Temel LQS Skoru</span>
-                                </li>
-                                <li className="flex items-center text-gray-700">
-                                    <Check className="w-5 h-5 text-green-500 mr-3 shrink-0" />
-                                    <span>Standart Etiket Önerileri</span>
-                                </li>
-                            </ul>
-
-                            <button
-                                disabled
-                                className="w-full py-4 rounded-xl font-bold bg-gray-200 text-gray-500 cursor-default"
-                            >
-                                Mevcut Plan
-                            </button>
-                        </div>
-
-                        {/* PRO PLAN */}
-                        <div className="border-2 border-indigo-600 rounded-3xl p-8 flex flex-col relative bg-white shadow-xl transform md:-translate-y-4">
+                    {/* ORTA KISIM: PLANLAR */}
+                    <div className="flex justify-center mb-8">
+                        <div className="border-2 border-indigo-600 rounded-3xl p-8 flex flex-col relative bg-white shadow-xl max-w-md w-full">
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">
                                 En Popüler
                             </div>
@@ -117,34 +76,10 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                                     <Crown className="w-5 h-5 mr-2 fill-current" /> Professional
                                 </h3>
                                 <div className="text-4xl font-black text-gray-900">$29 <span className="text-lg text-gray-400 font-medium">/ ay</span></div>
-                                <p className="text-gray-500 text-sm mt-2">Büyüyen mağazalar için</p>
                             </div>
 
-                            <ul className="space-y-4 mb-8 flex-1 text-left">
-                                <li className="flex items-center text-gray-900 font-medium">
-                                    <div className="bg-indigo-100 p-1 rounded-full mr-3"><Check className="w-3 h-3 text-indigo-600" /></div>
-                                    <span>Sınırsız Analiz</span>
-                                </li>
-                                <li className="flex items-center text-gray-900 font-medium">
-                                    <div className="bg-indigo-100 p-1 rounded-full mr-3"><Zap className="w-3 h-3 text-indigo-600" /></div>
-                                    <span>Neuro-Pricing Fiyat Motoru</span>
-                                </li>
-                                <li className="flex items-center text-gray-900 font-medium">
-                                    <div className="bg-indigo-100 p-1 rounded-full mr-3"><BarChart3 className="w-3 h-3 text-indigo-600" /></div>
-                                    <span>Trafik İstihbaratı (Google/Etsy)</span>
-                                </li>
-                                <li className="flex items-center text-gray-900 font-medium">
-                                    <div className="bg-indigo-100 p-1 rounded-full mr-3"><Shield className="w-3 h-3 text-indigo-600" /></div>
-                                    <span>Rakip Ajan Modu</span>
-                                </li>
-                                <li className="flex items-center text-gray-900 font-medium">
-                                    <div className="bg-indigo-100 p-1 rounded-full mr-3"><Search className="w-3 h-3 text-indigo-600" /></div>
-                                    <span>7/24 AI Desteği</span>
-                                </li>
-                            </ul>
-
                             <button
-                                onClick={handleUpgrade}
+                                onClick={onUpgrade}
                                 className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                             >
                                 Pro'ya Geç 🚀
@@ -152,8 +87,8 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                         </div>
                     </div>
 
-                    <p className="mt-8 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed pb-16">
-                        Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir. Ek ücretleri önlemek için yenileme işleminden en az 24 saat önce dilediğin zaman iptal et. Aboneliğini, abone olduğun platform üzerinden yönet.
+                    <p className="text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed">
+                        Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir.
                     </p>
                 </div>
             </div>
