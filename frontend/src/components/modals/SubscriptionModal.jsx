@@ -1,35 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { X, Check, Crown, Zap, Shield, BarChart3, Search } from 'lucide-react';
 
 const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     if (!isOpen) return null;
 
-    const [showRefreshBtn, setShowRefreshBtn] = useState(false);
-
     React.useEffect(() => {
-        // Lemon Squeezy Event Handler (Global Listener)
-        const handleLemonSqueezyEvent = (event) => {
-            // Lemon Squeezy'den gelen veriyi kontrol et (String veya Obje olabilir)
-            const eventName = typeof event.data === 'string' ? event.data : event.data?.event;
+        const handleLemonSqueezy = (event) => {
+            // Gelen veriyi güvenli bir şekilde parse et
+            let eventData = event.data;
 
+            // Bazen string gelir, bazen obje. İkisini de kontrol et.
+            if (typeof eventData === 'string') {
+                try {
+                    // Eğer string JSON ise parse etmeyi dene
+                    eventData = JSON.parse(eventData);
+                } catch (e) {
+                    // JSON değilse olduğu gibi bırak
+                }
+            }
+
+            // Hata ayıklama için konsola bas (Prod'da kaldırılabilir ama şimdilik kalsın)
+            console.log("LS Event Yakalandı:", eventData);
+
+            const eventName = eventData?.event || eventData;
+
+            // BAŞARI SİNYALİNİ YAKALA
             if (eventName === 'LemonSqueezy.Payment.Success' || eventName === 'Payment.Success') {
-                console.log("Ödeme Başarılı! Sayfa yenileniyor...");
+                console.log("✅ Ödeme Tamamlandı! Otomatik Kapatılıyor...");
 
-                // 1. Overlay'i kapat (Varsa fonksiyonu çağır)
-                if (window.LemonSqueezy) window.LemonSqueezy.Url.Close();
+                // 1. Overlay'i Kapat
+                if (window.LemonSqueezy) {
+                    window.LemonSqueezy.Url.Close();
+                }
 
-                // 2. Sayfayı yenile (Veritabanını tazelemek için)
-                window.location.reload();
+                // 2. Sayfayı Yenile (Kullanıcıya hissettirmeden)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500); // Yarım saniye bekle ki kullanıcı 'Success' tikini görsün
             }
         };
 
-        // Global window listener ekle (En garanti yöntem)
-        window.addEventListener('message', handleLemonSqueezyEvent);
-
-        // Cleanup (Temizlik)
-        return () => {
-            window.removeEventListener('message', handleLemonSqueezyEvent);
-        };
+        window.addEventListener('message', handleLemonSqueezy);
+        return () => window.removeEventListener('message', handleLemonSqueezy);
     }, []);
 
     const handleUpgrade = () => {
@@ -41,7 +53,6 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
         // const userId = user?.id;
         // window.location.href = `https://store.lemonsqueezy.com/checkout/buy/...?checkout[custom][user_id]=${userId}`;
 
-        setShowRefreshBtn(true);
         onUpgrade();
     };
 
@@ -145,19 +156,6 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                         Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir. Ek ücretleri önlemek için yenileme işleminden en az 24 saat önce dilediğin zaman iptal et. Aboneliğini, abone olduğun platform üzerinden yönet.
                     </p>
                 </div>
-
-                {/* SAFETY REFRESH BUTTON - OVERLAY */}
-                {showRefreshBtn && (
-                    <div className="fixed bottom-0 left-0 w-full z-[999999] p-4 bg-white/10 backdrop-blur-md flex justify-center animate-fade-in-up">
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-2xl flex items-center gap-2 transform hover:scale-105 transition-all cursor-pointer pointer-events-auto"
-                        >
-                            <Check className="w-5 h-5" />
-                            Ödeme Yaptım / Sayfayı Yenile
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );
