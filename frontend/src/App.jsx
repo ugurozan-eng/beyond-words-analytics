@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Search, Download, TrendingUp, DollarSign, Package, PlusCircle, Filter, ArrowUpDown, CheckSquare, Square, ShieldAlert, CheckCircle, AlertCircle, Trash2, Settings, Crown, LayoutDashboard, BarChart3, Zap, List } from 'lucide-react';
 import AnalysisCharts from './components/dashboard/AnalysisCharts';
 import WelcomePanel from './components/dashboard/WelcomePanel';
@@ -37,7 +37,7 @@ function App() {
 }
 
 function AppContent() {
-    const { user, loading, isPro } = useAuth();
+    const { user, loading, isPro, signOut } = useAuth();
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Managed by AuthContext now
     const [isDemoMode, setIsDemoMode] = useState(false);
     const [listings, setListings] = useState([]);
@@ -60,6 +60,22 @@ function AppContent() {
     const [initialModalType, setInitialModalType] = useState('mine');
     const [activeView, setActiveView] = useState('dashboard'); // 'dashboard', 'create-listing', 'keyword-explorer', 'profit-calculator', 'tag-spy', 'my-shop', 'analysis', 'competitor'
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const profileRef = useRef(null);
+
+    // Click outside handler for profile dropdown
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         if (!loading) {
@@ -403,19 +419,59 @@ function AppContent() {
                             <ShieldAlert className="w-5 h-5" />
                             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                         </button>
-                        <button
-                            className="flex items-center space-x-2 focus:outline-none"
-                            onClick={() => console.log("Profil tıklandı")}
-                        >
-                            <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200 cursor-pointer hover:bg-indigo-200 transition-colors">
-                                OZ
-                            </div>
-                            {isPro && (
-                                <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
-                                    PRO
-                                </span>
+                        <div className="relative" ref={profileRef}>
+                            <button
+                                className="flex items-center space-x-2 focus:outline-none"
+                                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                            >
+                                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200 cursor-pointer hover:bg-indigo-200 transition-colors">
+                                    OZ
+                                </div>
+                                {isPro && (
+                                    <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
+                                        PRO
+                                    </span>
+                                )}
+                            </button>
+
+                            {/* DROPDOWN MENU */}
+                            {isProfileOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 animate-fade-in-up origin-top-right">
+                                    <div className="px-4 py-3 border-b border-gray-100">
+                                        <p className="text-sm font-bold text-gray-900">Ozan</p>
+                                        <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                                    </div>
+
+                                    <div className="py-1">
+                                        <button
+                                            onClick={() => { setIsProfileOpen(false); /* Navigate to settings */ }}
+                                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
+                                        >
+                                            <Settings className="w-4 h-4 mr-2" /> Profil Ayarları
+                                        </button>
+                                        <button
+                                            onClick={() => { setIsProfileOpen(false); /* Open billing portal */ }}
+                                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
+                                        >
+                                            <Crown className="w-4 h-4 mr-2 text-amber-500" /> Abonelik
+                                        </button>
+                                    </div>
+
+                                    <div className="border-t border-gray-100 py-1">
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileOpen(false);
+                                                signOut();
+                                                setIsLoggedIn(false);
+                                            }}
+                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                                        >
+                                            <Trash2 className="w-4 h-4 mr-2" /> Çıkış Yap
+                                        </button>
+                                    </div>
+                                </div>
                             )}
-                        </button>
+                        </div>
                     </div>
                 </div>
 
