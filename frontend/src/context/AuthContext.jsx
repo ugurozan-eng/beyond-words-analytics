@@ -53,6 +53,8 @@ export const AuthProvider = ({ children }) => {
             if (error) {
                 console.error('Error fetching profile:', error);
             } else {
+                console.log("🔥 FULL DB USER DATA:", data);
+                console.log("🔥 SUBSCRIPTION STATUS:", data?.subscription_status);
                 setProfile(data);
             }
         } catch (err) {
