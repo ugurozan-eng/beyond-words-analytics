@@ -444,13 +444,13 @@ function AppContent() {
 
                                     <div className="py-1">
                                         <button
-                                            onClick={() => { setIsProfileOpen(false); /* Navigate to settings */ }}
+                                            onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
                                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
                                         >
                                             <Settings className="w-4 h-4 mr-2" /> Profil Ayarları
                                         </button>
                                         <button
-                                            onClick={() => { setIsProfileOpen(false); /* Open billing portal */ }}
+                                            onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
                                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
                                         >
                                             <Crown className="w-4 h-4 mr-2 text-amber-500" /> Abonelik

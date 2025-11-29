@@ -138,7 +138,16 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                         </div>
                     </div>
 
-                    <p className="mt-8 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed">
+                    <div className="mt-8 mb-4">
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="text-indigo-600 hover:text-indigo-800 font-medium text-sm border border-indigo-200 hover:border-indigo-400 px-4 py-2 rounded-lg transition-colors"
+                        >
+                            Ödeme Yaptım / Sayfayı Yenile ↻
+                        </button>
+                    </div>
+
+                    <p className="mt-4 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed">
                         Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir. Ek ücretleri önlemek için yenileme işleminden en az 24 saat önce dilediğin zaman iptal et. Aboneliğini, abone olduğun platform üzerinden yönet.
                     </p>
                 </div>
