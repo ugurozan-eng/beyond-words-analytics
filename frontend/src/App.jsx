@@ -374,10 +374,49 @@ function AppContent() {
 
                     {/* RIGHT: NOTIFICATIONS & PROFILE */}
                     <div className="flex items-center space-x-2 lg:space-x-4">
-                        <button className="p-2 text-gray-400 hover:text-indigo-600 transition-colors relative">
-                            <ShieldAlert className="w-5 h-5" />
-                            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                        </button>
+                        {/* LANGUAGE FLAGS */}
+                        <div className="flex items-center space-x-2 mr-2">
+                            <button
+                                onClick={() => i18n.changeLanguage('tr')}
+                                className={`transition-opacity hover:opacity-100 ${i18n.language === 'tr' ? 'opacity-100' : 'opacity-50 grayscale'}`}
+                                title="Türkçe"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" className="w-6 h-4 rounded-sm shadow-sm">
+                                    <rect width="1200" height="800" fill="#E30A17" />
+                                    <circle cx="425" cy="400" r="200" fill="#ffffff" />
+                                    <circle cx="475" cy="400" r="160" fill="#E30A17" />
+                                    <polygon fill="#ffffff" points="583.334,400 764.235,458.779 652.426,304.894 652.426,495.106 764.235,341.221" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={() => i18n.changeLanguage('en')}
+                                className={`transition-opacity hover:opacity-100 ${i18n.language === 'en' ? 'opacity-100' : 'opacity-50 grayscale'}`}
+                                title="English"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1235 650" className="w-6 h-4 rounded-sm shadow-sm">
+                                    <rect width="1235" height="650" fill="#B22234" />
+                                    <rect y="50" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect y="150" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect y="250" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect y="350" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect y="450" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect y="550" width="1235" height="50" fill="#FFFFFF" />
+                                    <rect width="494" height="350" fill="#3C3B6E" />
+                                    {/* Simplified stars for small size */}
+                                    <g fill="#FFFFFF">
+                                        <circle cx="50" cy="30" r="10" /> <circle cx="150" cy="30" r="10" /> <circle cx="250" cy="30" r="10" /> <circle cx="350" cy="30" r="10" /> <circle cx="450" cy="30" r="10" />
+                                        <circle cx="100" cy="65" r="10" /> <circle cx="200" cy="65" r="10" /> <circle cx="300" cy="65" r="10" /> <circle cx="400" cy="65" r="10" />
+                                        <circle cx="50" cy="100" r="10" /> <circle cx="150" cy="100" r="10" /> <circle cx="250" cy="100" r="10" /> <circle cx="350" cy="100" r="10" /> <circle cx="450" cy="100" r="10" />
+                                        <circle cx="100" cy="135" r="10" /> <circle cx="200" cy="135" r="10" /> <circle cx="300" cy="135" r="10" /> <circle cx="400" cy="135" r="10" />
+                                        <circle cx="50" cy="170" r="10" /> <circle cx="150" cy="170" r="10" /> <circle cx="250" cy="170" r="10" /> <circle cx="350" cy="170" r="10" /> <circle cx="450" cy="170" r="10" />
+                                        <circle cx="100" cy="205" r="10" /> <circle cx="200" cy="205" r="10" /> <circle cx="300" cy="205" r="10" /> <circle cx="400" cy="205" r="10" />
+                                        <circle cx="50" cy="240" r="10" /> <circle cx="150" cy="240" r="10" /> <circle cx="250" cy="240" r="10" /> <circle cx="350" cy="240" r="10" /> <circle cx="450" cy="240" r="10" />
+                                        <circle cx="100" cy="275" r="10" /> <circle cx="200" cy="275" r="10" /> <circle cx="300" cy="275" r="10" /> <circle cx="400" cy="275" r="10" />
+                                        <circle cx="50" cy="310" r="10" /> <circle cx="150" cy="310" r="10" /> <circle cx="250" cy="310" r="10" /> <circle cx="350" cy="310" r="10" /> <circle cx="450" cy="310" r="10" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </div>
                         <div className="relative" ref={profileRef}>
                             <button
                                 className="flex items-center space-x-2 focus:outline-none"
@@ -401,23 +440,7 @@ function AppContent() {
                                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                                     </div>
 
-                                    <div className="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
-                                        <span className="text-xs text-gray-500 font-medium">{t('common.language')}</span>
-                                        <div className="flex space-x-1">
-                                            <button
-                                                onClick={() => i18n.changeLanguage('tr')}
-                                                className={`text-xs px-2 py-1 rounded ${i18n.language === 'tr' ? 'bg-indigo-100 text-indigo-700 font-bold' : 'text-gray-500 hover:bg-gray-100'}`}
-                                            >
-                                                TR
-                                            </button>
-                                            <button
-                                                onClick={() => i18n.changeLanguage('en')}
-                                                className={`text-xs px-2 py-1 rounded ${i18n.language === 'en' ? 'bg-indigo-100 text-indigo-700 font-bold' : 'text-gray-500 hover:bg-gray-100'}`}
-                                            >
-                                                EN
-                                            </button>
-                                        </div>
-                                    </div>
+
 
                                     <div className="py-1">
                                         <button
