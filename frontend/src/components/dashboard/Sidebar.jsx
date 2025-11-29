@@ -62,6 +62,16 @@ const Sidebar = ({ activeView, onNavigate, onLogout, onUpgrade }) => {
                     </div>
                 )}
 
+                {isPro && (
+                    <div className="bg-indigo-800/50 rounded-2xl p-4 border border-indigo-700/50 mb-4">
+                        <div className="flex items-center text-amber-400 mb-2">
+                            <Crown className="w-5 h-5 mr-2" />
+                            <span className="font-bold text-sm">Pro Üyelik Aktif</span>
+                        </div>
+                        <p className="text-xs text-indigo-300">Sınırsız analizin keyfini çıkarın. 🚀</p>
+                    </div>
+                )}
+
                 <button
                     onClick={onLogout}
                     className="w-full flex items-center px-4 py-3 text-indigo-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors text-sm font-bold"

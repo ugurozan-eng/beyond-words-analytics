@@ -37,7 +37,7 @@ function App() {
 }
 
 function AppContent() {
-    const { user, loading } = useAuth();
+    const { user, loading, isPro } = useAuth();
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Managed by AuthContext now
     const [isDemoMode, setIsDemoMode] = useState(false);
     const [listings, setListings] = useState([]);
@@ -403,9 +403,19 @@ function AppContent() {
                             <ShieldAlert className="w-5 h-5" />
                             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                         </button>
-                        <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200">
-                            OZ
-                        </div>
+                        <button
+                            className="flex items-center space-x-2 focus:outline-none"
+                            onClick={() => console.log("Profil tıklandı")}
+                        >
+                            <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200 cursor-pointer hover:bg-indigo-200 transition-colors">
+                                OZ
+                            </div>
+                            {isPro && (
+                                <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
+                                    PRO
+                                </span>
+                            )}
+                        </button>
                     </div>
                 </div>
 

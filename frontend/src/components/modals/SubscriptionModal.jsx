@@ -7,8 +7,10 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     React.useEffect(() => {
         // Lemon Squeezy Event Handler (Global Listener)
         const handleLemonSqueezyEvent = (event) => {
-            // Lemon Squeezy'den gelen başarı sinyalini yakala
-            if (event.data && event.data === 'LemonSqueezy.Payment.Success') {
+            // Lemon Squeezy'den gelen veriyi kontrol et (String veya Obje olabilir)
+            const eventName = typeof event.data === 'string' ? event.data : event.data?.event;
+
+            if (eventName === 'LemonSqueezy.Payment.Success' || eventName === 'Payment.Success') {
                 console.log("Ödeme Başarılı! Sayfa yenileniyor...");
 
                 // 1. Overlay'i kapat (Varsa fonksiyonu çağır)
