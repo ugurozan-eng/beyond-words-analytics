@@ -366,5 +366,22 @@
         "total_fees": "Toplam Kesintiler",
         "total_costs": "Toplam Maliyetler",
         "disclaimer": "Bu hesaplama tahmini değerler içerir. Etsy ücretleri ve vergiler bölgeye göre değişiklik gösterebilir."
+    },
+    "shop_link_import": {
+        "title": "Mağaza Bağlantısı İçe Aktar",
+        "subtitle": "Etsy mağaza linkinizi yapıştırın, analize başlayalım.",
+        "analyze_button": "Mağazayı Tara"
+    },
+    "health_check": {
+        "title": "Mağaza Sağlık Durumu",
+        "subtitle": "Genel skor ve acil müdahale listesi.",
+        "critical_products": "Kritik Ürün",
+        "lqs_below_50": "LQS kalitesi 50 puanın altında.",
+        "fix_button": "Düzelt",
+        "missing_tags": "Eksik Etiketli",
+        "tags_below_13": "13 etiket tamamlanmamış.",
+        "complete_button": "Tamamla",
+        "unanalyzed": "Analiz Edilmemiş",
+        "not_scanned_yet": "Henüz taranmamış ürünler."
     }
 }
