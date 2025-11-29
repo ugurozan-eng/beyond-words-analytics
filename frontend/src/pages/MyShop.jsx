@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Package, TrendingUp, DollarSign, Zap, Filter, ArrowUpDown, CheckSquare, Square, CheckCircle, AlertCircle, Trash2, ShieldAlert, PlusCircle, Download } from 'lucide-react';
 import ShopLinkImport from '../components/Import/ShopLinkImport';
 import ProductGrid from '../components/dashboard/ProductGrid';
@@ -29,6 +30,7 @@ const MyShop = ({
     setInitialModalType,
     setIsModalOpen
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="p-6 max-w-7xl mx-auto animate-fade-in space-y-6">
             <div className="flex items-center justify-between mb-2">
@@ -43,10 +45,10 @@ const MyShop = ({
 
             {/* KPI STRIP */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <MiniStatCard title="Toplam Ürün" value={listings.length} icon={Package} color="bg-blue-500" />
-                <MiniStatCard title="Toplam Değer" value={`$${listings.reduce((a, b) => a + b.price, 0).toFixed(2)}`} icon={DollarSign} color="bg-emerald-500" />
-                <MiniStatCard title="Ort. LQS" value={listings.filter(i => i.is_analyzed).length > 0 ? (listings.filter(i => i.is_analyzed).reduce((a, b) => a + b.lqs_score, 0) / listings.filter(i => i.is_analyzed).length).toFixed(1) : "0.0"} icon={TrendingUp} color="bg-violet-500" />
-                <MiniStatCard title="Analiz Edilen" value={listings.filter(i => i.is_analyzed).length} icon={Zap} color="bg-orange-500" />
+                <MiniStatCard title={t('mini_stats.total_products')} value={listings.length} icon={Package} color="bg-blue-500" />
+                <MiniStatCard title={t('mini_stats.total_value')} value={`$${listings.reduce((a, b) => a + b.price, 0).toFixed(2)}`} icon={DollarSign} color="bg-emerald-500" />
+                <MiniStatCard title={t('mini_stats.avg_lqs')} value={listings.filter(i => i.is_analyzed).length > 0 ? (listings.filter(i => i.is_analyzed).reduce((a, b) => a + b.lqs_score, 0) / listings.filter(i => i.is_analyzed).length).toFixed(1) : "0.0"} icon={TrendingUp} color="bg-violet-500" />
+                <MiniStatCard title={t('mini_stats.analyzed')} value={listings.filter(i => i.is_analyzed).length} icon={Zap} color="bg-orange-500" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">

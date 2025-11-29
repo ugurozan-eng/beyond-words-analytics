@@ -62,5 +62,57 @@
         "per_month": "/ month",
         "upgrade_button": "Upgrade to Pro 🚀",
         "terms": "By subscribing, you agree to our Buyer Terms of Service. Subscriptions renew automatically until cancelled."
+    },
+    "welcome_panel": {
+        "title": "Analysis Assistant v2.5",
+        "subtitle": "Advanced seasonal charts, creative brainstorming, and AI-powered market analysis.",
+        "step1_title": "1. Add Product",
+        "step1_desc": "Upload image, let AI analyze.",
+        "step2_title": "2. Review",
+        "step2_desc": "Click product from list, start auto-analysis.",
+        "step3_title": "3. Optimize",
+        "step3_desc": "Apply suggestions with one click."
+    },
+    "traffic_panel": {
+        "loading": "Collecting traffic data...",
+        "pro_feature": "Pro Feature",
+        "upgrade_text": "Upgrade to see traffic sources",
+        "unlock": "Unlock 🔓",
+        "total_traffic": "Total Traffic (30 Days)",
+        "increase": "12% Increase (vs Last Month)",
+        "ai_insight": "AI Insight",
+        "default_insight": "Analyzing your data. Increase observed in Google traffic.",
+        "open_report": "Open Detailed Report"
+    },
+    "analysis_charts": {
+        "excellent": "Excellent (8+)",
+        "good": "Good (5-8)",
+        "needs_improvement": "Needs Improvement (<5)",
+        "lqs_distribution": "LQS Performance Distribution",
+        "price_analysis": "Price Analysis",
+        "material_distribution": "Material Distribution",
+        "price": "Price",
+        "material": "Material",
+        "price_label": "Price ($)",
+        "count_label": "Count"
+    },
+    "product_grid": {
+        "analyzed_products": "Analyzed Products",
+        "new": "New",
+        "view_details": "View Details"
+    },
+    "mini_stats": {
+        "total_products": "Total Products",
+        "total_value": "Total Value",
+        "avg_lqs": "Avg. LQS",
+        "analyzed": "Analyzed",
+        "market_volume": "Market Volume",
+        "active_sellers": "Active Sellers",
+        "trend_keywords": "Trend Keywords",
+        "opportunity_score": "Opportunity Score"
+    },
+    "market_trends": {
+        "summary_title": "Market Trends Summary",
+        "summary_desc": "General sales trends and seasonal fluctuations in your category will be displayed here."
     }
 }

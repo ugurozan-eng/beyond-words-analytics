@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Eye, Star, TrendingUp } from 'lucide-react';
 import ProductAnalysisModal from './ProductAnalysisModal';
 
 const ProductGrid = ({ products }) => {
+    const { t } = useTranslation();
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     if (!products || products.length === 0) return null;
@@ -18,10 +20,10 @@ const ProductGrid = ({ products }) => {
             <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-gray-700 flex items-center">
                     <TrendingUp className="w-4 h-4 mr-2 text-indigo-500" />
-                    Analiz Edilen Ürünler
+                    {t('product_grid.analyzed_products')}
                 </h3>
                 <span className="text-xs font-bold bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full">
-                    {products.length} Yeni
+                    {products.length} {t('product_grid.new')}
                 </span>
             </div>
 
@@ -67,7 +69,7 @@ const ProductGrid = ({ products }) => {
                                     className="w-full mt-4 py-2 bg-gray-50 hover:bg-indigo-50 text-gray-600 hover:text-indigo-600 font-bold text-xs rounded-lg transition-colors flex items-center justify-center border border-gray-100 hover:border-indigo-100"
                                 >
                                     <Eye className="w-3 h-3 mr-2" />
-                                    Detay Gör
+                                    {t('product_grid.view_details')}
                                 </button>
                             </div>
                         </div>

@@ -62,5 +62,57 @@
         "per_month": "/ ay",
         "upgrade_button": "Pro'ya Geç 🚀",
         "terms": "Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir."
+    },
+    "welcome_panel": {
+        "title": "Analiz Asistanı v2.5",
+        "subtitle": "Gelişmiş sezonluk grafikler, yaratıcı kelime fırtınası ve yapay zeka destekli pazar analizi.",
+        "step1_title": "1. Ürün Ekle",
+        "step1_desc": "Görseli yükleyin, AI analiz etsin.",
+        "step2_title": "2. İncele",
+        "step2_desc": "Listeden ürüne tıklayın, otomatik analiz başlasın.",
+        "step3_title": "3. Optimize Et",
+        "step3_desc": "Önerileri tek tıkla uygulayın."
+    },
+    "traffic_panel": {
+        "loading": "Trafik verisi toplanıyor...",
+        "pro_feature": "Pro Özellik",
+        "upgrade_text": "Trafik kaynaklarını görmek için yükseltin",
+        "unlock": "Kilidi Aç 🔓",
+        "total_traffic": "Toplam Trafik (30 Gün)",
+        "increase": "%12 Artış (Geçen Aya Göre)",
+        "ai_insight": "Yapay Zeka İçgörüsü",
+        "default_insight": "Verileriniz analiz ediliyor. Google trafiğinde artış gözlemlendi.",
+        "open_report": "Detaylı Raporu Aç"
+    },
+    "analysis_charts": {
+        "excellent": "Mükemmel (8+)",
+        "good": "İyi (5-8)",
+        "needs_improvement": "Geliştirilmeli (<5)",
+        "lqs_distribution": "LQS Performans Dağılımı",
+        "price_analysis": "Fiyat Analizi",
+        "material_distribution": "Materyal Dağılımı",
+        "price": "Fiyat",
+        "material": "Materyal",
+        "price_label": "Fiyat ($)",
+        "count_label": "Adet"
+    },
+    "product_grid": {
+        "analyzed_products": "Analiz Edilen Ürünler",
+        "new": "Yeni",
+        "view_details": "Detay Gör"
+    },
+    "mini_stats": {
+        "total_products": "Toplam Ürün",
+        "total_value": "Toplam Değer",
+        "avg_lqs": "Ort. LQS",
+        "analyzed": "Analiz Edilen",
+        "market_volume": "Pazar Hacmi",
+        "active_sellers": "Aktif Satıcı",
+        "trend_keywords": "Trend Kelimeler",
+        "opportunity_score": "Fırsat Skoru"
+    },
+    "market_trends": {
+        "summary_title": "Market Trendleri Özeti",
+        "summary_desc": "Kategorinizdeki genel satış trendleri ve mevsimsel dalgalanmalar burada görüntülenecek."
     }
 }

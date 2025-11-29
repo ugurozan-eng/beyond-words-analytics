@@ -280,10 +280,10 @@ function AppContent() {
         <div className="space-y-6 animate-fade-in pb-10">
             {/* ROW 1: KPI STRIP (Global Stats) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <MiniStatCard title="Pazar Hacmi" value="$4.2M" icon={DollarSign} color="bg-blue-500" />
-                <MiniStatCard title="Aktif Satıcı" value="12.5K" icon={Package} color="bg-emerald-500" />
-                <MiniStatCard title="Trend Kelimeler" value="850+" icon={TrendingUp} color="bg-violet-500" />
-                <MiniStatCard title="Fırsat Skoru" value="8.4" icon={Zap} color="bg-orange-500" />
+                <MiniStatCard title={t('mini_stats.market_volume')} value="$4.2M" icon={DollarSign} color="bg-blue-500" />
+                <MiniStatCard title={t('mini_stats.active_sellers')} value="12.5K" icon={Package} color="bg-emerald-500" />
+                <MiniStatCard title={t('mini_stats.trend_keywords')} value="850+" icon={TrendingUp} color="bg-violet-500" />
+                <MiniStatCard title={t('mini_stats.opportunity_score')} value="8.4" icon={Zap} color="bg-orange-500" />
             </div>
 
             {/* ROW 2: MARKET TRENDS & COMPETITOR ACTIVITY */}
@@ -293,9 +293,9 @@ function AppContent() {
                     <div className="p-4 bg-indigo-50 rounded-full mb-4">
                         <TrendingUp className="w-12 h-12 text-indigo-500" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Market Trendleri Özeti</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('market_trends.summary_title')}</h3>
                     <p className="text-gray-500 max-w-md">
-                        Kategorinizdeki genel satış trendleri ve mevsimsel dalgalanmalar burada görüntülenecek.
+                        {t('market_trends.summary_desc')}
                     </p>
                 </div>
 

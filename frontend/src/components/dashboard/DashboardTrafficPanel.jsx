@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TrendingUp, ArrowRight, BarChart3 } from 'lucide-react';
 
 const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', onUnlockClick, compact = false }) => {
+    const { t } = useTranslation();
     // Default mock data if trafficData is missing or empty
     const data = trafficData || {
         total_visits: 0,
-        insight: "Trafik verisi toplanıyor...",
+        insight: t('traffic_panel.loading'),
         sources: []
     };
 
@@ -32,13 +34,13 @@ const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', o
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                         </div>
                     </div>
-                    <h3 className="text-lg font-black text-gray-900">Pro Özellik</h3>
-                    <p className="text-gray-500 text-sm font-medium mb-4">Trafik kaynaklarını görmek için yükseltin</p>
+                    <h3 className="text-lg font-black text-gray-900">{t('traffic_panel.pro_feature')}</h3>
+                    <p className="text-gray-500 text-sm font-medium mb-4">{t('traffic_panel.upgrade_text')}</p>
                     <button
                         onClick={onUnlockClick}
                         className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg hover:bg-indigo-700 transition-colors"
                     >
-                        Kilidi Aç 🔓
+                        {t('traffic_panel.unlock')}
                     </button>
                 </div>
             )}
@@ -53,11 +55,11 @@ const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', o
                         <BarChart3 className="w-8 h-8" />
                     </div>
                     <div>
-                        <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">Toplam Trafik (30 Gün)</p>
+                        <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">{t('traffic_panel.total_traffic')}</p>
                         <h2 className="text-4xl font-black text-gray-900 mt-1">{total.toLocaleString()}</h2>
                         <div className="flex items-center mt-2 text-emerald-600 text-xs font-bold bg-emerald-50 px-2 py-1 rounded-lg w-max">
                             <TrendingUp className="w-3 h-3 mr-1" />
-                            %12 Artış (Geçen Aya Göre)
+                            {t('traffic_panel.increase')}
                         </div>
                     </div>
                 </div>
@@ -102,15 +104,15 @@ const DashboardTrafficPanel = ({ trafficData, onOpenReport, userPlan = 'free', o
 
                 {/* RIGHT: Insight & Action */}
                 <div className="flex flex-col items-start text-left max-w-sm shrink-0">
-                    <p className="text-gray-500 text-xs font-bold uppercase mb-2">Yapay Zeka İçgörüsü</p>
+                    <p className="text-gray-500 text-xs font-bold uppercase mb-2">{t('traffic_panel.ai_insight')}</p>
                     <p className="text-gray-800 font-medium text-sm mb-4 leading-relaxed">
-                        {data.insight || "Verileriniz analiz ediliyor. Google trafiğinde artış gözlemlendi."}
+                        {data.insight || t('traffic_panel.default_insight')}
                     </p>
                     <button
                         onClick={onOpenReport}
                         className="flex items-center text-indigo-600 font-bold text-sm hover:text-indigo-800 transition-colors group"
                     >
-                        Detaylı Raporu Aç
+                        {t('traffic_panel.open_report')}
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
