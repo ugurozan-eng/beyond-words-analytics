@@ -4,6 +4,20 @@ import { X, Check, Crown, Zap, Shield, BarChart3, Search } from 'lucide-react';
 const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     if (!isOpen) return null;
 
+    React.useEffect(() => {
+        // Lemon Squeezy Event Handler
+        if (window.LemonSqueezy) {
+            window.LemonSqueezy.Setup({
+                eventHandler: (event) => {
+                    if (event.event === 'Payment.Success') {
+                        window.LemonSqueezy.Url.Close(); // Overlay'i kapat
+                        window.location.reload(); // Sayfayı yenile (Güncel Pro durumunu çekmek için)
+                    }
+                }
+            });
+        }
+    }, []);
+
     const handleUpgrade = () => {
         // 1. Get User ID from Local Storage or Auth Context (passed as prop ideally, but for now we use localStorage as fallback or assume parent handles it)
         // Ideally, onUpgrade should be passed from App.jsx where user context is available.
@@ -112,8 +126,8 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                         </div>
                     </div>
 
-                    <p className="mt-8 text-gray-400 text-xs">
-                        İstediğiniz zaman iptal edebilirsiniz. 14 gün para iade garantisi.
+                    <p className="mt-8 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed">
+                        Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir. Ek ücretleri önlemek için yenileme işleminden en az 24 saat önce dilediğin zaman iptal et. Aboneliğini, abone olduğun platform üzerinden yönet.
                     </p>
                 </div>
             </div>
