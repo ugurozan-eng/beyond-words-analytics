@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Check, Crown, Zap, Shield, BarChart3, Search } from 'lucide-react';
 
 const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     if (!isOpen) return null;
+
+    const [showRefreshBtn, setShowRefreshBtn] = useState(false);
 
     React.useEffect(() => {
         // Lemon Squeezy Event Handler (Global Listener)
@@ -39,6 +41,7 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
         // const userId = user?.id;
         // window.location.href = `https://store.lemonsqueezy.com/checkout/buy/...?checkout[custom][user_id]=${userId}`;
 
+        setShowRefreshBtn(true);
         onUpgrade();
     };
 
@@ -144,15 +147,17 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                 </div>
 
                 {/* SAFETY REFRESH BUTTON - OVERLAY */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-gray-200 z-50 flex justify-center">
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="w-full max-w-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] flex items-center justify-center"
-                    >
-                        <Check className="w-5 h-5 mr-2" />
-                        Ödeme Yaptım / Sayfayı Yenile
-                    </button>
-                </div>
+                {showRefreshBtn && (
+                    <div className="fixed bottom-0 left-0 w-full z-[999999] p-4 bg-white/10 backdrop-blur-md flex justify-center animate-fade-in-up">
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-2xl flex items-center gap-2 transform hover:scale-105 transition-all cursor-pointer pointer-events-auto"
+                        >
+                            <Check className="w-5 h-5" />
+                            Ödeme Yaptım / Sayfayı Yenile
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
