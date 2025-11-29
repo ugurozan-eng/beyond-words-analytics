@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Save, Lock, Key, ShoppingBag, BarChart3, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 
@@ -13,6 +14,7 @@ const InfoTooltip = ({ text }) => (
 );
 
 const SettingsModal = ({ isOpen, onClose }) => {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('etsy');
     const [settings, setSettings] = useState({
         etsy_keystring: '',
@@ -48,7 +50,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 });
             }
         } catch (error) {
-            console.error("Ayarlar yüklenirken hata:", error);
+            console.error(t('settings.load_error'), error);
         } finally {
             setIsLoading(false);
         }
@@ -74,7 +76,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 setSaveStatus('error');
             }
         } catch (error) {
-            console.error("Kaydetme hatası:", error);
+            console.error(t('settings.save_error'), error);
             setSaveStatus('error');
         } finally {
             setIsLoading(false);
@@ -93,7 +95,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         <span className="bg-indigo-100 p-2 rounded-xl mr-3 text-indigo-600">
                             {activeTab === 'etsy' ? <ShoppingBag className="w-6 h-6" /> : <BarChart3 className="w-6 h-6" />}
                         </span>
-                        Ayarlar
+                        {t('settings.title')}
                     </h2>
                     <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500">
                         <X className="w-6 h-6" />
@@ -106,13 +108,13 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         onClick={() => setActiveTab('etsy')}
                         className={`flex-1 py-4 text-sm font-bold flex items-center justify-center transition-colors ${activeTab === 'etsy' ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                     >
-                        <ShoppingBag className="w-4 h-4 mr-2" /> Etsy API
+                        <ShoppingBag className="w-4 h-4 mr-2" /> {t('settings.etsy_api')}
                     </button>
                     <button
                         onClick={() => setActiveTab('ga4')}
                         className={`flex-1 py-4 text-sm font-bold flex items-center justify-center transition-colors ${activeTab === 'ga4' ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                     >
-                        <BarChart3 className="w-4 h-4 mr-2" /> Google Analytics
+                        <BarChart3 className="w-4 h-4 mr-2" /> {t('settings.google_analytics')}
                     </button>
                 </div>
 
@@ -127,43 +129,43 @@ const SettingsModal = ({ isOpen, onClose }) => {
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
                                             <Key className="w-4 h-4 mr-2 text-indigo-500" />
-                                            Etsy Keystring (API Key)
-                                            <InfoTooltip text="Etsy Developer Portal > Apps menüsünden 'Keystring' değerini kopyalayın." />
+                                            {t('settings.etsy_keystring')}
+                                            <InfoTooltip text={t('settings.etsy_keystring_tooltip')} />
                                         </label>
                                         <input
                                             type="text"
                                             value={settings.etsy_keystring}
                                             onChange={(e) => setSettings({ ...settings, etsy_keystring: e.target.value })}
                                             className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all font-mono text-sm"
-                                            placeholder="Etsy API Key giriniz..."
+                                            placeholder={t('settings.etsy_keystring_placeholder')}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
                                             <Lock className="w-4 h-4 mr-2 text-indigo-500" />
-                                            Etsy Shared Secret
-                                            <InfoTooltip text="Etsy Developer Portal > Apps menüsünden 'Shared Secret' değerini kopyalayın." />
+                                            {t('settings.etsy_shared_secret')}
+                                            <InfoTooltip text={t('settings.etsy_shared_secret_tooltip')} />
                                         </label>
                                         <input
                                             type="password"
                                             value={settings.etsy_shared_secret}
                                             onChange={(e) => setSettings({ ...settings, etsy_shared_secret: e.target.value })}
                                             className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all font-mono text-sm"
-                                            placeholder="Shared Secret giriniz..."
+                                            placeholder={t('settings.etsy_shared_secret_placeholder')}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
                                             <ShoppingBag className="w-4 h-4 mr-2 text-indigo-500" />
-                                            Etsy Shop ID
-                                            <InfoTooltip text="Etsy mağaza sayfanızı açın. Adres çubuğunda veya kaynak kodunda 'shop_id' aratın." />
+                                            {t('settings.etsy_shop_id')}
+                                            <InfoTooltip text={t('settings.etsy_shop_id_tooltip')} />
                                         </label>
                                         <input
                                             type="text"
                                             value={settings.etsy_shop_id}
                                             onChange={(e) => setSettings({ ...settings, etsy_shop_id: e.target.value })}
                                             className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all font-mono text-sm"
-                                            placeholder="Shop ID giriniz..."
+                                            placeholder={t('settings.etsy_shop_id_placeholder')}
                                         />
                                     </div>
                                 </div>
@@ -172,12 +174,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
                             {activeTab === 'ga4' && (
                                 <div className="space-y-5 animate-fade-in">
                                     <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-800 text-sm mb-4">
-                                        Google Analytics 4 entegrasyonu için aşağıdaki bilgileri giriniz. Bu bilgiler raporlama ekranında trafik verilerini çekmek için kullanılacaktır.
+                                        {t('settings.ga4_info')}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
-                                            Property ID
-                                            <InfoTooltip text="Google Analytics > Yönetici > Mülk Ayarları > Mülk Kimliği (Sağ üstte yazar)." />
+                                            {t('settings.ga4_property_id')}
+                                            <InfoTooltip text={t('settings.ga4_property_id_tooltip')} />
                                         </label>
                                         <input
                                             type="text"
@@ -189,8 +191,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
-                                            Measurement ID
-                                            <InfoTooltip text="Google Analytics > Yönetici > Veri Akışları > Akış Detayları > Ölçüm Kimliği (G- ile başlar)." />
+                                            {t('settings.ga4_measurement_id')}
+                                            <InfoTooltip text={t('settings.ga4_measurement_id_tooltip')} />
                                         </label>
                                         <input
                                             type="text"
@@ -202,8 +204,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
-                                            Client Secret
-                                            <InfoTooltip text="Google Cloud Console > APIs & Services > Credentials > OAuth 2.0 Client IDs." />
+                                            {t('settings.ga4_client_secret')}
+                                            <InfoTooltip text={t('settings.ga4_client_secret_tooltip')} />
                                         </label>
                                         <input
                                             type="password"
@@ -222,21 +224,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 {/* Footer */}
                 <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
                     {saveStatus === 'success' && (
-                        <span className="text-emerald-600 font-bold flex items-center animate-fade-in"><CheckCircle className="w-5 h-5 mr-2" /> Kaydedildi!</span>
+                        <span className="text-emerald-600 font-bold flex items-center animate-fade-in"><CheckCircle className="w-5 h-5 mr-2" /> {t('settings.saved')}</span>
                     )}
                     {saveStatus === 'error' && (
-                        <span className="text-red-600 font-bold flex items-center animate-fade-in"><AlertCircle className="w-5 h-5 mr-2" /> Hata oluştu!</span>
+                        <span className="text-red-600 font-bold flex items-center animate-fade-in"><AlertCircle className="w-5 h-5 mr-2" /> {t('settings.error')}</span>
                     )}
                     {!saveStatus && <span></span>}
 
                     <div className="flex space-x-3">
-                        <button onClick={onClose} className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-200 transition-colors">İptal</button>
+                        <button onClick={onClose} className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-200 transition-colors">{t('common.cancel')}</button>
                         <button
                             onClick={handleSave}
                             disabled={isLoading}
                             className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-1 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {isLoading ? 'Kaydediliyor...' : <><Save className="w-5 h-5 mr-2" /> Kaydet</>}
+                            {isLoading ? t('settings.saving') : <><Save className="w-5 h-5 mr-2" /> {t('common.save')}</>}
                         </button>
                     </div>
                 </div>

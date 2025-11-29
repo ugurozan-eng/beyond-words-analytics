@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Globe, TrendingUp, ChevronDown, MapPin } from 'lucide-react';
 
 const GlobalMarketPulse = () => {
+    const { t } = useTranslation();
     const [selectedCountry, setSelectedCountry] = useState('USA');
 
     const marketData = {
@@ -50,8 +52,8 @@ const GlobalMarketPulse = () => {
                         <Globe className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900">Pazar Trendleri</h3>
-                        <p className="text-xs text-gray-500">Global Pazar Nabzı</p>
+                        <h3 className="font-bold text-gray-900">{t('global_market_pulse.title')}</h3>
+                        <p className="text-xs text-gray-500">{t('global_market_pulse.subtitle')}</p>
                     </div>
                 </div>
 
@@ -74,7 +76,7 @@ const GlobalMarketPulse = () => {
                 <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                     <h4 className="text-sm font-bold text-gray-700 mb-4 flex items-center">
                         <TrendingUp className="w-4 h-4 mr-2 text-green-500" />
-                        Yükselen Kategoriler
+                        {t('global_market_pulse.rising_categories')}
                     </h4>
                     <div className="space-y-3">
                         {currentData.categories.map((cat, idx) => (
@@ -93,7 +95,7 @@ const GlobalMarketPulse = () => {
                 <div className="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100">
                     <h4 className="text-sm font-bold text-indigo-900 mb-4 flex items-center">
                         <MapPin className="w-4 h-4 mr-2 text-indigo-500" />
-                        {currentData.flag} Trend Kelimeler
+                        {currentData.flag} {t('global_market_pulse.trending_keywords')}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                         {currentData.keywords.map((keyword, idx) => (
@@ -107,7 +109,7 @@ const GlobalMarketPulse = () => {
                     </div>
                     <div className="mt-6 pt-4 border-t border-indigo-100">
                         <p className="text-xs text-indigo-400 leading-relaxed">
-                            *Bu veriler son 24 saatteki arama hacimlerine göre derlenmiştir.
+                            {t('global_market_pulse.disclaimer')}
                         </p>
                     </div>
                 </div>

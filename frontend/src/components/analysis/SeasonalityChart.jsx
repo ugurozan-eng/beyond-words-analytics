@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const SeasonalityChart = ({ dataString }) => {
+    const { t } = useTranslation();
     let data = [];
     try {
         const parsed = JSON.parse(dataString || "[]");
@@ -11,7 +13,7 @@ const SeasonalityChart = ({ dataString }) => {
         }
     } catch { }
 
-    if (data.length === 0) return <div className="text-xs text-gray-400 italic p-4 text-center">Grafik verisi yok</div>;
+    if (data.length === 0) return <div className="text-xs text-gray-400 italic p-4 text-center">{t('seasonality.no_data')}</div>;
 
     return (
         <div className="h-40 w-full mt-4">
@@ -31,7 +33,7 @@ const SeasonalityChart = ({ dataString }) => {
                 </BarChart>
             </ResponsiveContainer>
             <div className="flex justify-between text-[10px] text-gray-400 mt-2 px-2 font-medium uppercase tracking-wider">
-                <span>Ocak</span><span>Haziran</span><span>Aralık</span>
+                <span>{t('seasonality.jan')}</span><span>{t('seasonality.jun')}</span><span>{t('seasonality.dec')}</span>
             </div>
         </div>
     );

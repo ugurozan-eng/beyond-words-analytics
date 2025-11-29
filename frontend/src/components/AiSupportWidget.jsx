@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 const AiSupportWidget = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { type: 'ai', text: 'Merhaba! Ben Klindar AI Asistanı. 👋\nLQS, Fiyatlandırma veya SEO hakkında aklınıza takılan her şeyi bana sorabilirsiniz.' }
+        { type: 'ai', text: t('ai_support.welcome_message') }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -36,13 +38,13 @@ const AiSupportWidget = () => {
                 body: JSON.stringify({ message: userMessage }),
             });
 
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error(t('ai_support.network_error'));
 
             const data = await response.json();
             setMessages(prev => [...prev, { type: 'ai', text: data.response }]);
         } catch (error) {
             console.error('Chat error:', error);
-            setMessages(prev => [...prev, { type: 'ai', text: 'Üzgünüm, şu an bağlantı kuramıyorum. Lütfen biraz sonra tekrar deneyin.' }]);
+            setMessages(prev => [...prev, { type: 'ai', text: t('ai_support.connection_error') }]);
         } finally {
             setIsLoading(false);
         }
@@ -67,10 +69,10 @@ const AiSupportWidget = () => {
                                 <Bot className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm">Cyclear AI Support</h3>
+                                <h3 className="font-bold text-sm">{t('ai_support.title')}</h3>
                                 <div className="flex items-center space-x-1">
                                     <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                                    <span className="text-xs text-indigo-100">Çevrimiçi</span>
+                                    <span className="text-xs text-indigo-100">{t('ai_support.online')}</span>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +123,7 @@ const AiSupportWidget = () => {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                placeholder="Bir soru sorun..."
+                                placeholder={t('ai_support.placeholder')}
                                 className="flex-1 bg-transparent border-none outline-none focus:ring-0 text-sm py-2 text-gray-700 placeholder-gray-400"
                                 disabled={isLoading}
                             />
@@ -139,7 +141,7 @@ const AiSupportWidget = () => {
                         <div className="text-center mt-2">
                             <span className="text-[10px] text-gray-400 flex items-center justify-center">
                                 <Sparkles className="w-3 h-3 mr-1 text-indigo-400" />
-                                Powered by Gemini 2.5 Flash
+                                {t('ai_support.powered_by')}
                             </span>
                         </div>
                     </div>
@@ -163,7 +165,7 @@ const AiSupportWidget = () => {
                 {/* TOOLTIP */}
                 {!isOpen && (
                     <span className="absolute right-16 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                        AI Asistana Sor
+                        {t('ai_support.tooltip')}
                     </span>
                 )}
             </button>

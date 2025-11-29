@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, TrendingUp, BarChart3, Calendar, Award } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
+    const { t } = useTranslation();
     if (!isOpen || selectedKeywords.length < 2) return null;
 
     // Helper to find best values
@@ -39,8 +41,8 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
                             <BarChart3 className="w-6 h-6" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-black text-gray-900">Kelime Karşılaştırma</h2>
-                            <p className="text-sm text-gray-500 font-medium">{selectedKeywords.length} kelime analiz ediliyor</p>
+                            <h2 className="text-xl font-black text-gray-900">{t('keyword_comparison.title')}</h2>
+                            <p className="text-sm text-gray-500 font-medium">{selectedKeywords.length} {t('keyword_comparison.analyzing_count')}</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500 hover:text-gray-800">
@@ -52,7 +54,7 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
                 <div className="overflow-auto p-8">
                     <div className="grid grid-cols-[200px_repeat(auto-fit,minmax(200px,1fr))] gap-4">
                         {/* Header Row */}
-                        <div className="font-bold text-gray-400 uppercase text-xs tracking-wider flex items-center">Metrikler</div>
+                        <div className="font-bold text-gray-400 uppercase text-xs tracking-wider flex items-center">{t('keyword_comparison.metrics')}</div>
                         {selectedKeywords.map((k, i) => (
                             <div key={i} className="font-black text-gray-800 text-lg text-center p-2 bg-gray-50 rounded-xl border border-gray-100">
                                 {k.term}
@@ -61,7 +63,7 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
 
                         {/* Volume Row */}
                         <div className="flex items-center font-bold text-gray-600 border-b border-gray-50 py-4">
-                            <TrendingUp className="w-4 h-4 mr-2 text-indigo-500" /> Aranma Hacmi
+                            <TrendingUp className="w-4 h-4 mr-2 text-indigo-500" /> {t('keyword_comparison.volume')}
                         </div>
                         {selectedKeywords.map((k, i) => (
                             <div key={i} className={`flex items-center justify-center py-4 border-b border-gray-50 font-bold text-lg ${k.volume === maxVolume ? 'text-emerald-600 bg-emerald-50/30 rounded-lg' : 'text-gray-600'}`}>
@@ -72,13 +74,13 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
 
                         {/* Competition Row */}
                         <div className="flex items-center font-bold text-gray-600 border-b border-gray-50 py-4">
-                            <Award className="w-4 h-4 mr-2 text-orange-500" /> Rekabet
+                            <Award className="w-4 h-4 mr-2 text-orange-500" /> {t('keyword_comparison.competition')}
                         </div>
                         {selectedKeywords.map((k, i) => (
                             <div key={i} className="flex items-center justify-center py-4 border-b border-gray-50">
                                 <span className={`px-3 py-1 rounded-full text-sm font-bold border ${k.competition === 'Low' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
-                                        k.competition === 'Medium' ? 'bg-amber-100 text-amber-700 border-amber-200' :
-                                            'bg-red-100 text-red-700 border-red-200'
+                                    k.competition === 'Medium' ? 'bg-amber-100 text-amber-700 border-amber-200' :
+                                        'bg-red-100 text-red-700 border-red-200'
                                     }`}>
                                     {k.competition}
                                 </span>
@@ -87,7 +89,7 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
 
                         {/* Trend Row */}
                         <div className="flex items-center font-bold text-gray-600 border-b border-gray-50 py-4">
-                            <TrendingUp className="w-4 h-4 mr-2 text-blue-500" /> Trend
+                            <TrendingUp className="w-4 h-4 mr-2 text-blue-500" /> {t('keyword_comparison.trend')}
                         </div>
                         {selectedKeywords.map((k, i) => (
                             <div key={i} className={`flex items-center justify-center py-4 border-b border-gray-50 font-bold ${k.trend.includes('+') ? 'text-emerald-600' : 'text-red-500'}`}>
@@ -97,7 +99,7 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
 
                         {/* Seasonality Chart Row */}
                         <div className="flex items-center font-bold text-gray-600 py-4">
-                            <Calendar className="w-4 h-4 mr-2 text-violet-500" /> Mevsimsellik
+                            <Calendar className="w-4 h-4 mr-2 text-violet-500" /> {t('keyword_comparison.seasonality')}
                         </div>
                         {selectedKeywords.map((k, i) => (
                             <div key={i} className="h-32 py-4">
@@ -120,7 +122,7 @@ const KeywordComparisonModal = ({ isOpen, onClose, selectedKeywords }) => {
 
                 <div className="p-6 bg-gray-50 border-t border-gray-100 text-center">
                     <p className="text-gray-500 text-sm">
-                        <span className="font-bold text-indigo-600">İpucu:</span> Yeşil ile vurgulanan değerler, seçilenler arasındaki en iyi performansı gösterir.
+                        <span className="font-bold text-indigo-600">{t('keyword_comparison.tip_label')}</span> {t('keyword_comparison.tip_text')}
                     </p>
                 </div>
             </div>

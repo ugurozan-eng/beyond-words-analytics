@@ -1,13 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 const LQSChart = ({ listings }) => {
+    const { t } = useTranslation();
     const analyzed = listings.filter(l => l.is_analyzed);
 
     const data = [
-        { name: 'Mükemmel (8-10)', value: analyzed.filter(l => l.lqs_score >= 8).length, color: '#10b981' }, // Emerald-500
-        { name: 'İyi (5-7.9)', value: analyzed.filter(l => l.lqs_score >= 5 && l.lqs_score < 8).length, color: '#f59e0b' }, // Amber-500
-        { name: 'Zayıf (<5)', value: analyzed.filter(l => l.lqs_score < 5).length, color: '#ef4444' }, // Red-500
+        { name: t('lqs_chart.excellent'), value: analyzed.filter(l => l.lqs_score >= 8).length, color: '#10b981' }, // Emerald-500
+        { name: t('lqs_chart.good'), value: analyzed.filter(l => l.lqs_score >= 5 && l.lqs_score < 8).length, color: '#f59e0b' }, // Amber-500
+        { name: t('lqs_chart.poor'), value: analyzed.filter(l => l.lqs_score < 5).length, color: '#ef4444' }, // Red-500
     ].filter(d => d.value > 0);
 
     if (analyzed.length === 0) {
@@ -16,7 +18,7 @@ const LQSChart = ({ listings }) => {
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                     <span className="text-2xl">📊</span>
                 </div>
-                <p className="text-gray-400 text-sm font-medium">Henüz analiz verisi yok</p>
+                <p className="text-gray-400 text-sm font-medium">{t('lqs_chart.no_data')}</p>
             </div>
         );
     }

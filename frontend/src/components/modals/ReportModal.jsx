@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TrendingUp, X, Sparkles } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { API_BASE_URL } from '../../config';
 import TrafficSourceChart from '../analysis/TrafficSourceChart';
 
 const ReportModal = ({ isOpen, onClose, listingId, productTitle, trafficData }) => {
+    const { t } = useTranslation();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const ReportModal = ({ isOpen, onClose, listingId, productTitle, trafficData }) 
                 <div className="p-8 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-sm z-10">
                     <div>
                         <h2 className="text-2xl font-extrabold text-gray-900 flex items-center tracking-tight">
-                            <TrendingUp className="w-7 h-7 mr-3 text-emerald-500" /> Gelişim Raporu
+                            <TrendingUp className="w-7 h-7 mr-3 text-emerald-500" /> {t('report.title')}
                         </h2>
                         <p className="text-sm text-gray-500 mt-1 font-medium">{productTitle}</p>
                     </div>
@@ -44,12 +46,12 @@ const ReportModal = ({ isOpen, onClose, listingId, productTitle, trafficData }) 
                     {loading ? (
                         <div className="flex justify-center py-20"><div className="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-600"></div></div>
                     ) : history.length === 0 ? (
-                        <div className="text-center py-20 text-gray-400">Henüz yeterli geçmiş verisi yok.</div>
+                        <div className="text-center py-20 text-gray-400">{t('report.no_data')}</div>
                     ) : (
                         <>
                             <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-lg">
                                 <h3 className="text-lg font-bold text-indigo-900 mb-6 flex items-center">
-                                    <Sparkles className="w-5 h-5 mr-2 text-indigo-500" /> LQS Kalite Yolculuğu
+                                    <Sparkles className="w-5 h-5 mr-2 text-indigo-500" /> {t('report.lqs_journey')}
                                 </h3>
                                 <div className="h-80 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -74,15 +76,15 @@ const ReportModal = ({ isOpen, onClose, listingId, productTitle, trafficData }) 
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100 text-center shadow-sm">
-                                    <div className="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-2">Başlangıç Skoru</div>
+                                    <div className="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-2">{t('report.start_score')}</div>
                                     <div className="text-4xl font-black text-emerald-700">{history[0]?.lqs}</div>
                                 </div>
                                 <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100 text-center shadow-sm">
-                                    <div className="text-xs text-indigo-600 font-bold uppercase tracking-wider mb-2">Mevcut Skor</div>
+                                    <div className="text-xs text-indigo-600 font-bold uppercase tracking-wider mb-2">{t('report.current_score')}</div>
                                     <div className="text-4xl font-black text-indigo-700">{history[history.length - 1]?.lqs}</div>
                                 </div>
                                 <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 text-center shadow-sm">
-                                    <div className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-2">Gelişim</div>
+                                    <div className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-2">{t('report.improvement')}</div>
                                     <div className="text-4xl font-black text-blue-700">
                                         {history[history.length - 1]?.lqs - history[0]?.lqs > 0 ? '+' : ''}
                                         {(history[history.length - 1]?.lqs - history[0]?.lqs).toFixed(1)}

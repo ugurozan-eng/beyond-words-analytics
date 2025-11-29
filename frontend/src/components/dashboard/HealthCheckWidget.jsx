@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Activity, AlertCircle, CheckCircle, ArrowRight, Zap } from 'lucide-react';
 
 const HealthCheckWidget = ({ listings = [], onOptimize }) => {
+    const { t } = useTranslation();
     // Calculate health metrics
     const criticalLQS = listings.filter(l => l.lqs_score > 0 && l.lqs_score < 50).length;
     const missingTags = listings.filter(l => l.tags && l.tags.length < 13).length;
@@ -26,8 +28,8 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                         <Activity className="w-6 h-6 text-rose-600" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900">Mağaza Sağlığı</h3>
-                        <p className="text-xs text-gray-500">Aksiyon Raporu</p>
+                        <h3 className="font-bold text-gray-900">{t('health_check.title')}</h3>
+                        <p className="text-xs text-gray-500">{t('health_check.subtitle')}</p>
                     </div>
                 </div>
                 <div className={`text-2xl font-black ${getHealthColor(finalScore)}`}>
@@ -41,15 +43,15 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                     <div className="flex items-center space-x-3">
                         <AlertCircle className="w-5 h-5 text-red-500" />
                         <div>
-                            <p className="text-sm font-bold text-gray-800">{criticalLQS} Kritik Ürün</p>
-                            <p className="text-xs text-red-400">LQS Skoru 50'nin altında</p>
+                            <p className="text-sm font-bold text-gray-800">{criticalLQS} {t('health_check.critical_product')}</p>
+                            <p className="text-xs text-red-400">{t('health_check.lqs_below_50')}</p>
                         </div>
                     </div>
                     <button
                         onClick={() => onOptimize && onOptimize()}
                         className="px-3 py-1.5 bg-white text-red-600 text-xs font-bold rounded-lg shadow-sm border border-red-100 hover:bg-red-50 transition-colors"
                     >
-                        Düzelt
+                        {t('health_check.fix_button')}
                     </button>
                 </div>
 
@@ -58,12 +60,12 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                     <div className="flex items-center space-x-3">
                         <Zap className="w-5 h-5 text-amber-500" />
                         <div>
-                            <p className="text-sm font-bold text-gray-800">{missingTags} Eksik Etiket</p>
-                            <p className="text-xs text-amber-400">13 etiketin altındaki ürünler</p>
+                            <p className="text-sm font-bold text-gray-800">{missingTags} {t('health_check.missing_tags')}</p>
+                            <p className="text-xs text-amber-400">{t('health_check.tags_below_13')}</p>
                         </div>
                     </div>
                     <button className="px-3 py-1.5 bg-white text-amber-600 text-xs font-bold rounded-lg shadow-sm border border-amber-100 hover:bg-amber-50 transition-colors">
-                        Tamamla
+                        {t('health_check.complete_button')}
                     </button>
                 </div>
 
@@ -72,8 +74,8 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                     <div className="flex items-center space-x-3">
                         <CheckCircle className="w-5 h-5 text-blue-500" />
                         <div>
-                            <p className="text-sm font-bold text-gray-800">{unanalyzed} Analizsiz</p>
-                            <p className="text-xs text-blue-400">Henüz taranmamış ürünler</p>
+                            <p className="text-sm font-bold text-gray-800">{unanalyzed} {t('health_check.unanalyzed')}</p>
+                            <p className="text-xs text-blue-400">{t('health_check.not_scanned_yet')}</p>
                         </div>
                     </div>
                     <button className="p-1.5 bg-white text-blue-600 rounded-lg shadow-sm border border-blue-100 hover:bg-blue-50 transition-colors">

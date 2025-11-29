@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, Eye, Copy, Check, AlertCircle, Loader2, BarChart2, Tag } from 'lucide-react';
 
 const TagSpy = () => {
+    const { t } = useTranslation();
     const [url, setUrl] = useState('');
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -28,13 +30,13 @@ const TagSpy = () => {
             });
             clearTimeout(timeoutId);
 
-            if (!response.ok) throw new Error('Analiz sırasında bir hata oluştu.');
+            if (!response.ok) throw new Error(t('tag_spy.analysis_error'));
 
             const data = await response.json();
             setResults(data);
         } catch (err) {
             if (err.name === 'AbortError') {
-                setError('Sunucu yanıt vermedi (Zaman aşımı). Lütfen backend sunucusunun çalıştığından emin olun.');
+                setError(t('tag_spy.timeout_error'));
             } else {
                 setError(err.message);
             }
@@ -77,10 +79,10 @@ const TagSpy = () => {
                     <Eye className="w-8 h-8 text-indigo-600" />
                 </div>
                 <h1 className="text-4xl font-black text-gray-900 mb-4 tracking-tight">
-                    Rakip <span className="text-indigo-600">Etiket Casusu</span>
+                    {t('tag_spy.hero_title_prefix')} <span className="text-indigo-600">{t('tag_spy.hero_title_highlight')}</span>
                 </h1>
                 <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
-                    Rakibinizin mağaza linkini yapıştırın, en çok kullandığı ve kazandıran etiketleri anında keşfedin.
+                    {t('tag_spy.hero_subtitle')}
                 </p>
 
                 {/* Search Bar */}
@@ -102,7 +104,7 @@ const TagSpy = () => {
                             className="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02]"
                         >
                             {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Eye className="w-5 h-5 mr-2" />}
-                            {loading ? 'Analiz...' : 'Casusluk Yap'}
+                            {loading ? t('tag_spy.analyzing') : t('tag_spy.spy_button')}
                         </button>
                     </form>
                 </div>
@@ -127,7 +129,7 @@ const TagSpy = () => {
                                 <BarChart2 className="w-6 h-6 text-indigo-600" />
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-gray-500 uppercase">Analiz Edilen Ürün</p>
+                                <p className="text-sm font-bold text-gray-500 uppercase">{t('tag_spy.analyzed_product')}</p>
                                 <h3 className="text-2xl font-black text-gray-900">{results.analyzed_product_count}</h3>
                             </div>
                         </div>
@@ -136,21 +138,21 @@ const TagSpy = () => {
                                 <Tag className="w-6 h-6 text-purple-600" />
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-gray-500 uppercase">Bulunan Etiket</p>
+                                <p className="text-sm font-bold text-gray-500 uppercase">{t('tag_spy.found_tags')}</p>
                                 <h3 className="text-2xl font-black text-gray-900">{results.top_tags.length}</h3>
                             </div>
                         </div>
                         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 rounded-2xl shadow-lg text-white flex items-center justify-between">
                             <div>
-                                <p className="text-indigo-100 font-bold text-sm mb-1">Tüm Etiketleri Al</p>
-                                <p className="text-xs text-indigo-200">Virgülle ayrılmış liste</p>
+                                <p className="text-indigo-100 font-bold text-sm mb-1">{t('tag_spy.get_all_tags')}</p>
+                                <p className="text-xs text-indigo-200">{t('tag_spy.comma_separated_list')}</p>
                             </div>
                             <button
                                 onClick={copyAllTags}
                                 className="bg-white text-indigo-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-indigo-50 transition-colors flex items-center"
                             >
                                 {copiedField === 'all-tags' ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                                Kopyala
+                                {t('common.copy')}
                             </button>
                         </div>
                     </div>
@@ -158,17 +160,17 @@ const TagSpy = () => {
                     {/* Frequency Table */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                         <div className="p-6 border-b border-gray-100">
-                            <h3 className="text-lg font-bold text-gray-900">Etiket Frekans Analizi</h3>
+                            <h3 className="text-lg font-bold text-gray-900">{t('tag_spy.frequency_analysis_title')}</h3>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left min-w-[800px]">
                                 <thead>
                                     <tr className="bg-gray-50 border-b border-gray-100">
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider w-1/3">Etiket</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider w-1/3">Kullanım Sıklığı</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Hacim</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Rekabet</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">İşlem</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider w-1/3">{t('tag_spy.tag')}</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider w-1/3">{t('tag_spy.usage_frequency')}</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('tag_spy.volume')}</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('tag_spy.competition')}</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">{t('tag_spy.action')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
@@ -201,7 +203,7 @@ const TagSpy = () => {
                                                     <button
                                                         onClick={() => copyToClipboard(item.tag, `tag-${index}`)}
                                                         className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-                                                        title="Kopyala"
+                                                        title={t('common.copy')}
                                                     >
                                                         {copiedField === `tag-${index}` ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                                                     </button>

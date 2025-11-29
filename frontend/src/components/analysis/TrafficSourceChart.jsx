@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 
 const TrafficSourceChart = ({ data }) => {
+    const { t } = useTranslation();
     if (!data || !data.sources || data.sources.length === 0) return null;
 
     return (
@@ -10,14 +12,14 @@ const TrafficSourceChart = ({ data }) => {
             <div className="flex justify-between items-start mb-6">
                 <div>
                     <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                        <TrendingUp className="w-5 h-5 mr-2 text-blue-500" /> Trafik İstihbaratı (30 Günlük)
+                        <TrendingUp className="w-5 h-5 mr-2 text-blue-500" /> {t('traffic.title')}
                     </h3>
                     {data.insight && (
                         <p className="text-sm text-gray-500 mt-1">{data.insight}</p>
                     )}
                 </div>
                 <div className="bg-blue-50 px-3 py-1 rounded-lg">
-                    <span className="text-xs text-blue-600 font-bold uppercase">Toplam</span>
+                    <span className="text-xs text-blue-600 font-bold uppercase">{t('traffic.total')}</span>
                     <div className="text-lg font-black text-blue-700">{data.total_visits}</div>
                 </div>
             </div>

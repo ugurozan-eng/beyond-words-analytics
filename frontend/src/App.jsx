@@ -10,6 +10,7 @@ import SettingsModal from './components/modals/SettingsModal';
 import OptimizationModal from './components/modals/OptimizationModal';
 import LoginPage from './components/LoginPage';
 import DashboardTrafficPanel from './components/dashboard/DashboardTrafficPanel';
+import DashboardHome from './components/dashboard/DashboardHome';
 import MiniStatCard from './components/dashboard/MiniStatCard';
 import SubscriptionModal from './components/modals/SubscriptionModal';
 import Sidebar from './components/dashboard/Sidebar';
@@ -97,7 +98,7 @@ function AppContent() {
             if (!response.ok) throw new Error("Hata");
             setListings(await response.json());
         } catch (error) {
-            console.log("Liste yenileme hatası (geçici)");
+            console.log(t('app.list_refresh_error'));
         } finally {
             setIsLoading(false);
         }
@@ -109,7 +110,7 @@ function AppContent() {
         // Add new products to the beginning of the list
         setListings(prev => [...newProducts, ...prev]);
         setAnalyzedProducts(newProducts); // Update the grid view
-        setStatusMessage({ type: 'success', text: `${newProducts.length} ürün başarıyla içe aktarıldı!` });
+        setStatusMessage({ type: 'success', text: t('app.import_success', { count: newProducts.length }) });
         setTimeout(() => setStatusMessage(null), 4000);
     };
 
@@ -138,7 +139,7 @@ function AppContent() {
 
     const handleUpgrade = () => {
         if (!user) {
-            alert("Lütfen önce giriş yapın.");
+            alert(t('app.login_required'));
             return;
         }
 
@@ -174,7 +175,7 @@ function AppContent() {
             if (selectedListing?.id === id) { setSelectedListing(null); setAnalysisResult(null); }
             setDeleteConfirmation(null);
             if (userPlan === 'free') setDailyUsage(prev => prev + 1);
-        } catch (error) { console.error("Silme hatası:", error); alert("Silinirken bir hata oluştu."); }
+        } catch (error) { console.error(t('app.delete_error'), error); alert(t('app.delete_error_alert')); }
     };
 
     const handleSelectListing = (listing) => {
@@ -196,14 +197,14 @@ function AppContent() {
     };
 
     const handleBulkAnalyze = async () => {
-        if (!confirm(`${selectedIds.length} ürün analiz edilecek. Bu işlem biraz sürebilir. Onaylıyor musunuz?`)) return;
+        if (!confirm(t('app.bulk_analyze_confirm', { count: selectedIds.length }))) return;
         const targets = listings.filter(l => selectedIds.includes(l.id));
         for (const item of targets) {
             setSelectedListing(item); setAnalysisResult(null);
             await handleAnalyze(item, false);
             await new Promise(r => setTimeout(r, 1000));
         }
-        setStatusMessage({ type: 'success', text: 'Toplu analiz tamamlandı!' });
+        setStatusMessage({ type: 'success', text: t('app.bulk_analyze_complete') });
         setTimeout(() => setStatusMessage(null), 4000);
         setSelectedIds([]);
     };
@@ -211,14 +212,14 @@ function AppContent() {
     const handleAnalyze = async (listingToAnalyze = null, force = false) => {
         if (userPlan === 'free' && dailyUsage >= DAILY_LIMIT && !force) {
             setIsSubscriptionOpen(true);
-            setStatusMessage({ type: 'error', text: '⚠️ Günlük analiz limitiniz doldu! Devam etmek için Pro\'ya geçin.' });
+            setStatusMessage({ type: 'error', text: t('app.daily_limit_reached') });
             setTimeout(() => setStatusMessage(null), 4000);
             return;
         }
         const targetListing = listingToAnalyze || selectedListing;
         if (!targetListing) return;
         setIsAnalyzing(true);
-        setStatusMessage({ type: 'info', text: '🔍 Analiz yapılıyor, lütfen bekleyin...' });
+        setStatusMessage({ type: 'info', text: t('app.analyzing_wait') });
         try {
             const res = await fetch(`${API_BASE_URL}/analysis/`, {
                 method: 'POST',
@@ -231,7 +232,7 @@ function AppContent() {
             // Check for functional error (backend returned 200 but with error data)
             if (result.lqs_score === 0 || result.suggested_title === "Error") {
                 setAnalysisResult(result); // Show error in panel
-                setStatusMessage({ type: 'error', text: `Analiz Hatası: ${result.suggested_description || 'Veri alınamadı'}` });
+                setStatusMessage({ type: 'error', text: t('app.analysis_error', { error: result.suggested_description || t('app.data_fetch_error') }) });
                 return; // Stop here, don't overwrite listing data
             }
 
@@ -241,9 +242,9 @@ function AppContent() {
                 const analyzedTime = new Date(result.last_analyzed_at).getTime();
                 isCachedData = (Date.now() - analyzedTime) > 60000;
             }
-            if (isCachedData) setStatusMessage({ type: 'success', text: '✅ Analiziniz güncel (Son 48 saat içinde yapıldı)' });
+            if (isCachedData) setStatusMessage({ type: 'success', text: t('app.analysis_current') });
             else {
-                setStatusMessage({ type: 'success', text: '🔵 Analiz başarıyla tamamlandı!' });
+                setStatusMessage({ type: 'success', text: t('app.analysis_success') });
                 if (userPlan === 'free') setDailyUsage(prev => prev + 1);
             }
             const updatedItem = { ...targetListing, is_analyzed: true, ...result };
@@ -251,8 +252,8 @@ function AppContent() {
             if (selectedListing && selectedListing.id === targetListing.id) setSelectedListing(updatedItem);
             setTimeout(() => setStatusMessage(null), 4000);
         } catch (error) {
-            console.error("Analiz hatası detay:", error);
-            setStatusMessage({ type: 'error', text: `Analiz Hatası: ${error.message || 'Bilinmeyen hata'}` });
+            console.error(t('app.analysis_error_detail'), error);
+            setStatusMessage({ type: 'error', text: t('app.analysis_error', { error: error.message || t('app.unknown_error') }) });
         } finally { setIsAnalyzing(false); }
     };
 
@@ -264,9 +265,9 @@ function AppContent() {
             setListings(prev => prev.map(item => item.id === id ? { ...item, ...updatedListing } : item));
             setSelectedListing(prev => prev.id === id ? { ...prev, ...updatedListing } : prev);
             setAnalysisResult(prev => prev ? ({ ...prev, ...updatedListing }) : null);
-            setStatusMessage({ type: 'success', text: 'Kaydedildi!' });
+            setStatusMessage({ type: 'success', text: t('app.saved') });
             setTimeout(() => setStatusMessage(null), 2000);
-        } catch { setStatusMessage({ type: 'error', text: 'Hata' }); }
+        } catch { setStatusMessage({ type: 'error', text: t('app.error') }); }
     };
 
     const activeResult = analysisResult || (selectedListing?.is_analyzed ? { ...selectedListing, suggested_tags: selectedListing.tags || [] } : null);
@@ -277,61 +278,17 @@ function AppContent() {
 
     // --- RENDER HELPERS ---
     const renderDashboard = () => (
-        <div className="space-y-6 animate-fade-in pb-10">
-            {/* ROW 1: KPI STRIP (Global Stats) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <MiniStatCard title={t('mini_stats.market_volume')} value="$4.2M" icon={DollarSign} color="bg-blue-500" />
-                <MiniStatCard title={t('mini_stats.active_sellers')} value="12.5K" icon={Package} color="bg-emerald-500" />
-                <MiniStatCard title={t('mini_stats.trend_keywords')} value="850+" icon={TrendingUp} color="bg-violet-500" />
-                <MiniStatCard title={t('mini_stats.opportunity_score')} value="8.4" icon={Zap} color="bg-orange-500" />
-            </div>
-
-            {/* ROW 2: MARKET TRENDS & COMPETITOR ACTIVITY */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* MARKET TRENDS (Col-span-8) */}
-                <div className="lg:col-span-8 h-96 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-center items-center text-center">
-                    <div className="p-4 bg-indigo-50 rounded-full mb-4">
-                        <TrendingUp className="w-12 h-12 text-indigo-500" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('market_trends.summary_title')}</h3>
-                    <p className="text-gray-500 max-w-md">
-                        {t('market_trends.summary_desc')}
-                    </p>
-                </div>
-
-                {/* COMPETITOR ACTIVITY (Col-span-4) */}
-                <div className="lg:col-span-4 h-96 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-center items-center text-center">
-                    <div className="p-4 bg-orange-50 rounded-full mb-4">
-                        <ShieldAlert className="w-12 h-12 text-orange-500" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Rakip Aktivite Akışı</h3>
-                    <p className="text-gray-500">
-                        Takip ettiğiniz rakiplerin son 24 saatteki fiyat ve listeleme değişiklikleri.
-                    </p>
-                </div>
-            </div>
-
-            {/* ROW 3: TRAFFIC INTELLIGENCE */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-gray-700 flex items-center"><BarChart3 className="w-4 h-4 mr-2 text-gray-400" /> Trafik İstihbaratı</h3>
-                </div>
-                <DashboardTrafficPanel
-                    trafficData={selectedListing?.traffic_data ? (typeof selectedListing.traffic_data === 'object' ? selectedListing.traffic_data : JSON.parse(selectedListing.traffic_data)) : null}
-                    onOpenReport={() => alert("Detaylı rapor modalı yakında eklenecek.")}
-                    userPlan={userPlan}
-                    onUnlockClick={() => setIsSubscriptionOpen(true)}
-                    compact={true}
-                />
-            </div>
-        </div>
+        <DashboardHome
+            onNavigate={setActiveView}
+            userPlan={userPlan}
+        />
     );
 
     const renderAnalysis = () => (
         <div className="h-full flex flex-col animate-fade-in">
             <div className="mb-6 flex items-center justify-between">
                 <button onClick={() => setActiveView('dashboard')} className="flex items-center text-gray-500 hover:text-indigo-600 font-bold transition-colors">
-                    <LayoutDashboard className="w-4 h-4 mr-2" /> Dashboard'a Dön
+                    <LayoutDashboard className="w-4 h-4 mr-2" /> {t('app.back_to_dashboard')}
                 </button>
                 {selectedListing && (
                     <div className="flex items-center space-x-4">

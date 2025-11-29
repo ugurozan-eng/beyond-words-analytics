@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Clock, TrendingUp, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
@@ -16,6 +17,7 @@ const formatDate = (dateString) => {
 };
 
 const HistoryList = ({ listingId }) => {
+    const { t } = useTranslation();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +28,7 @@ const HistoryList = ({ listingId }) => {
                 const response = await axios.get(`${API_BASE_URL}/listings/${listingId}/history`);
                 setHistory(response.data);
             } catch (error) {
-                console.error("Geçmiş yüklenirken hata:", error);
+                console.error(t('history.error_loading'), error);
             } finally {
                 setLoading(false);
             }
@@ -35,13 +37,13 @@ const HistoryList = ({ listingId }) => {
         fetchHistory();
     }, [listingId]);
 
-    if (loading) return <div className="text-center py-4 text-gray-400 text-sm">Geçmiş yükleniyor...</div>;
-    if (history.length === 0) return <div className="text-center py-4 text-gray-400 text-sm">Henüz geçmiş analiz kaydı yok.</div>;
+    if (loading) return <div className="text-center py-4 text-gray-400 text-sm">{t('history.loading')}</div>;
+    if (history.length === 0) return <div className="text-center py-4 text-gray-400 text-sm">{t('history.no_history')}</div>;
 
     return (
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
             <h4 className="text-sm font-bold text-gray-800 flex items-center mb-4 uppercase tracking-wider">
-                <Clock className="w-4 h-4 mr-2 text-gray-500" /> Geçmiş Analizler
+                <Clock className="w-4 h-4 mr-2 text-gray-500" /> {t('history.title')}
             </h4>
             <div className="space-y-3">
                 {history.map((item) => (
@@ -50,7 +52,7 @@ const HistoryList = ({ listingId }) => {
                             <div className={`w-2 h-2 rounded-full ${item.lqs_score >= 8 ? 'bg-green-500' : item.lqs_score >= 5 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
                             <div>
                                 <p className="text-xs font-bold text-gray-700">{formatDate(item.created_at)}</p>
-                                <p className="text-[10px] text-gray-500">LQS: {item.lqs_score} • Trend: {item.trend_score}</p>
+                                <p className="text-[10px] text-gray-500">LQS: {item.lqs_score} • {t('history.trend')}: {item.trend_score}</p>
                             </div>
                         </div>
                         <div className="text-right">

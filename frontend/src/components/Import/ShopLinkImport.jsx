@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, Search, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 
 const ShopLinkImport = ({ onImportComplete }) => {
+    const { t } = useTranslation();
     const [url, setUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -17,12 +19,12 @@ const ShopLinkImport = ({ onImportComplete }) => {
         setSuccess(null);
 
         if (!url) {
-            setError('Lütfen bir Etsy mağaza linki girin.');
+            setError(t('shop_link_import.enter_link_error'));
             return;
         }
 
         if (!validateUrl(url)) {
-            setError('Geçerli bir Etsy mağaza linki değil.');
+            setError(t('shop_link_import.invalid_link_error'));
             return;
         }
 
@@ -38,23 +40,23 @@ const ShopLinkImport = ({ onImportComplete }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Mağaza verileri çekilemedi.');
+                throw new Error(t('shop_link_import.fetch_error'));
             }
 
             const data = await response.json();
 
             if (data.status === 'success') {
-                setSuccess(`"${data.shop_name}" mağazasından ${data.products.length} ürün bulundu!`);
+                setSuccess(t('shop_link_import.success_message', { shopName: data.shop_name, count: data.products.length }));
                 if (onImportComplete) {
                     onImportComplete(data.products);
                 }
                 setUrl('');
             } else {
-                setError('Beklenmedik bir yanıt alındı.');
+                setError(t('shop_link_import.unexpected_response'));
             }
 
         } catch (err) {
-            setError(err.message || 'Bir hata oluştu.');
+            setError(err.message || t('common.error_occurred'));
         } finally {
             setIsLoading(false);
         }
@@ -67,8 +69,8 @@ const ShopLinkImport = ({ onImportComplete }) => {
                     <Link className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-gray-800">Mağaza İçe Aktar</h3>
-                    <p className="text-xs text-gray-500">Etsy mağaza linki ile ürünleri hızlıca analiz et.</p>
+                    <h3 className="font-bold text-gray-800">{t('shop_link_import.title')}</h3>
+                    <p className="text-xs text-gray-500">{t('shop_link_import.subtitle')}</p>
                 </div>
             </div>
 
@@ -94,10 +96,10 @@ const ShopLinkImport = ({ onImportComplete }) => {
                     {isLoading ? (
                         <>
                             <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                            Aranıyor...
+                            {t('shop_link_import.searching')}
                         </>
                     ) : (
-                        'Analiz Et'
+                        t('shop_link_import.analyze_button')
                     )}
                 </button>
             </div>

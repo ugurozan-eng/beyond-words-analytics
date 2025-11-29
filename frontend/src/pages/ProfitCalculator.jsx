@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Calculator, DollarSign, TrendingUp, AlertCircle, Info } from 'lucide-react';
 
 const ProfitCalculator = () => {
+    const { t } = useTranslation();
     // Inputs
     const [productType, setProductType] = useState('physical'); // physical, digital
     const [salePrice, setSalePrice] = useState('');
@@ -81,9 +83,9 @@ const ProfitCalculator = () => {
             <div className="mb-8">
                 <h1 className="text-3xl font-black text-gray-900 flex items-center tracking-tight">
                     <Calculator className="w-8 h-8 mr-3 text-indigo-600" />
-                    Kâr Hesaplayıcı
+                    {t('profit_calculator.title')}
                 </h1>
-                <p className="text-gray-500 mt-2">Etsy kesintilerini ve net kârınızı kuruşu kuruşuna hesaplayın.</p>
+                <p className="text-gray-500 mt-2">{t('profit_calculator.subtitle')}</p>
             </div>
 
             <div className="flex flex-col lg:flex-row gap-8 h-full">
@@ -91,7 +93,7 @@ const ProfitCalculator = () => {
                 <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
                     <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
                         <DollarSign className="w-5 h-5 mr-2 text-indigo-500" />
-                        Satış Detayları
+                        {t('profit_calculator.sales_details')}
                     </h2>
 
                     {/* Product Type Selector */}
@@ -100,20 +102,20 @@ const ProfitCalculator = () => {
                             onClick={() => setProductType('physical')}
                             className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center ${productType === 'physical' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                         >
-                            📦 Fiziksel Ürün
+                            📦 {t('profit_calculator.physical_product')}
                         </button>
                         <button
                             onClick={() => setProductType('digital')}
                             className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center ${productType === 'digital' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                         >
-                            📂 Dijital Ürün
+                            📂 {t('profit_calculator.digital_product')}
                         </button>
                     </div>
 
                     <div className="space-y-6">
                         {/* Sale Price */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Satış Fiyatı ($)</label>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">{t('profit_calculator.sale_price')}</label>
                             <div className="relative">
                                 <span className="absolute left-4 top-3.5 text-gray-400 font-bold">$</span>
                                 <input
@@ -135,7 +137,7 @@ const ProfitCalculator = () => {
                                     <div className="flex justify-between items-center mb-1">
                                         {/* Left Side: Label + Icon */}
                                         <div className="flex items-center gap-1">
-                                            <span className="text-xs font-bold text-gray-500 uppercase">KARGO ÜCRETİ (MÜŞTERİDEN)</span>
+                                            <span className="text-xs font-bold text-gray-500 uppercase">{t('profit_calculator.shipping_charge_label')}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => setShowTooltip(!showTooltip)}
@@ -153,7 +155,7 @@ const ProfitCalculator = () => {
                                                 onChange={(e) => setIsFreeShipping(e.target.checked)}
                                                 className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
                                             />
-                                            <span className="text-xs font-bold text-indigo-600">Ücretsiz Kargo</span>
+                                            <span className="text-xs font-bold text-indigo-600">{t('profit_calculator.free_shipping')}</span>
                                         </label>
                                     </div>
 
@@ -162,7 +164,7 @@ const ProfitCalculator = () => {
                                         <div className="mb-3 bg-indigo-50 border border-indigo-100 rounded-lg p-3 flex items-start animate-fade-in">
                                             <Info className="w-4 h-4 text-indigo-600 mt-0.5 mr-2 flex-shrink-0" />
                                             <p className="text-xs text-indigo-800 leading-relaxed">
-                                                <strong>Dikkat:</strong> Etsy, işlem ücretini (%6.5) sadece ürün fiyatından değil, (Ürün + Kargo) toplamı üzerinden keser. Buraya müşterinin sepette ödediği kargo tutarını girmelisiniz.
+                                                <strong>{t('common.attention')}</strong> {t('profit_calculator.shipping_warning')}
                                             </p>
                                         </div>
                                     )}
@@ -184,7 +186,7 @@ const ProfitCalculator = () => {
 
                             {/* Discount */}
                             <div className={productType === 'digital' ? 'col-span-2' : ''}>
-                                <label className="block text-xs font-bold text-gray-500 uppercase mb-2">İndirim Oranı (%)</label>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t('profit_calculator.discount_rate')}</label>
                                 <div className="relative">
                                     <span className="absolute right-4 top-3.5 text-gray-400 font-bold">%</span>
                                     <input
@@ -205,7 +207,7 @@ const ProfitCalculator = () => {
                         {productType === 'physical' && (
                             <>
                                 <div className="flex flex-row items-center gap-2 mb-4">
-                                    <h2 className="text-lg font-bold text-gray-800">Maliyetler</h2>
+                                    <h2 className="text-lg font-bold text-gray-800">{t('profit_calculator.costs')}</h2>
                                     <button
                                         type="button"
                                         onClick={() => setShowCostTooltip(!showCostTooltip)}
@@ -220,7 +222,7 @@ const ProfitCalculator = () => {
                                     <div className="mb-4 bg-orange-50 border border-orange-100 rounded-lg p-3 flex items-start animate-fade-in">
                                         <AlertCircle className="w-4 h-4 text-orange-600 mt-0.5 mr-2 flex-shrink-0" />
                                         <p className="text-xs text-orange-800 leading-relaxed">
-                                            Buraya ürünün size olan maliyetini ve kargo firmasına ödediğiniz tutarı girmelisiniz. Bu değerler net kâr hesabından düşülecektir.
+                                            {t('profit_calculator.costs_tooltip')}
                                         </p>
                                     </div>
                                 )}
@@ -228,7 +230,7 @@ const ProfitCalculator = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {/* Product Cost */}
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Ürün Maliyeti</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t('profit_calculator.product_cost')}</label>
                                         <div className="relative">
                                             <span className="absolute left-4 top-3.5 text-gray-400 font-bold">$</span>
                                             <input
@@ -244,7 +246,7 @@ const ProfitCalculator = () => {
 
                                     {/* Shipping Cost */}
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Kargo Maliyeti (Siz)</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t('profit_calculator.shipping_cost_you')}</label>
                                         <div className="relative">
                                             <span className="absolute left-4 top-3.5 text-gray-400 font-bold">$</span>
                                             <input
@@ -263,25 +265,25 @@ const ProfitCalculator = () => {
 
                         {/* Offsite Ads */}
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Offsite Ads (Reklam)</label>
+                            <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t('profit_calculator.offsite_ads')}</label>
                             <div className="flex bg-gray-50 p-1 rounded-xl border border-gray-200">
                                 <button
                                     onClick={() => setOffsiteAds('none')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === 'none' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                                 >
-                                    Kapalı
+                                    {t('profit_calculator.offsite_ads_none')}
                                 </button>
                                 <button
                                     onClick={() => setOffsiteAds('15')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === '15' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                                 >
-                                    %15 (Zorunlu)
+                                    {t('profit_calculator.offsite_ads_15')}
                                 </button>
                                 <button
                                     onClick={() => setOffsiteAds('12')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === '12' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                                 >
-                                    %12 (10k+)
+                                    {t('profit_calculator.offsite_ads_12')}
                                 </button>
                             </div>
                         </div>
@@ -293,11 +295,11 @@ const ProfitCalculator = () => {
                     {/* BIG STATS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-lg shadow-emerald-200">
-                            <p className="text-emerald-100 text-sm font-bold uppercase tracking-wider mb-1">Net Kâr</p>
+                            <p className="text-emerald-100 text-sm font-bold uppercase tracking-wider mb-1">{t('profit_calculator.net_profit')}</p>
                             <h3 className="text-4xl font-black">${results.netProfit.toFixed(2)}</h3>
                         </div>
                         <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm flex flex-col justify-center">
-                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Kâr Marjı</p>
+                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">{t('profit_calculator.profit_margin')}</p>
                             <div className="flex items-center">
                                 <TrendingUp className={`w-6 h-6 mr-2 ${results.margin >= 30 ? 'text-emerald-500' : results.margin > 0 ? 'text-yellow-500' : 'text-red-500'}`} />
                                 <h3 className={`text-3xl font-black ${results.margin >= 30 ? 'text-emerald-600' : results.margin > 0 ? 'text-yellow-600' : 'text-red-600'}`}>
@@ -309,42 +311,42 @@ const ProfitCalculator = () => {
 
                     {/* BREAKDOWN */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 flex-1">
-                        <h3 className="text-lg font-bold text-gray-800 mb-6">Hesap Özeti</h3>
+                        <h3 className="text-lg font-bold text-gray-800 mb-6">{t('profit_calculator.summary_title')}</h3>
 
                         <div className="space-y-4">
                             <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                                <span className="text-gray-600 font-medium">Toplam Ciro</span>
+                                <span className="text-gray-600 font-medium">{t('profit_calculator.total_revenue')}</span>
                                 <span className="font-bold text-gray-900">${results.revenue.toFixed(2)}</span>
                             </div>
 
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center text-sm text-red-400">
-                                    <span>Listing Fee</span>
+                                    <span>{t('profit_calculator.listing_fee')}</span>
                                     <span>-${results.listingFee.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm text-red-400">
-                                    <span>Transaction Fee (%6.5)</span>
+                                    <span>{t('profit_calculator.transaction_fee')}</span>
                                     <span>-${results.transactionFee.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm text-red-400">
-                                    <span>Processing Fee (%3 + 0.25)</span>
+                                    <span>{t('profit_calculator.processing_fee')}</span>
                                     <span>-${results.processingFee.toFixed(2)}</span>
                                 </div>
                                 {results.offsiteAdsFee > 0 && (
                                     <div className="flex justify-between items-center text-sm text-red-400">
-                                        <span>Offsite Ads (%{offsiteAds})</span>
+                                        <span>{t('profit_calculator.offsite_ads_fee')} (%{offsiteAds})</span>
                                         <span>-${results.offsiteAdsFee.toFixed(2)}</span>
                                     </div>
                                 )}
                             </div>
 
                             <div className="flex justify-between items-center py-2 border-t border-gray-100 text-red-600 font-bold">
-                                <span>Toplam Etsy Kesintisi</span>
+                                <span>{t('profit_calculator.total_fees')}</span>
                                 <span>-${results.totalFees.toFixed(2)}</span>
                             </div>
 
                             <div className="flex justify-between items-center py-2 text-orange-600 font-bold">
-                                <span>Toplam Maliyetler</span>
+                                <span>{t('profit_calculator.total_costs')}</span>
                                 <span>-${results.totalCosts.toFixed(2)}</span>
                             </div>
                         </div>
@@ -352,7 +354,7 @@ const ProfitCalculator = () => {
                         <div className="mt-8 bg-indigo-50 rounded-xl p-4 flex items-start">
                             <Info className="w-5 h-5 text-indigo-500 mr-3 flex-shrink-0 mt-0.5" />
                             <p className="text-xs text-indigo-700 leading-relaxed">
-                                Bu hesaplama tahmini değerlerdir. Etsy'nin vergi (VAT/Sales Tax) uygulamaları ve kur farkları nihai tutarı etkileyebilir.
+                                {t('profit_calculator.disclaimer')}
                             </p>
                         </div>
                     </div>

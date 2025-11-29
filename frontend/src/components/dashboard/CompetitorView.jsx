@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldAlert, PlusCircle, TrendingUp, Search, Trash2, ExternalLink, AlertCircle } from 'lucide-react';
 
 const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }) => {
+    const { t } = useTranslation();
     const competitors = listings.filter(l => l.listing_type === 'competitor');
     const avgPrice = competitors.length > 0
         ? (competitors.reduce((a, b) => a + b.price, 0) / competitors.length).toFixed(2)
@@ -16,10 +18,10 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                         <div className="bg-white/20 p-3 rounded-xl">
                             <ShieldAlert className="w-6 h-6 text-white" />
                         </div>
-                        <span className="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold">Aktif Takip</span>
+                        <span className="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold">{t('competitor_view.active_tracking')}</span>
                     </div>
                     <h3 className="text-4xl font-black mb-1">{competitors.length}</h3>
-                    <p className="text-orange-100 text-sm font-medium">Takip edilen rakip ürün</p>
+                    <p className="text-orange-100 text-sm font-medium">{t('competitor_view.tracked_products')}</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
@@ -29,15 +31,15 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                         </div>
                     </div>
                     <h3 className="text-4xl font-black text-gray-800 mb-1">${avgPrice}</h3>
-                    <p className="text-gray-500 text-sm font-medium">Ortalama Rakip Fiyatı</p>
+                    <p className="text-gray-500 text-sm font-medium">{t('competitor_view.avg_competitor_price')}</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center border-dashed border-2 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50/30 transition-all cursor-pointer group" onClick={onAddCompetitor}>
                     <div className="bg-indigo-100 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform">
                         <PlusCircle className="w-8 h-8 text-indigo-600" />
                     </div>
-                    <h3 className="font-bold text-gray-800 group-hover:text-indigo-700">Yeni Rakip Ekle</h3>
-                    <p className="text-xs text-gray-400 mt-1">URL veya görsel ile takip başlat</p>
+                    <h3 className="font-bold text-gray-800 group-hover:text-indigo-700">{t('competitor_view.add_new_competitor')}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{t('competitor_view.start_tracking_desc')}</p>
                 </div>
             </div>
 
@@ -46,11 +48,11 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                 <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                     <h3 className="font-bold text-gray-800 flex items-center text-lg">
                         <ShieldAlert className="w-5 h-5 mr-2 text-orange-500" />
-                        Rakip Listesi
+                        {t('competitor_view.competitor_list')}
                     </h3>
                     <div className="relative">
                         <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-                        <input type="text" placeholder="Rakiplerde ara..." className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-100 outline-none w-64" />
+                        <input type="text" placeholder={t('competitor_view.search_placeholder')} className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-100 outline-none w-64" />
                     </div>
                 </div>
 
@@ -59,10 +61,10 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                         <div className="bg-orange-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <ShieldAlert className="w-10 h-10 text-orange-400" />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-2">Henüz Rakip Eklenmedi</h3>
-                        <p className="text-gray-500 max-w-md mx-auto mb-6">Rakiplerinizi ekleyerek fiyatlarını, stratejilerini ve değişimlerini buradan takip edebilirsiniz.</p>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">{t('competitor_view.no_competitors_title')}</h3>
+                        <p className="text-gray-500 max-w-md mx-auto mb-6">{t('competitor_view.no_competitors_desc')}</p>
                         <button onClick={onAddCompetitor} className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-orange-200 transition-all transform hover:-translate-y-1 inline-flex items-center">
-                            <PlusCircle className="w-5 h-5 mr-2" /> İlk Rakibi Ekle
+                            <PlusCircle className="w-5 h-5 mr-2" /> {t('competitor_view.add_first_competitor')}
                         </button>
                     </div>
                 ) : (
@@ -73,7 +75,7 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                                     <img src={comp.image_url} alt={comp.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold shadow-sm flex items-center">
                                         <div className="w-2 h-2 rounded-full bg-orange-500 mr-1.5 animate-pulse"></div>
-                                        Takipte
+                                        {t('competitor_view.tracking_badge')}
                                     </div>
                                 </div>
                                 <div className="p-5">
@@ -87,7 +89,7 @@ const CompetitorView = ({ listings, onAddCompetitor, onSelectListing, onDelete }
                                             </span>
                                         ) : (
                                             <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-lg text-xs font-bold flex items-center">
-                                                Analiz Bekliyor
+                                                {t('competitor_view.analysis_pending')}
                                             </span>
                                         )}
                                     </div>

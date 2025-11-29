@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, TrendingUp, Copy, Check, AlertCircle, Loader2, ArrowUpRight, ArrowDownRight, List, Zap, BarChart3 } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 import KeywordComparisonModal from '../components/modals/KeywordComparisonModal';
 
 const KeywordExplorer = () => {
+    const { t } = useTranslation();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -28,7 +30,7 @@ const KeywordExplorer = () => {
 
         try {
             const response = await fetch(`http://localhost:8000/api/v1/keywords/explore?query=${encodeURIComponent(term)}`);
-            if (!response.ok) throw new Error('Arama sırasında bir hata oluştu.');
+            if (!response.ok) throw new Error(t('keyword_explorer.search_error'));
 
             const data = await response.json();
             setResults(data.results);
@@ -50,7 +52,10 @@ const KeywordExplorer = () => {
             setSelectedKeywords(prev => prev.filter(k => k.term !== keyword.term));
         } else {
             if (selectedKeywords.length >= 4) {
-                alert("En fazla 4 kelime kıyaslanabilir.");
+                if (selectedKeywords.length >= 4) {
+                    alert(t('keyword_explorer.max_compare_error'));
+                    return;
+                }
                 return;
             }
             setSelectedKeywords(prev => [...prev, keyword]);
@@ -104,10 +109,10 @@ const KeywordExplorer = () => {
             {/* HERO SECTION */}
             <div className="text-center py-12 mb-8">
                 <h1 className="text-4xl font-black text-gray-900 mb-4 tracking-tight">
-                    Cyclear ile <span className="text-indigo-600">Kârlı Kelimeleri</span> Keşfet
+                    {t('keyword_explorer.hero_title_prefix')} <span className="text-indigo-600">{t('keyword_explorer.hero_title_highlight')}</span> {t('keyword_explorer.hero_title_suffix')}
                 </h1>
                 <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
-                    Etsy'de en çok aranan anahtar kelimeleri bulun, rekabeti analiz edin ve satışlarınızı artırın.
+                    {t('keyword_explorer.hero_subtitle')}
                 </p>
 
                 {/* Search Bar */}
@@ -119,7 +124,7 @@ const KeywordExplorer = () => {
                         <input
                             type="text"
                             className="block w-full pl-14 pr-32 py-5 bg-white border-2 border-transparent focus:border-indigo-500 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 text-lg font-medium transition-all"
-                            placeholder="Bir anahtar kelime girin..."
+                            placeholder={t('keyword_explorer.search_placeholder')}
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                         />
@@ -128,7 +133,7 @@ const KeywordExplorer = () => {
                             disabled={loading || !query.trim()}
                             className="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02]"
                         >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Keşfet'}
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t('keyword_explorer.discover_button')}
                         </button>
                     </form>
                 </div>
@@ -141,7 +146,7 @@ const KeywordExplorer = () => {
                             className="bg-gray-900 text-white px-8 py-3 rounded-full font-bold shadow-2xl hover:scale-105 transition-transform flex items-center space-x-2 border border-gray-700"
                         >
                             <BarChart3 className="w-5 h-5 text-indigo-400" />
-                            <span>{selectedKeywords.length} Kelimeyi Kıyasla</span>
+                            <span>{selectedKeywords.length} {t('keyword_explorer.compare_keywords')}</span>
                         </button>
                     </div>
                 )}
@@ -149,7 +154,7 @@ const KeywordExplorer = () => {
                 {/* Popular Searches (Empty State) */}
                 {!results && !loading && (
                     <div className="animate-fade-in">
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Popüler Aramalar</p>
+                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">{t('keyword_explorer.popular_searches')}</p>
                         <div className="flex flex-wrap justify-center gap-3">
                             {['Digital Planner', 'Wedding Invitation', 'Wall Art', 'Personalized Gift'].map((term) => (
                                 <button
@@ -178,7 +183,7 @@ const KeywordExplorer = () => {
                 <div className="flex items-center justify-between mb-6 animate-fade-in">
                     <h2 className="text-2xl font-bold text-gray-800 flex items-center">
                         <TrendingUp className="w-6 h-6 mr-2 text-indigo-600" />
-                        Sonuçlar ({results.length})
+                        {t('keyword_explorer.results')} ({results.length})
                     </h2>
                     <div className="flex bg-gray-100 p-1 rounded-xl">
                         <button
@@ -186,14 +191,14 @@ const KeywordExplorer = () => {
                             className={`p-2 rounded-lg transition-all flex items-center space-x-2 ${viewMode === 'table' ? 'bg-white text-indigo-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}
                         >
                             <List className="w-4 h-4" />
-                            <span>Liste</span>
+                            <span>{t('keyword_explorer.list_view')}</span>
                         </button>
                         <button
                             onClick={() => setViewMode('storm')}
                             className={`p-2 rounded-lg transition-all flex items-center space-x-2 ${viewMode === 'storm' ? 'bg-indigo-600 text-white shadow-md font-bold' : 'text-gray-500 hover:text-gray-700'}`}
                         >
                             <Zap className="w-4 h-4" />
-                            <span>Fırtına</span>
+                            <span>{t('keyword_explorer.storm_view')}</span>
                         </button>
                     </div>
                 </div>
@@ -209,14 +214,14 @@ const KeywordExplorer = () => {
                                     <thead>
                                         <tr className="bg-gray-50 border-b border-gray-100">
                                             <th className="w-12 px-6 py-4">
-                                                <span className="sr-only">Seç</span>
+                                                <span className="sr-only">{t('common.select')}</span>
                                             </th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Anahtar Kelime</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Aranma Hacmi</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Rekabet</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Trend</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Mevsimsellik (12 Ay)</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">İşlem</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.keyword')}</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.search_volume')}</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.competition')}</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.trend')}</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.seasonality')}</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">{t('keyword_explorer.action')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
@@ -260,7 +265,7 @@ const KeywordExplorer = () => {
                                                         <button
                                                             onClick={() => copyToClipboard(item.term, `term-${index}`)}
                                                             className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-                                                            title="Kopyala"
+                                                            title={t('common.copy')}
                                                         >
                                                             {copiedField === `term-${index}` ? <Check className="w-5 h-5 text-emerald-500" /> : <Copy className="w-5 h-5" />}
                                                         </button>
@@ -315,7 +320,7 @@ const KeywordExplorer = () => {
                                         <div
                                             onClick={(e) => { e.stopPropagation(); copyToClipboard(item.term, `storm-${index}`); }}
                                             className="absolute bottom-2 left-1/2 transform -translate-x-1/2 p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                                            title="Kopyala"
+                                            title={t('common.copy')}
                                         >
                                             {copiedField === `storm-${index}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                                         </div>
@@ -325,15 +330,15 @@ const KeywordExplorer = () => {
                                             <div className="font-black text-base mb-2 text-gray-900 border-b border-gray-100 pb-2">{item.term}</div>
                                             <div className="space-y-1.5">
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-gray-500 font-medium">Hacim</span>
+                                                    <span className="text-gray-500 font-medium">{t('keyword_explorer.volume')}</span>
                                                     <span className="font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">{item.volume.toLocaleString()}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-gray-500 font-medium">Rekabet</span>
+                                                    <span className="text-gray-500 font-medium">{t('keyword_explorer.competition')}</span>
                                                     <span className={`font-bold px-2 py-0.5 rounded ${item.competition === 'High' ? 'bg-red-50 text-red-700' : item.competition === 'Medium' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>{item.competition}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-gray-500 font-medium">Trend</span>
+                                                    <span className="text-gray-500 font-medium">{t('keyword_explorer.trend')}</span>
                                                     <span className="font-bold text-gray-700">{item.trend}</span>
                                                 </div>
                                             </div>

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, ExternalLink, Star, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
 
 const ProductAnalysisModal = ({ product, onClose }) => {
+    const { t } = useTranslation();
     if (!product) return null;
 
     // Use existing score or generate a random one for visualization if missing
@@ -16,24 +18,24 @@ const ProductAnalysisModal = ({ product, onClose }) => {
     const getAnalysisItems = (score) => {
         if (score >= 80) {
             return [
-                { type: 'positive', text: 'Başlık uzunluğu ve anahtar kelime yoğunluğu mükemmel.' },
-                { type: 'positive', text: 'Görsel kalitesi ve çözünürlüğü yüksek.' },
-                { type: 'positive', text: 'Fiyat rekabetçi aralıkta.' },
-                { type: 'neutral', text: 'Daha fazla etiket eklenebilir.' }
+                { type: 'positive', text: t('product_analysis.title_keyword_excellent') },
+                { type: 'positive', text: t('product_analysis.image_quality_high') },
+                { type: 'positive', text: t('product_analysis.price_competitive') },
+                { type: 'neutral', text: t('product_analysis.more_tags_needed') }
             ];
         } else if (score >= 60) {
             return [
-                { type: 'positive', text: 'Görsel kalitesi kabul edilebilir.' },
-                { type: 'warning', text: 'Başlıkta daha fazla anahtar kelime kullanılmalı.' },
-                { type: 'warning', text: 'Açıklama kısmı biraz kısa kalmış.' },
-                { type: 'positive', text: 'Fiyatlandırma makul.' }
+                { type: 'positive', text: t('product_analysis.image_quality_acceptable') },
+                { type: 'warning', text: t('product_analysis.title_needs_keywords') },
+                { type: 'warning', text: t('product_analysis.description_short') },
+                { type: 'positive', text: t('product_analysis.price_reasonable') }
             ];
         } else {
             return [
-                { type: 'negative', text: 'Başlık çok kısa ve yetersiz.' },
-                { type: 'negative', text: 'Görsel çözünürlüğü düşük veya karanlık.' },
-                { type: 'negative', text: 'Etiket kullanımı çok az.' },
-                { type: 'warning', text: 'Fiyat piyasa ortalamasının üzerinde olabilir.' }
+                { type: 'negative', text: t('product_analysis.title_short') },
+                { type: 'negative', text: t('product_analysis.image_quality_low') },
+                { type: 'negative', text: t('product_analysis.tags_few') },
+                { type: 'warning', text: t('product_analysis.price_high') }
             ];
         }
     };
@@ -63,12 +65,12 @@ const ProductAnalysisModal = ({ product, onClose }) => {
                                 />
                                 <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg shadow-sm text-sm font-bold text-gray-700 flex items-center">
                                     <Star className="w-4 h-4 text-amber-400 fill-amber-400 mr-2" />
-                                    {product.favorites || 0} Favori
+                                    {product.favorites || 0} {t('product_analysis.favorites')}
                                 </div>
                             </div>
 
                             <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                <div className="text-xs font-bold text-gray-400 uppercase mb-1">Fiyat</div>
+                                <div className="text-xs font-bold text-gray-400 uppercase mb-1">{t('product_analysis.price_label')}</div>
                                 <div className="text-3xl font-black text-gray-900">${product.price}</div>
                             </div>
                         </div>
@@ -81,7 +83,7 @@ const ProductAnalysisModal = ({ product, onClose }) => {
                                     {lqsScore}
                                 </div>
                                 <div className="text-center">
-                                    <h3 className="font-bold text-gray-800 text-lg">LQS Skoru</h3>
+                                    <h3 className="font-bold text-gray-800 text-lg">{t('product_analysis.lqs_score')}</h3>
                                     <p className="text-sm text-gray-500">Listing Quality Score</p>
                                 </div>
                             </div>
@@ -90,7 +92,7 @@ const ProductAnalysisModal = ({ product, onClose }) => {
                             <div>
                                 <h4 className="font-bold text-gray-800 mb-4 flex items-center">
                                     <span className="w-1 h-6 bg-indigo-500 rounded-full mr-2"></span>
-                                    Analiz Raporu
+                                    {t('product_analysis.analysis_report')}
                                 </h4>
                                 <div className="space-y-3">
                                     {analysisItems.map((item, index) => (
@@ -113,7 +115,7 @@ const ProductAnalysisModal = ({ product, onClose }) => {
                 {/* Footer */}
                 <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end space-x-3">
                     <button onClick={onClose} className="px-6 py-2.5 font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-200 rounded-xl transition-colors">
-                        Kapat
+                        {t('common.close')}
                     </button>
                     <a
                         href={`https://www.etsy.com/listing/${product.listing_id}`}
@@ -122,7 +124,7 @@ const ProductAnalysisModal = ({ product, onClose }) => {
                         className="px-6 py-2.5 font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-lg shadow-orange-200 transition-all flex items-center"
                     >
                         <ExternalLink className="w-4 h-4 mr-2" />
-                        Etsy'de Düzenle
+                        {t('product_analysis.edit_on_etsy')}
                     </a>
                 </div>
             </div>

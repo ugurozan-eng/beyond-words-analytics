@@ -114,5 +114,181 @@
     "market_trends": {
         "summary_title": "Market Trendleri Özeti",
         "summary_desc": "Kategorinizdeki genel satış trendleri ve mevsimsel dalgalanmalar burada görüntülenecek."
+    },
+    "dashboard": {
+        "currency_title": "Döviz Kurları",
+        "quick_actions_title": "Hızlı İşlemler"
+    },
+    "currency": {
+        "usd_try": "USD / TRY",
+        "eur_try": "EUR / TRY"
+    },
+    "trends": {
+        "title": "Haftanın Trend Aramaları"
+    },
+    "usage": {
+        "title": "Hesap Durumu",
+        "remaining_credits": "Kalan AI Hakkı",
+        "reset_date": "Sıfırlanma: {date}",
+        "upgrade": "Limitleri Kaldır"
+    },
+    "analysis": {
+        "analyzing_title": "Analiz Ediliyor 2026...",
+        "analyzing_desc": "Semantik Vektör Taraması ve Kelime Fırtınası başlatıldı.",
+        "error_title": "Analiz Hatası",
+        "retry": "Tekrar Dene",
+        "waiting_title": "Analiz Bekleniyor",
+        "waiting_desc": "Bu ürün henüz analiz edilmedi veya verisi eksik.",
+        "start_analysis": "Analizi Başlat",
+        "copied": "kopyalandı!",
+        "competitor_report": "Rakip Analiz Raporu",
+        "results_title": "Analiz Sonuçları (2026)",
+        "retry_short": "Tekrar",
+        "tabs": {
+            "overview": "Genel Bakış & Fiyat",
+            "seo": "SEO & Etiketler",
+            "details": "Detaylar & Trafik"
+        },
+        "trend_radar": "Trend Radarı (2026)",
+        "no_trend_data": "Trend verisi yok",
+        "trend": {
+            "very_popular": "Çok Popüler",
+            "rising": "Yükselişte",
+            "niche": "Niş / Düşük"
+        },
+        "seasonality": "Sezonluk Satış Potansiyeli",
+        "competitor_score": "Rakip Tehdit Skoru",
+        "lqs_score": "LQS (Liste Kalite Skoru)",
+        "view_report": "Gelişim Raporunu İncele",
+        "suggested_title": "Önerilen Başlık",
+        "no_title": "Başlık yok",
+        "title_label": "Başlık",
+        "suggested_desc": "Önerilen Açıklama",
+        "no_desc": "Açıklama yok",
+        "desc_label": "Açıklama",
+        "tags_label": "Etiketler",
+        "competitor_tags": "Rakibin Kullandığı En İyi Etiketler",
+        "ai_tags": "Yapay Zeka'nın Seçtiği En İyi 13",
+        "no_tags_selected": "Henüz seçilmedi",
+        "top_13": "En İyi 13",
+        "no_traffic_data": "Trafik verisi bulunamadı.",
+        "competitor_strategy": "Rakip Stratejisi & Zayıf Yönler",
+        "materials_placeholder": "Materyaller",
+        "styles_placeholder": "Stiller",
+        "colors_placeholder": "Renkler",
+        "material_label": "Materyal",
+        "style_label": "Stil",
+        "colors_label": "Renkler"
+    },
+    "history": {
+        "error_loading": "Geçmiş yüklenirken hata:",
+        "loading": "Geçmiş yükleniyor...",
+        "no_history": "Henüz geçmiş analiz kaydı yok.",
+        "title": "Geçmiş Analizler",
+        "trend": "Trend"
+    },
+    "pricing": {
+        "neuro_pricing": "NEURO-PRICING",
+        "suggested_price": "Önerilen Fiyat",
+        "confidence_interval": "Güven Aralığı",
+        "min": "Min",
+        "max": "Max",
+        "strategy": "Strateji",
+        "analyzing": "Analiz ediliyor..."
+    },
+    "seasonality": {
+        "no_data": "Grafik verisi yok",
+        "jan": "Ocak",
+        "jun": "Haziran",
+        "dec": "Aralık"
+    },
+    "tags": {
+        "placeholder": "etiketlerini virgülle ayırın...",
+        "no_tags": "Etiket yok",
+        "keyword_storm": "Keyword Storm 2026",
+        "focus": "Odak",
+        "niche": "Niş",
+        "aesthetic": "Estetik",
+        "main_focus": "Ana Odak",
+        "niche_long": "Niş/Uzun",
+        "creative_ideas": "Yaratıcı Fikirler (Açıklama İçin)",
+        "no_ideas": "Fikir yok"
+    },
+    "traffic": {
+        "title": "Trafik İstihbaratı (30 Günlük)",
+        "total": "Toplam"
+    },
+    "my_shop": {
+        "title": "Mağazam",
+        "product_count": "{{count}} Ürün",
+        "deal_of_the_day": "Günün Fırsatı",
+        "no_analyzed_products": "Analiz edilmiş ürün yok.",
+        "product_inventory": "Ürün Envanteri",
+        "analyze_selected": "{{count}} Analiz Et",
+        "add_new": "Yeni Ekle",
+        "filter_all": "Tüm Ürünler",
+        "filter_mine": "Benimkiler",
+        "filter_competitors": "Rakipler",
+        "filter_optimized": "Optimize Edilenler",
+        "filter_pending": "Bekleyenler",
+        "sort_newest": "En Yeni",
+        "sort_lqs_high": "LQS (Yüksek)",
+        "sort_price_high": "Fiyat (Yüksek)",
+        "no_products_found": "Ürün bulunamadı.",
+        "status_optimized": "Optimize",
+        "status_pending": "Bekliyor"
+    },
+    "product_analysis": {
+        "title_keyword_excellent": "Başlık uzunluğu ve anahtar kelime yoğunluğu mükemmel.",
+        "image_quality_high": "Görsel kalitesi ve çözünürlüğü yüksek.",
+        "price_competitive": "Fiyat rekabetçi aralıkta.",
+        "more_tags_needed": "Daha fazla etiket eklenebilir.",
+        "image_quality_acceptable": "Görsel kalitesi kabul edilebilir.",
+        "title_needs_keywords": "Başlıkta daha fazla anahtar kelime kullanılmalı.",
+        "description_short": "Açıklama kısmı biraz kısa kalmış.",
+        "price_reasonable": "Fiyatlandırma makul.",
+        "title_short": "Başlık çok kısa ve yetersiz.",
+        "image_quality_low": "Görsel çözünürlüğü düşük veya karanlık.",
+        "tags_few": "Etiket kullanımı çok az.",
+        "price_high": "Fiyat piyasa ortalamasının üzerinde olabilir.",
+        "favorites": "Favori",
+        "price_label": "Fiyat",
+        "lqs_score": "LQS Skoru",
+        "analysis_report": "Analiz Raporu",
+        "edit_on_etsy": "Etsy'de Düzenle"
+    },
+    "competitor_view": {
+        "active_tracking": "Aktif Takip",
+        "tracked_products": "Takip edilen rakip ürün",
+        "avg_competitor_price": "Ortalama Rakip Fiyatı",
+        "add_new_competitor": "Yeni Rakip Ekle",
+        "start_tracking_desc": "URL veya görsel ile takip başlat",
+        "competitor_list": "Rakip Listesi",
+        "search_placeholder": "Rakiplerde ara...",
+        "no_competitors_title": "Henüz Rakip Eklenmedi",
+        "no_competitors_desc": "Rakiplerinizi ekleyerek fiyatlarını, stratejilerini ve değişimlerini buradan takip edebilirsiniz.",
+        "add_first_competitor": "İlk Rakibi Ekle",
+        "tracking_badge": "Takipte",
+        "analysis_pending": "Analiz Bekliyor"
+    },
+    "app": {
+        "list_refresh_error": "Liste yenileme hatası (geçici)",
+        "import_success": "{{count}} ürün başarıyla içe aktarıldı!",
+        "login_required": "Lütfen önce giriş yapın.",
+        "delete_error": "Silme hatası:",
+        "delete_error_alert": "Silinirken bir hata oluştu.",
+        "bulk_analyze_confirm": "{{count}} ürün analiz edilecek. Bu işlem biraz sürebilir. Onaylıyor musunuz?",
+        "bulk_analyze_complete": "Toplu analiz tamamlandı!",
+        "daily_limit_reached": "⚠️ Günlük analiz limitiniz doldu! Devam etmek için Pro'ya geçin.",
+        "analyzing_wait": "🔍 Analiz yapılıyor, lütfen bekleyin...",
+        "analysis_error": "Analiz Hatası: {{error}}",
+        "data_fetch_error": "Veri alınamadı",
+        "analysis_current": "✅ Analiziniz güncel (Son 48 saat içinde yapıldı)",
+        "analysis_success": "🔵 Analiz başarıyla tamamlandı!",
+        "analysis_error_detail": "Analiz hatası detay:",
+        "unknown_error": "Bilinmeyen hata",
+        "saved": "Kaydedildi!",
+        "error": "Hata",
+        "back_to_dashboard": "Dashboard'a Dön"
     }
 }
