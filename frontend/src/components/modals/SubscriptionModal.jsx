@@ -138,18 +138,20 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
                         </div>
                     </div>
 
-                    <div className="mt-8 mb-4">
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="text-indigo-600 hover:text-indigo-800 font-medium text-sm border border-indigo-200 hover:border-indigo-400 px-4 py-2 rounded-lg transition-colors"
-                        >
-                            Ödeme Yaptım / Sayfayı Yenile ↻
-                        </button>
-                    </div>
-
-                    <p className="mt-4 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed">
+                    <p className="mt-8 text-gray-400 text-xs text-center max-w-2xl mx-auto leading-relaxed pb-16">
                         Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir. Ek ücretleri önlemek için yenileme işleminden en az 24 saat önce dilediğin zaman iptal et. Aboneliğini, abone olduğun platform üzerinden yönet.
                     </p>
+                </div>
+
+                {/* SAFETY REFRESH BUTTON - OVERLAY */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-gray-200 z-50 flex justify-center">
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="w-full max-w-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] flex items-center justify-center"
+                    >
+                        <Check className="w-5 h-5 mr-2" />
+                        Ödeme Yaptım / Sayfayı Yenile
+                    </button>
                 </div>
             </div>
         </div>
