@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
         return data;
     };
 
-    const isPro = profile?.subscription_status === 'active' || profile?.subscription_status === 'pro';
+    const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'active';
 
     const value = {
         user,
