@@ -5,17 +5,26 @@ const SubscriptionModal = ({ isOpen, onClose, onUpgrade }) => {
     if (!isOpen) return null;
 
     React.useEffect(() => {
-        // Lemon Squeezy Event Handler
-        if (window.LemonSqueezy) {
-            window.LemonSqueezy.Setup({
-                eventHandler: (event) => {
-                    if (event.event === 'Payment.Success') {
-                        window.LemonSqueezy.Url.Close(); // Overlay'i kapat
-                        window.location.reload(); // Sayfayı yenile (Güncel Pro durumunu çekmek için)
-                    }
-                }
-            });
-        }
+        // Lemon Squeezy Event Handler (Global Listener)
+        const handleLemonSqueezyEvent = (event) => {
+            if (event.data && event.data.event === 'Payment.Success') {
+                console.log("Ödeme Başarılı! Sayfa yenileniyor...");
+
+                // 1. Overlay'i kapat (Varsa fonksiyonu çağır)
+                if (window.LemonSqueezy) window.LemonSqueezy.Url.Close();
+
+                // 2. Sayfayı yenile (Veritabanını tazelemek için)
+                window.location.reload();
+            }
+        };
+
+        // Global window listener ekle (En garanti yöntem)
+        window.addEventListener('message', handleLemonSqueezyEvent);
+
+        // Cleanup (Temizlik)
+        return () => {
+            window.removeEventListener('message', handleLemonSqueezyEvent);
+        };
     }, []);
 
     const handleUpgrade = () => {
