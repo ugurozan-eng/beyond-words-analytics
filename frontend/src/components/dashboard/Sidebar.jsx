@@ -1,7 +1,10 @@
 import React from 'react';
 import { LayoutDashboard, Search, ShieldAlert, Settings, LogOut, Crown, Wand2, Calculator, BarChart2, Eye, Store } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
-const Sidebar = ({ activeView, onNavigate, onLogout, userPlan, onUpgrade }) => {
+const Sidebar = ({ activeView, onNavigate, onLogout, onUpgrade }) => {
+    const { isPro } = useAuth();
+
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { id: 'my-shop', label: 'Mağazam', icon: Store },
@@ -43,7 +46,7 @@ const Sidebar = ({ activeView, onNavigate, onLogout, userPlan, onUpgrade }) => {
 
             {/* BOTTOM ACTIONS */}
             <div className="p-4 border-t border-indigo-800/50 space-y-4">
-                {userPlan === 'free' && (
+                {!isPro && (
                     <div className="bg-gradient-to-br from-indigo-800 to-purple-900 rounded-2xl p-4 border border-indigo-700/50">
                         <div className="flex items-center mb-2">
                             <Crown className="w-5 h-5 text-amber-400 mr-2" />
