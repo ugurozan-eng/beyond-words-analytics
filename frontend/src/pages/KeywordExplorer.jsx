@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, TrendingUp, Copy, Check, AlertCircle, Loader2, ArrowUpRight, ArrowDownRight, List, Zap, BarChart3 } from 'lucide-react';
+import { Search, TrendingUp, Copy, Check, AlertCircle, Loader2, ArrowUpRight, ArrowDownRight, List, Zap, BarChart3, Sparkles, Wind } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 import KeywordComparisonModal from '../components/modals/KeywordComparisonModal';
@@ -52,10 +52,7 @@ const KeywordExplorer = () => {
             setSelectedKeywords(prev => prev.filter(k => k.term !== keyword.term));
         } else {
             if (selectedKeywords.length >= 4) {
-                if (selectedKeywords.length >= 4) {
-                    alert(t('keyword_explorer.max_compare_error'));
-                    return;
-                }
+                alert(t('keyword_explorer.max_compare_error'));
                 return;
             }
             setSelectedKeywords(prev => [...prev, keyword]);
@@ -63,16 +60,25 @@ const KeywordExplorer = () => {
     };
 
     const getCompetitionBadge = (level) => {
-        switch (level) {
-            case 'High':
-                return <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold border border-red-200">High</span>;
-            case 'Medium':
-                return <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold border border-yellow-200">Medium</span>;
-            case 'Low':
-                return <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold border border-emerald-200">Low</span>;
-            default:
-                return <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-bold">Unknown</span>;
-        }
+        const colors = {
+            "High": "bg-red-100 text-red-700 border-red-200",
+            "Medium": "bg-yellow-100 text-yellow-700 border-yellow-200",
+            "Low": "bg-green-100 text-green-700 border-green-200",
+            "Unknown": "bg-gray-100 text-gray-700 border-gray-200"
+        };
+
+        const translationKey = {
+            "High": "competition_high",
+            "Medium": "competition_medium",
+            "Low": "competition_low",
+            "Unknown": "competition_unknown"
+        };
+
+        return (
+            <span className={`px-3 py-1 rounded-full text-xs font-bold border ${colors[level] || colors["Unknown"]}`}>
+                {t(`keyword_explorer.${translationKey[level] || 'competition_unknown'}`)}
+            </span>
+        );
     };
 
     const getTrendBadge = (trend) => {
@@ -123,7 +129,7 @@ const KeywordExplorer = () => {
                         </div>
                         <input
                             type="text"
-                            className="block w-full pl-14 pr-32 py-5 bg-white border-2 border-transparent focus:border-indigo-500 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 text-lg font-medium transition-all"
+                            className="block w-full pl-14 pr-40 py-5 bg-white border-2 border-transparent focus:border-indigo-500 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 text-lg font-medium transition-all"
                             placeholder={t('keyword_explorer.search_placeholder')}
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
@@ -133,7 +139,7 @@ const KeywordExplorer = () => {
                             disabled={loading || !query.trim()}
                             className="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02]"
                         >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t('keyword_explorer.discover_button')}
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : t('keyword_explorer.discover_button')}
                         </button>
                     </form>
                 </div>
@@ -154,7 +160,7 @@ const KeywordExplorer = () => {
                 {/* Popular Searches (Empty State) */}
                 {!results && !loading && (
                     <div className="animate-fade-in">
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">{t('keyword_explorer.popular_searches')}</p>
+                        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 text-center">{t('keyword_explorer.popular_searches')}</h3>
                         <div className="flex flex-wrap justify-center gap-3">
                             {['Digital Planner', 'Wedding Invitation', 'Wall Art', 'Personalized Gift'].map((term) => (
                                 <button
@@ -181,24 +187,24 @@ const KeywordExplorer = () => {
             {/* Results Header & View Toggle */}
             {results && (
                 <div className="flex items-center justify-between mb-6 animate-fade-in">
-                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-                        <TrendingUp className="w-6 h-6 mr-2 text-indigo-600" />
+                    <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                        <Sparkles className="w-6 h-6 text-indigo-600 mr-2" />
                         {t('keyword_explorer.results')} ({results.length})
                     </h2>
                     <div className="flex bg-gray-100 p-1 rounded-xl">
                         <button
                             onClick={() => setViewMode('table')}
-                            className={`p-2 rounded-lg transition-all flex items-center space-x-2 ${viewMode === 'table' ? 'bg-white text-indigo-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center ${viewMode === 'table' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                         >
-                            <List className="w-4 h-4" />
-                            <span>{t('keyword_explorer.list_view')}</span>
+                            <List className="w-4 h-4 mr-2" />
+                            {t('keyword_explorer.list_view')}
                         </button>
                         <button
                             onClick={() => setViewMode('storm')}
-                            className={`p-2 rounded-lg transition-all flex items-center space-x-2 ${viewMode === 'storm' ? 'bg-indigo-600 text-white shadow-md font-bold' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center ${viewMode === 'storm' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                         >
-                            <Zap className="w-4 h-4" />
-                            <span>{t('keyword_explorer.storm_view')}</span>
+                            <Wind className="w-4 h-4 mr-2" />
+                            {t('keyword_explorer.storm_view')}
                         </button>
                     </div>
                 </div>
@@ -211,17 +217,17 @@ const KeywordExplorer = () => {
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden animate-fade-in-up">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left min-w-[800px]">
-                                    <thead>
-                                        <tr className="bg-gray-50 border-b border-gray-100">
+                                    <thead className="bg-gray-50">
+                                        <tr>
                                             <th className="w-12 px-6 py-4">
                                                 <span className="sr-only">{t('common.select')}</span>
                                             </th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.keyword')}</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.search_volume')}</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.competition')}</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.trend')}</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.seasonality')}</th>
-                                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">{t('keyword_explorer.action')}</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.keyword')}</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.search_volume')}</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.competition')}</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.trend')}</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.seasonality')}</th>
+                                            <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">{t('keyword_explorer.action')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">

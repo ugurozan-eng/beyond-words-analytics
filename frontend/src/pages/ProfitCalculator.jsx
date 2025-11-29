@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calculator, DollarSign, TrendingUp, AlertCircle, Info } from 'lucide-react';
+import { Calculator, DollarSign, TrendingUp, AlertCircle, Info, Package, HelpCircle } from 'lucide-react';
 
 const ProfitCalculator = () => {
     const { t } = useTranslation();
@@ -207,14 +207,22 @@ const ProfitCalculator = () => {
                         {productType === 'physical' && (
                             <>
                                 <div className="flex flex-row items-center gap-2 mb-4">
-                                    <h2 className="text-lg font-bold text-gray-800">{t('profit_calculator.costs')}</h2>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowCostTooltip(!showCostTooltip)}
-                                        className={`p-1 rounded-full transition-colors ${showCostTooltip ? 'bg-orange-100 text-orange-600' : 'text-orange-500 hover:text-orange-600 hover:bg-orange-50'}`}
-                                    >
-                                        <AlertCircle className="w-5 h-5" />
-                                    </button>
+                                    <h2 className="text-lg font-bold text-gray-800 flex items-center">
+                                        <Package className="w-6 h-6 mr-2 text-indigo-600" />
+                                        {t('profit_calculator.costs')}
+                                    </h2>
+                                    <div className="group relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowCostTooltip(!showCostTooltip)}
+                                            className={`p-1 rounded-full transition-colors ${showCostTooltip ? 'bg-orange-100 text-orange-600' : 'text-orange-500 hover:text-orange-600 hover:bg-orange-50'}`}
+                                        >
+                                            <AlertCircle className="w-5 h-5" />
+                                        </button>
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                                            {t('profit_calculator.costs_tooltip')}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Cost Info Box */}
@@ -266,25 +274,20 @@ const ProfitCalculator = () => {
                         {/* Offsite Ads */}
                         <div>
                             <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t('profit_calculator.offsite_ads')}</label>
-                            <div className="flex bg-gray-50 p-1 rounded-xl border border-gray-200">
-                                <button
-                                    onClick={() => setOffsiteAds('none')}
-                                    className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === 'none' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                                >
-                                    {t('profit_calculator.offsite_ads_none')}
-                                </button>
-                                <button
-                                    onClick={() => setOffsiteAds('15')}
-                                    className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === '15' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                                >
-                                    {t('profit_calculator.offsite_ads_15')}
-                                </button>
-                                <button
-                                    onClick={() => setOffsiteAds('12')}
-                                    className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${offsiteAds === '12' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                                >
-                                    {t('profit_calculator.offsite_ads_12')}
-                                </button>
+                            <div className="grid grid-cols-3 gap-2">
+                                {[
+                                    { value: 'none', label: t('profit_calculator.offsite_ads_none') },
+                                    { value: '15', label: t('profit_calculator.offsite_ads_15') },
+                                    { value: '12', label: t('profit_calculator.offsite_ads_12') }
+                                ].map((option) => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() => setOffsiteAds(option.value)}
+                                        className={`px-2 py-3 rounded-xl text-xs font-bold border-2 transition-all ${offsiteAds === option.value ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-gray-200 hover:border-indigo-300 text-gray-600'}`}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </div>

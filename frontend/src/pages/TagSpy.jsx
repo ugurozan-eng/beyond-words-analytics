@@ -58,16 +58,25 @@ const TagSpy = () => {
     };
 
     const getCompetitionBadge = (level) => {
-        switch (level) {
-            case 'High':
-                return <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold border border-red-200">High</span>;
-            case 'Medium':
-                return <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold border border-yellow-200">Medium</span>;
-            case 'Low':
-                return <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold border border-emerald-200">Low</span>;
-            default:
-                return <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-bold">Unknown</span>;
-        }
+        const colors = {
+            "High": "bg-red-100 text-red-700 border-red-200",
+            "Medium": "bg-yellow-100 text-yellow-700 border-yellow-200",
+            "Low": "bg-green-100 text-green-700 border-green-200",
+            "Unknown": "bg-gray-100 text-gray-700 border-gray-200"
+        };
+
+        const translationKey = {
+            "High": "competition_high",
+            "Medium": "competition_medium",
+            "Low": "competition_low",
+            "Unknown": "competition_unknown"
+        };
+
+        return (
+            <span className={`px-2 py-1 rounded text-xs font-bold border ${colors[level] || colors["Unknown"]}`}>
+                {t(`tag_spy.${translationKey[level] || 'competition_unknown'}`)}
+            </span>
+        );
     };
 
     return (
@@ -94,7 +103,7 @@ const TagSpy = () => {
                         <input
                             type="text"
                             className="block w-full pl-14 pr-40 py-5 bg-white border-2 border-transparent focus:border-indigo-500 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 text-lg font-medium transition-all"
-                            placeholder="https://etsy.com/shop/RakipMagaza"
+                            placeholder={t('tag_spy.search_placeholder')}
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
                         />
