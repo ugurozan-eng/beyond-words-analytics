@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, Download, TrendingUp, DollarSign, Package, PlusCircle, Filter, ArrowUpDown, CheckSquare, Square, ShieldAlert, CheckCircle, AlertCircle, Trash2, Settings, Crown, LayoutDashboard, BarChart3, Zap, List } from 'lucide-react';
 import AnalysisCharts from './components/dashboard/AnalysisCharts';
 import WelcomePanel from './components/dashboard/WelcomePanel';
@@ -37,6 +38,7 @@ function App() {
 }
 
 function AppContent() {
+    const { t, i18n } = useTranslation();
     const { user, loading, isPro, signOut } = useAuth();
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Managed by AuthContext now
     const [isDemoMode, setIsDemoMode] = useState(false);
@@ -405,7 +407,7 @@ function AppContent() {
                             <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Genel Arama..."
+                                placeholder={t('common.general_search')}
                                 className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -442,18 +444,36 @@ function AppContent() {
                                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                                     </div>
 
+                                    <div className="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+                                        <span className="text-xs text-gray-500 font-medium">{t('common.language')}</span>
+                                        <div className="flex space-x-1">
+                                            <button
+                                                onClick={() => i18n.changeLanguage('tr')}
+                                                className={`text-xs px-2 py-1 rounded ${i18n.language === 'tr' ? 'bg-indigo-100 text-indigo-700 font-bold' : 'text-gray-500 hover:bg-gray-100'}`}
+                                            >
+                                                TR
+                                            </button>
+                                            <button
+                                                onClick={() => i18n.changeLanguage('en')}
+                                                className={`text-xs px-2 py-1 rounded ${i18n.language === 'en' ? 'bg-indigo-100 text-indigo-700 font-bold' : 'text-gray-500 hover:bg-gray-100'}`}
+                                            >
+                                                EN
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <div className="py-1">
                                         <button
                                             onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
                                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
                                         >
-                                            <Settings className="w-4 h-4 mr-2" /> Profil Ayarları
+                                            <Settings className="w-4 h-4 mr-2" /> {t('common.profile_settings')}
                                         </button>
                                         <button
                                             onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
                                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
                                         >
-                                            <Crown className="w-4 h-4 mr-2 text-amber-500" /> Abonelik
+                                            <Crown className="w-4 h-4 mr-2 text-amber-500" /> {t('common.subscription')}
                                         </button>
                                     </div>
 
@@ -466,7 +486,7 @@ function AppContent() {
                                             }}
                                             className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center"
                                         >
-                                            <Trash2 className="w-4 h-4 mr-2" /> Çıkış Yap
+                                            <Trash2 className="w-4 h-4 mr-2" /> {t('common.logout')}
                                         </button>
                                     </div>
                                 </div>
@@ -541,7 +561,7 @@ function AppContent() {
                 optimizedData={selectedListing}
                 onApply={() => {
                     // Refresh or update logic if needed
-                    setStatusMessage({ type: 'success', text: 'Değişiklikler uygulandı!' });
+                    setStatusMessage({ type: 'success', text: t('common.changes_applied') });
                     setTimeout(() => setStatusMessage(null), 3000);
                 }}
             />
@@ -556,11 +576,11 @@ function AppContent() {
                         <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Trash2 className="w-8 h-8 text-red-600" />
                         </div>
-                        <h3 className="text-xl font-black text-gray-900 mb-2">Ürünü Sil?</h3>
-                        <p className="text-gray-500 mb-6">Bu işlem geri alınamaz. Devam etmek istiyor musunuz?</p>
+                        <h3 className="text-xl font-black text-gray-900 mb-2">{t('common.delete_product')}</h3>
+                        <p className="text-gray-500 mb-6">{t('common.delete_confirm_text')}</p>
                         <div className="flex space-x-3 justify-center">
-                            <button onClick={() => setDeleteConfirmation(null)} className="px-6 py-2.5 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors">İptal</button>
-                            <button onClick={confirmDelete} className="px-6 py-2.5 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200 transition-colors">Evet, Sil</button>
+                            <button onClick={() => setDeleteConfirmation(null)} className="px-6 py-2.5 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors">{t('common.cancel')}</button>
+                            <button onClick={confirmDelete} className="px-6 py-2.5 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200 transition-colors">{t('common.yes_delete')}</button>
                         </div>
                     </div>
                 </div>

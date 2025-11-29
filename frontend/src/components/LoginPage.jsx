@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShoppingBag, ArrowRight, AlertCircle, Loader2, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = ({ onLogin }) => {
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isSignUp, setIsSignUp] = useState(false);
@@ -29,7 +31,7 @@ const LoginPage = ({ onLogin }) => {
                 // For Supabase, sign up might require email confirmation or auto-login
                 // If auto-login is enabled, onLogin will be triggered by AuthContext state change
                 // But we can show a success message if confirmation is needed
-                alert("Kayıt başarılı! Lütfen e-postanızı kontrol edin veya giriş yapın.");
+                alert(t('auth.signup_success'));
                 setIsSignUp(false);
             } else {
                 await signIn(formData.email, formData.password);
@@ -37,7 +39,7 @@ const LoginPage = ({ onLogin }) => {
                 // However, App.jsx listens to user state, so it should auto-redirect.
             }
         } catch (err) {
-            setError(err.message || "İşlem sırasında bir hata oluştu.");
+            setError(err.message || t('auth.generic_error'));
         } finally {
             setIsLoading(false);
         }
@@ -50,7 +52,7 @@ const LoginPage = ({ onLogin }) => {
             await signInWithGoogle();
         } catch (err) {
             setIsLoading(false);
-            setError(err.message || "Google girişi başarısız.");
+            setError(err.message || t('auth.google_error'));
         }
     };
 
@@ -83,7 +85,7 @@ const LoginPage = ({ onLogin }) => {
                     <div className="bg-red-500/90 backdrop-blur-md border border-red-400 text-white p-3 rounded-xl mb-4 text-sm text-left animate-shake">
                         <div className="flex items-center font-bold mb-1">
                             <AlertCircle className="w-4 h-4 mr-2" />
-                            Hata
+                            {t('auth.error_title')}
                         </div>
                         <p className="opacity-90">{error}</p>
                     </div>
@@ -92,13 +94,13 @@ const LoginPage = ({ onLogin }) => {
                 <form onSubmit={handleSubmit} className="space-y-4 text-left">
                     {isSignUp && (
                         <div>
-                            <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">Ad Soyad</label>
+                            <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">{t('auth.fullname')}</label>
                             <div className="relative">
                                 <User className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
                                 <input
                                     type="text"
                                     name="fullName"
-                                    placeholder="Adınız Soyadınız"
+                                    placeholder={t('auth.fullname_placeholder')}
                                     value={formData.fullName}
                                     onChange={handleInputChange}
                                     className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
@@ -109,13 +111,13 @@ const LoginPage = ({ onLogin }) => {
                     )}
 
                     <div>
-                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">E-posta Adresi</label>
+                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">{t('auth.email')}</label>
                         <div className="relative">
                             <Mail className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="ornek@email.com"
+                                placeholder={t('auth.email_placeholder')}
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
@@ -125,7 +127,7 @@ const LoginPage = ({ onLogin }) => {
                     </div>
 
                     <div>
-                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">Şifre</label>
+                        <label className="block text-indigo-100 text-xs font-bold mb-1 ml-1">{t('auth.password')}</label>
                         <div className="relative">
                             <Lock className="w-5 h-5 absolute left-3 top-3 text-gray-400" />
                             <input
@@ -145,15 +147,15 @@ const LoginPage = ({ onLogin }) => {
                         disabled={isLoading}
                         className="w-full bg-[#F1641E] hover:bg-[#d55618] text-white py-3 rounded-xl font-bold text-base shadow-lg shadow-orange-900/30 transition-all transform hover:-translate-y-1 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed mt-2"
                     >
-                        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isSignUp ? 'Kayıt Ol' : 'Giriş Yap')}
+                        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isSignUp ? t('auth.signup') : t('auth.signin'))}
                     </button>
                 </form>
 
                 <div className="mt-4 flex justify-between items-center text-xs text-indigo-200">
                     <button onClick={() => setIsSignUp(!isSignUp)} className="hover:text-white underline">
-                        {isSignUp ? 'Zaten hesabın var mı? Giriş Yap' : 'Hesabın yok mu? Kayıt Ol'}
+                        {isSignUp ? t('auth.have_account') : t('auth.no_account')}
                     </button>
-                    {!isSignUp && <button className="hover:text-white">Şifremi Unuttum</button>}
+                    {!isSignUp && <button className="hover:text-white">{t('auth.forgot_password')}</button>}
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-white/10">
@@ -163,7 +165,7 @@ const LoginPage = ({ onLogin }) => {
                         className="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center border border-white/20"
                     >
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4 mr-2" alt="Google" />
-                        Google ile Devam Et
+                        {t('auth.continue_google')}
                     </button>
                 </div>
 
@@ -172,7 +174,7 @@ const LoginPage = ({ onLogin }) => {
                         onClick={() => onLogin('demo')}
                         className="text-indigo-200 hover:text-white text-xs font-bold flex items-center justify-center w-full py-2"
                     >
-                        Demo Modunu Başlat <ArrowRight className="w-3 h-3 ml-1" />
+                        {t('auth.start_demo')} <ArrowRight className="w-3 h-3 ml-1" />
                     </button>
                 </div>
             </div>
