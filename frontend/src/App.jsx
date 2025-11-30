@@ -10,7 +10,7 @@ import LoginPage from './components/LoginPage';
 import DashboardHome from './components/dashboard/DashboardHome';
 import SubscriptionModal from './components/modals/SubscriptionModal';
 import Sidebar from './components/dashboard/Sidebar';
-import CompetitorView from './components/dashboard/CompetitorView';
+import CompetitorTracking from './pages/CompetitorTracking';
 import AiSupportWidget from './components/AiSupportWidget';
 import CreateListing from './pages/CreateListing';
 import KeywordExplorer from './pages/KeywordExplorer';
@@ -390,14 +390,7 @@ function AppContent() {
                         <Route path="/product/:id" element={
                             <SurgeryRoom />
                         } />
-                        <Route path="/competitor-tracking" element={
-                            <CompetitorView
-                                listings={listings}
-                                onAddCompetitor={() => { setInitialModalType('competitor'); setIsModalOpen(true); }}
-                                onSelectListing={handleSelectListing}
-                                onDelete={handleDeleteClick}
-                            />
-                        } />
+                        <Route path="/competitors" element={<CompetitorTracking />} />
                         <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                 </main>

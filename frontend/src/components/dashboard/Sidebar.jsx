@@ -11,7 +11,7 @@ const Sidebar = ({ activeView, onNavigate, onLogout, onUpgrade }) => {
         { id: 'dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard },
         { id: 'my-shop', label: t('sidebar.my_shop'), icon: Store },
         { id: 'create-listing', label: t('sidebar.ai_wizard'), icon: Wand2 },
-        { id: 'competitor', label: t('sidebar.competitor_tracking'), icon: ShieldAlert },
+        { id: 'competitors', label: t('sidebar.competitor_tracking'), icon: ShieldAlert },
         { id: 'tag-spy', label: t('sidebar.tag_spy'), icon: Eye },
         { id: 'keyword-explorer', label: t('sidebar.keyword_explorer'), icon: Search },
         { id: 'profit-calculator', label: t('sidebar.profit_calculator'), icon: Calculator },
