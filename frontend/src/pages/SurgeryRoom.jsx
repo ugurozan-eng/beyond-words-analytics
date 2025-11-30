@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, MagicWand, Tag, Eye, Save } from '@phosphor-icons/react';
+import { ArrowLeft, MagicWand, Tag, Eye, FloppyDisk } from '@phosphor-icons/react';
 import { calculateLQS, getHealthStatus } from '../utils/lqsCalculator';
 
 // MOCK DATA (Veritabanı boşsa bunlar çalışacak)
@@ -113,7 +113,7 @@ const SurgeryRoom = () => {
                         </button>
 
                         <button className="w-full bg-purple-600 text-white p-3 rounded-lg mt-4 font-bold flex justify-center items-center hover:bg-purple-700">
-                            <Save className="mr-2" /> {t('surgery.save_changes')}
+                            <FloppyDisk className="mr-2" /> {t('surgery.save_changes')}
                         </button>
                     </div>
                 </div>
