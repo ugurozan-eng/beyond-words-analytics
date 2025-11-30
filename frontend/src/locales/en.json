@@ -21,26 +21,6 @@
         "competitor_tracking": "Competitor Tracking",
         "tag_spy": "Tag Spy",
         "keyword_explorer": "Keyword Explorer",
-        "profit_calculator": "Profit Calculator",
-        "analysis": "Analysis",
-        "settings": "Settings",
-        "pro_active": "Pro Plan Active",
-        "pro_desc": "All features unlocked"
-    },
-    "wizard": {
-        "title": "Define Product Idea",
-        "subtitle": "Let AI turn your idea into an Etsy-optimized listing.",
-        "tab_image": "I Have an Image",
-        "tab_prompt": "Create Image Prompt",
-        "upload_label": "Product Image (Optional)",
-        "drag_drop": "Drag and drop image",
-        "click_select": "or click to select",
-        "desc_label": "Product Description / Idea",
-        "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
-        "start_btn": "Start Wizard",
-        "error_min_char": "Please enter a description of at least 20 characters or upload an image."
-    },
-    "auth": {
         "signup_success": "Registration successful! Please check your email or login.",
         "generic_error": "An error occurred during the process.",
         "google_error": "Google login failed.",

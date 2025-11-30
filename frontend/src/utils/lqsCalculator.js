@@ -5,7 +5,7 @@
  * 
  * Modules:
  * 1. Visual Impulse (Max 35) - Uses mock/default if no analysis data
- * 2. SEO Foundation (Max 35) - Pareto Title, Tag Health, Asset Richness
+ * 2. SEO Foundation (Max 35) - Impact Zone Title, Tag Health, Asset Richness
  * 3. Zeitgeist (Max 30) - Simulated market trends based on title seed
  */
 
@@ -44,10 +44,10 @@ export const calculateLQS = (product) => {
 
     // --- 2. MODULE: SEO FOUNDATION (Max 35) ---
 
-    // A. Pareto Title (Max 15)
+    // A. Impact Zone Title (Max 15)
     const title = product.title || "";
     const titleLower = title.toLowerCase();
-    let scorePareto = 15;
+    let scoreImpact = 15;
 
     // Rule 1: Core object in first 45 chars?
     // Since we don't have 'core_object' from AI in frontend editing, 
@@ -56,7 +56,7 @@ export const calculateLQS = (product) => {
 
     // Rule 2: Length < 80?
     if (title.length < 80) {
-        scorePareto -= 4;
+        scoreImpact -= 4;
     }
 
     // Rule 3: Spam check (All caps or repetition)
@@ -72,10 +72,10 @@ export const calculateLQS = (product) => {
     });
 
     if (isAllCaps || hasSpam) {
-        scorePareto -= 3;
+        scoreImpact -= 3;
     }
 
-    if (scorePareto < 0) scorePareto = 0;
+    if (scoreImpact < 0) scoreImpact = 0;
 
     // B. Tag Health (Max 15)
     const tags = product.tags || [];
@@ -110,7 +110,7 @@ export const calculateLQS = (product) => {
     if (longTailCount >= 7) scoreTagLong = 7;
     else if (longTailCount >= 4) scoreTagLong = 3.5;
 
-    const seoScore = scorePareto + scoreTagFill + scoreTagRel + scoreTagLong;
+    const seoScore = scoreImpact + scoreTagFill + scoreTagRel + scoreTagLong;
 
     // C. Asset Richness (Max 5)
     let scoreAsset = 0;

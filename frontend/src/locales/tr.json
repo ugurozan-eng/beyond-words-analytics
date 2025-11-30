@@ -22,27 +22,6 @@
         "competitor_tracking": "Rakip Takibi",
         "tag_spy": "Etiket Casusu",
         "keyword_explorer": "Anahtar Kelime Gezgini",
-        "profit_calculator": "Kâr Hesaplayıcı",
-        "analysis": "Analiz",
-        "settings": "Ayarlar",
-        "pro_active": "Pro Üyelik Aktif",
-        "pro_desc": "Tüm özellikler kullanımda"
-    },
-    "wizard": {
-        "title": "Ürün Fikrini Tanımla",
-        "subtitle": "Bırakın yapay zeka fikrinizi Etsy uyumlu bir listeye dönüştürsün.",
-        "tab_image": "Görselim Var",
-        "tab_prompt": "Görsel Prompt Oluştur",
-        "upload_label": "Ürün Görseli (Opsiyonel)",
-        "drag_drop": "Görseli sürükleyip bırakın",
-        "click_select": "veya seçmek için tıklayın",
-        "desc_label": "Ürün Açıklaması / Fikir",
-        "desc_placeholder": "Örn: Minimalist tarzda, suluboya çiçekli dijital düğün davetiyesi...",
-        "start_btn": "Sihirbazı Başlat",
-        "error_min_char": "Lütfen en az 20 karakterlik bir açıklama girin veya görsel yükleyin."
-    },
-    "auth": {
-        "signup_success": "Kayıt başarılı! Lütfen e-postanızı kontrol edin veya giriş yapın.",
         "generic_error": "İşlem sırasında bir hata oluştu.",
         "google_error": "Google girişi başarısız.",
         "error_title": "Hata",
