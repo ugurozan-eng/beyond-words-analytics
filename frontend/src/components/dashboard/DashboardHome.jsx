@@ -113,7 +113,7 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
     const dailyDiagnosis = diagnosisScenarios[0];
 
     const handleProductClick = (product) => {
-        if (onNavigate) onNavigate('analysis', product.id);
+        if (onNavigate) onNavigate('product-detail', product);
     };
 
     const renderTriageList = () => {

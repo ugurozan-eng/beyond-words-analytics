@@ -1,15 +1,3 @@
-{
-    "common": {
-        "save": "Save",
-        "cancel": "Cancel",
-        "delete": "Delete",
-        "edit": "Edit",
-        "loading": "Loading...",
-        "competitor_tracking": "Competitor Tracking",
-        "tag_spy": "Tag Spy",
-        "keyword_explorer": "Keyword Explorer",
-        "profit_calculator": "Profit Calculator",
-        "analysis": "Analysis",
         "settings": "Settings",
         "general_search": "General Search...",
         "copy": "Copy"

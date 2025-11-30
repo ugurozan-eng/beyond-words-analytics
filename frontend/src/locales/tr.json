@@ -12,18 +12,6 @@
         "logout": "Çıkış Yap",
         "upgrade_pro": "Pro'ya Geç",
         "search_placeholder": "Genel Arama...",
-        "general_search": "Genel Arama...",
-        "copy": "Kopyala"
-    },
-    "sidebar": {
-        "dashboard": "Panel",
-        "my_shop": "Mağazam",
-        "ai_wizard": "AI Ürün Sihirbazı",
-        "competitor_tracking": "Rakip Takibi",
-        "tag_spy": "Etiket Casusu",
-        "keyword_explorer": "Anahtar Kelime Gezgini",
-        "generic_error": "İşlem sırasında bir hata oluştu.",
-        "google_error": "Google girişi başarısız.",
         "error_title": "Hata",
         "fullname": "Ad Soyad",
         "fullname_placeholder": "Adınız Soyadınız",

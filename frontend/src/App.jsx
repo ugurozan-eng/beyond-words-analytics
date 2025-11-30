@@ -27,6 +27,7 @@ import KeywordExplorer from './pages/KeywordExplorer';
 import ProfitCalculator from './pages/ProfitCalculator';
 import TagSpy from './pages/TagSpy';
 import MyShop from './pages/MyShop';
+import ProductDetail from './pages/ProductDetail';
 import { API_BASE_URL } from './config';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -279,7 +280,10 @@ function AppContent() {
     // --- RENDER HELPERS ---
     const renderDashboard = () => (
         <DashboardHome
-            onNavigate={setActiveView}
+            onNavigate={(view, product) => {
+                if (product) handleSelectListing(product);
+                setActiveView(view);
+            }}
             userPlan={userPlan}
             listings={listings}
         />
@@ -509,6 +513,16 @@ function AppContent() {
                     {activeView === 'tag-spy' && <TagSpy />}
                     {activeView === 'profit-calculator' && <ProfitCalculator />}
                     {activeView === 'analysis' && renderAnalysis()}
+                    {activeView === 'product-detail' && (
+                        <ProductDetail
+                            listing={selectedListing}
+                            onNavigate={setActiveView}
+                            onUpdate={handleUpdateListing}
+                            onAnalyze={(force) => handleAnalyze(null, force)}
+                            isAnalyzing={isAnalyzing}
+                            analysisResult={analysisResult}
+                        />
+                    )}
                     {activeView === 'competitor' && (
                         <CompetitorView
                             listings={listings}
