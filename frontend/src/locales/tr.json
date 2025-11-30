@@ -60,5 +60,21 @@
         "diagnosis_short": "Çok kısa! En az 80 karakter olmalı.",
         "diagnosis_tags_missing": "Etiket hakkınız boşa gidiyor.",
         "save_changes": "Tedaviyi Tamamla"
+    },
+    "my_shop": {
+        "title": "Mağazam",
+        "product_count": "Ürün",
+        "add_new": "Yeni Ekle",
+        "product_inventory": "Ürün Envanteri",
+        "filter_all": "Tüm Ürünler",
+        "sort_newest": "En Yeni",
+        "no_products_found": "Henüz ürün bulunamadı.",
+        "search_placeholder": "Ürünlerde ara..."
+    },
+    "mini_stats": {
+        "total_products": "Toplam Ürün",
+        "total_value": "Toplam Değer",
+        "avg_lqs": "Ort. LQS Puanı",
+        "analyzed": "Analiz Edilen"
     }
 }

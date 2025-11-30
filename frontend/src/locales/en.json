@@ -60,5 +60,21 @@
         "diagnosis_short": "Too short! Must be at least 80 characters.",
         "diagnosis_tags_missing": "Wasting tag space.",
         "save_changes": "Complete Treatment"
+    },
+    "my_shop": {
+        "title": "My Shop",
+        "product_count": "Products",
+        "add_new": "Add New",
+        "product_inventory": "Product Inventory",
+        "filter_all": "All Products",
+        "sort_newest": "Newest",
+        "no_products_found": "No products found yet.",
+        "search_placeholder": "Search products..."
+    },
+    "mini_stats": {
+        "total_products": "Total Products",
+        "total_value": "Total Value",
+        "avg_lqs": "Avg. LQS",
+        "analyzed": "Analyzed"
     }
 }
