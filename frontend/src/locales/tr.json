@@ -19,18 +19,6 @@
         "email_placeholder": "ornek@email.com",
         "password": "Şifre",
         "signup": "Kayıt Ol",
-        "signin": "Giriş Yap",
-        "have_account": "Zaten hesabın var mı? Giriş Yap",
-        "no_account": "Hesabın yok mu? Kayıt Ol",
-        "forgot_password": "Şifremi Unuttum",
-        "continue_google": "Google ile Devam Et",
-        "start_demo": "Demo Modunu Başlat"
-    },
-    "subscription": {
-        "title": "İşletmenizi Bir Üst Seviyeye Taşıyın 🚀",
-        "subtitle": "Etsy mağazanızı büyütmek için ihtiyacınız olan tüm profesyonel araçlara erişin.",
-        "most_popular": "En Popüler",
-        "plan_name": "Professional",
         "per_month": "/ ay",
         "upgrade_button": "Pro'ya Geç 🚀",
         "terms": "Abone olarak Alıcı Hizmet Şartları şartlarımızı kabul etmiş olursun. Abonelikler, iptal edilene kadar otomatik olarak yenilenir."

@@ -1,27 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Download, TrendingUp, DollarSign, Package, PlusCircle, Filter, ArrowUpDown, CheckSquare, Square, ShieldAlert, CheckCircle, AlertCircle, Trash2, Settings, Crown, LayoutDashboard, BarChart3, Zap, List } from 'lucide-react';
-import AnalysisCharts from './components/dashboard/AnalysisCharts';
-import WelcomePanel from './components/dashboard/WelcomePanel';
-import AnalysisPanel from './components/analysis/AnalysisPanel';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Search, List, Trash2, Settings, Crown } from 'lucide-react';
 import NewProductModal from './components/modals/NewProductModal';
 import ReportModal from './components/modals/ReportModal';
 import SettingsModal from './components/modals/SettingsModal';
 import OptimizationModal from './components/modals/OptimizationModal';
 import LoginPage from './components/LoginPage';
-import DashboardTrafficPanel from './components/dashboard/DashboardTrafficPanel';
 import DashboardHome from './components/dashboard/DashboardHome';
-import MiniStatCard from './components/dashboard/MiniStatCard';
 import SubscriptionModal from './components/modals/SubscriptionModal';
 import Sidebar from './components/dashboard/Sidebar';
-import LQSChart from './components/dashboard/LQSChart';
-import PricingCard from './components/analysis/PricingCard';
 import CompetitorView from './components/dashboard/CompetitorView';
 import AiSupportWidget from './components/AiSupportWidget';
-import GlobalMarketPulse from './components/dashboard/GlobalMarketPulse';
-import HealthCheckWidget from './components/dashboard/HealthCheckWidget';
-import ShopLinkImport from './components/Import/ShopLinkImport';
-import ProductGrid from './components/dashboard/ProductGrid';
 import CreateListing from './pages/CreateListing';
 import KeywordExplorer from './pages/KeywordExplorer';
 import ProfitCalculator from './pages/ProfitCalculator';
@@ -42,10 +32,10 @@ function App() {
 function AppContent() {
     const { t, i18n } = useTranslation();
     const { user, loading, isPro, signOut } = useAuth();
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Managed by AuthContext now
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isDemoMode, setIsDemoMode] = useState(false);
     const [listings, setListings] = useState([]);
-    const [analyzedProducts, setAnalyzedProducts] = useState([]); // State for newly imported products
+    const [analyzedProducts, setAnalyzedProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedListing, setSelectedListing] = useState(null);
@@ -62,32 +52,26 @@ function AppContent() {
     const [isOptimizationOpen, setIsOptimizationOpen] = useState(false);
     const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
     const [initialModalType, setInitialModalType] = useState('mine');
-    const [activeView, setActiveView] = useState('dashboard'); // 'dashboard', 'create-listing', 'keyword-explorer', 'profit-calculator', 'tag-spy', 'my-shop', 'analysis', 'competitor'
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const profileRef = useRef(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    // Click outside handler for profile dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
                 setIsProfileOpen(false);
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     useEffect(() => {
-        if (!loading) {
-            setIsLoggedIn(!!user);
-        }
+        if (!loading) setIsLoggedIn(!!user);
     }, [user, loading]);
 
-    // Freemium Logic States
     const [userPlan, setUserPlan] = useState('free');
     const [dailyUsage, setDailyUsage] = useState(0);
     const DAILY_LIMIT = 3;
@@ -108,9 +92,8 @@ function AppContent() {
     useEffect(() => { fetchListings(); }, [fetchListings]);
 
     const handleImportComplete = (newProducts) => {
-        // Add new products to the beginning of the list
         setListings(prev => [...newProducts, ...prev]);
-        setAnalyzedProducts(newProducts); // Update the grid view
+        setAnalyzedProducts(newProducts);
         setStatusMessage({ type: 'success', text: t('app.import_success', { count: newProducts.length }) });
         setTimeout(() => setStatusMessage(null), 4000);
     };
@@ -120,7 +103,6 @@ function AppContent() {
         if (searchTerm) {
             result = result.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()) || item.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase())));
         }
-
         if (filterStatus === "mine") result = result.filter(item => item.listing_type === "mine");
         else if (filterStatus === "competitor") result = result.filter(item => item.listing_type === "competitor");
         else if (filterStatus === "optimized") result = result.filter(item => item.is_analyzed);
@@ -139,22 +121,10 @@ function AppContent() {
     const filteredListings = getProcessedListings();
 
     const handleUpgrade = () => {
-        if (!user) {
-            alert(t('app.login_required'));
-            return;
-        }
-
-        // Lemon Squeezy Checkout URL (Real Product)
+        if (!user) { alert(t('app.login_required')); return; }
         const checkoutUrl = `https://cyclear.lemonsqueezy.com/buy/a2d23b5d-7bf0-4911-8df8-ff7ac3eb0ba5?checkout[custom][user_id]=${user.id}`;
-
-        console.log("Opening Lemon Squeezy Checkout:", checkoutUrl);
-
-        // Use Lemon Squeezy Overlay if available, otherwise fallback to redirect
-        if (window.LemonSqueezy) {
-            window.LemonSqueezy.Url.Open(checkoutUrl);
-        } else {
-            window.location.href = checkoutUrl;
-        }
+        if (window.LemonSqueezy) window.LemonSqueezy.Url.Open(checkoutUrl);
+        else window.location.href = checkoutUrl;
     };
 
     const handleExportCSV = () => { if (!listings.length) return; const csvContent = ["ID,Type,Title,Price,Analyzed,LQS,LQS Reason,LastAnalyzed,Tags,SuggestedTitle,SuggestedDesc,Materials,Styles,Colors,Occasions,Recipients,PredictedPriceMin,PredictedPriceMax,PriceReason,FAQs,TrendScore,TrendReason,BestSellingMonths,CompetitorAnalysis", ...listings.map(i => `${i.id},${i.listing_type},"${i.title.replace(/"/g, '""')}",${i.price},${i.is_analyzed},${i.lqs_score},"${(i.lqs_reason || "").replace(/"/g, '""')}",${i.last_analyzed_at},"${i.tags.join(",")}", "${(i.suggested_title || "").replace(/"/g, '""')}", "${(i.suggested_description || "").replace(/"/g, '""')}", "${(i.suggested_materials || "")}", "${(i.suggested_styles || "")}", "${(i.suggested_colors || "")}", "${(i.suggested_occasions || "")}", "${(i.suggested_recipients || "")}",${i.predicted_price_min},${i.predicted_price_max},"${(i.price_reason || "").replace(/"/g, '""')}","${(i.suggested_faqs || "").replace(/"/g, '""')}",${i.trend_score},"${(i.trend_reason || "").replace(/"/g, '""')}","${(i.best_selling_months || "").replace(/"/g, '""')}","${(i.competitor_analysis || "").replace(/"/g, '""')}"`)].join("\n"); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })); link.download = "etsy_export.csv"; link.click(); };
@@ -182,7 +152,6 @@ function AppContent() {
     const handleSelectListing = (listing) => {
         setSelectedListing(listing);
         setAnalysisResult(null);
-        setActiveView('analysis'); // Switch to analysis view
         if (!listing.is_analyzed && !isAnalyzing) { handleAnalyze(listing); }
     };
 
@@ -230,11 +199,10 @@ function AppContent() {
             if (!res.ok) throw new Error("AI Hatası");
             const result = await res.json();
 
-            // Check for functional error (backend returned 200 but with error data)
             if (result.lqs_score === 0 || result.suggested_title === "Error") {
-                setAnalysisResult(result); // Show error in panel
+                setAnalysisResult(result);
                 setStatusMessage({ type: 'error', text: t('app.analysis_error', { error: result.suggested_description || t('app.data_fetch_error') }) });
-                return; // Stop here, don't overwrite listing data
+                return;
             }
 
             setAnalysisResult(result);
@@ -271,59 +239,9 @@ function AppContent() {
         } catch { setStatusMessage({ type: 'error', text: t('app.error') }); }
     };
 
-    const activeResult = analysisResult || (selectedListing?.is_analyzed ? { ...selectedListing, suggested_tags: selectedListing.tags || [] } : null);
-
     const handleLogin = (type) => { if (type === 'demo') setIsDemoMode(true); else setIsDemoMode(false); setIsLoggedIn(true); };
 
     if (!isLoggedIn) return <LoginPage onLogin={handleLogin} />;
-
-    // --- RENDER HELPERS ---
-    const renderDashboard = () => (
-        <DashboardHome
-            onNavigate={(view, product) => {
-                if (product) handleSelectListing(product);
-                setActiveView(view);
-            }}
-            userPlan={userPlan}
-            listings={listings}
-        />
-    );
-
-    const renderAnalysis = () => (
-        <div className="h-full flex flex-col animate-fade-in">
-            <div className="mb-6 flex items-center justify-between">
-                <button onClick={() => setActiveView('dashboard')} className="flex items-center text-gray-500 hover:text-indigo-600 font-bold transition-colors">
-                    <LayoutDashboard className="w-4 h-4 mr-2" /> {t('app.back_to_dashboard')}
-                </button>
-                {selectedListing && (
-                    <div className="flex items-center space-x-4">
-                        <img src={selectedListing.image_url} className="w-10 h-10 rounded-lg object-cover border border-gray-200" />
-                        <div>
-                            <h2 className="font-bold text-gray-900 line-clamp-1">{selectedListing.title}</h2>
-                            <span className="text-xs text-gray-500">${selectedListing.price}</span>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className="flex-1 overflow-y-auto">
-                {selectedListing ? (
-                    <AnalysisPanel
-                        analysisResult={activeResult}
-                        listingId={selectedListing.id}
-                        currentPrice={selectedListing.price}
-                        onCopy={(msg) => { setStatusMessage({ type: 'success', text: msg }); setTimeout(() => setStatusMessage(null), 2000); }}
-                        onUpdate={handleUpdateListing}
-                        onAnalyzeClick={(force) => handleAnalyze(null, force)}
-                        isAnalyzing={isAnalyzing}
-                        listingType={selectedListing.listing_type}
-                        onShowReport={(id, title) => setReportModalData({ isOpen: true, listingId: id, title: title })}
-                    />
-                ) : (
-                    <WelcomePanel />
-                )}
-            </div>
-        </div>
-    );
 
     return (
         <div className="flex h-screen bg-gray-50 font-sans overflow-hidden">
@@ -338,11 +256,12 @@ function AppContent() {
             {/* SIDEBAR */}
             <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-indigo-900 transition-transform duration-300 transform md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <Sidebar
-                    activeView={activeView}
+                    activeView={location.pathname.substring(1) || 'dashboard'}
                     onNavigate={(view) => {
                         if (view === 'settings') setIsSettingsOpen(true);
-                        else setActiveView(view);
-                        setIsSidebarOpen(false); // Close sidebar on mobile after navigation
+                        else if (view === 'dashboard') navigate('/');
+                        else navigate(`/${view}`);
+                        setIsSidebarOpen(false);
                     }}
                     onLogout={() => setIsLoggedIn(false)}
                     userPlan={userPlan}
@@ -354,123 +273,45 @@ function AppContent() {
             <div className="flex-1 flex flex-col overflow-hidden relative w-full">
                 {/* TOP HEADER */}
                 <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 z-10">
-
-                    {/* LEFT: HAMBURGER & SEARCH */}
                     <div className="flex items-center flex-1">
-                        {/* Hamburger Button (Mobile Only) */}
-                        <button
-                            onClick={() => setIsSidebarOpen(true)}
-                            className="md:hidden p-2 mr-4 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                        >
+                        <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2 mr-4 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
                             <List className="w-6 h-6" />
                         </button>
-
                         <div className="relative w-full max-w-md hidden md:block">
                             <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder={t('common.search_placeholder')}
-                                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+                            <input type="text" placeholder={t('common.search_placeholder')} className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-100 outline-none transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </div>
                     </div>
-
-                    {/* RIGHT: NOTIFICATIONS & PROFILE */}
                     <div className="flex items-center space-x-2 lg:space-x-4">
-                        {/* LANGUAGE FLAGS */}
                         <div className="flex items-center space-x-2 mr-2">
-                            <button
-                                onClick={() => i18n.changeLanguage('tr')}
-                                className={`transition-opacity hover:opacity-100 ${i18n.language === 'tr' ? 'opacity-100' : 'opacity-50 grayscale'}`}
-                                title="Türkçe"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" className="w-6 h-4 rounded-sm shadow-sm">
-                                    <rect width="1200" height="800" fill="#E30A17" />
-                                    <circle cx="425" cy="400" r="200" fill="#ffffff" />
-                                    <circle cx="475" cy="400" r="160" fill="#E30A17" />
-                                    <polygon fill="#ffffff" points="583.334,400 764.235,458.779 652.426,304.894 652.426,495.106 764.235,341.221" />
-                                </svg>
+                            <button onClick={() => i18n.changeLanguage('tr')} className={`transition-opacity hover:opacity-100 ${i18n.language === 'tr' ? 'opacity-100' : 'opacity-50 grayscale'}`} title="Türkçe">
+                                <span className="text-xl">🇹🇷</span>
                             </button>
-                            <button
-                                onClick={() => i18n.changeLanguage('en')}
-                                className={`transition-opacity hover:opacity-100 ${i18n.language === 'en' ? 'opacity-100' : 'opacity-50 grayscale'}`}
-                                title="English"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1235 650" className="w-6 h-4 rounded-sm shadow-sm">
-                                    <rect width="1235" height="650" fill="#B22234" />
-                                    <rect y="50" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect y="150" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect y="250" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect y="350" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect y="450" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect y="550" width="1235" height="50" fill="#FFFFFF" />
-                                    <rect width="494" height="350" fill="#3C3B6E" />
-                                    {/* Simplified stars for small size */}
-                                    <g fill="#FFFFFF">
-                                        <circle cx="50" cy="30" r="10" /> <circle cx="150" cy="30" r="10" /> <circle cx="250" cy="30" r="10" /> <circle cx="350" cy="30" r="10" /> <circle cx="450" cy="30" r="10" />
-                                        <circle cx="100" cy="65" r="10" /> <circle cx="200" cy="65" r="10" /> <circle cx="300" cy="65" r="10" /> <circle cx="400" cy="65" r="10" />
-                                        <circle cx="50" cy="100" r="10" /> <circle cx="150" cy="100" r="10" /> <circle cx="250" cy="100" r="10" /> <circle cx="350" cy="100" r="10" /> <circle cx="450" cy="100" r="10" />
-                                        <circle cx="100" cy="135" r="10" /> <circle cx="200" cy="135" r="10" /> <circle cx="300" cy="135" r="10" /> <circle cx="400" cy="135" r="10" />
-                                        <circle cx="50" cy="170" r="10" /> <circle cx="150" cy="170" r="10" /> <circle cx="250" cy="170" r="10" /> <circle cx="350" cy="170" r="10" /> <circle cx="450" cy="170" r="10" />
-                                        <circle cx="100" cy="205" r="10" /> <circle cx="200" cy="205" r="10" /> <circle cx="300" cy="205" r="10" /> <circle cx="400" cy="205" r="10" />
-                                        <circle cx="50" cy="240" r="10" /> <circle cx="150" cy="240" r="10" /> <circle cx="250" cy="240" r="10" /> <circle cx="350" cy="240" r="10" /> <circle cx="450" cy="240" r="10" />
-                                        <circle cx="100" cy="275" r="10" /> <circle cx="200" cy="275" r="10" /> <circle cx="300" cy="275" r="10" /> <circle cx="400" cy="275" r="10" />
-                                        <circle cx="50" cy="310" r="10" /> <circle cx="150" cy="310" r="10" /> <circle cx="250" cy="310" r="10" /> <circle cx="350" cy="310" r="10" /> <circle cx="450" cy="310" r="10" />
-                                    </g>
-                                </svg>
+                            <button onClick={() => i18n.changeLanguage('en')} className={`transition-opacity hover:opacity-100 ${i18n.language === 'en' ? 'opacity-100' : 'opacity-50 grayscale'}`} title="English">
+                                <span className="text-xl">🇺🇸</span>
                             </button>
                         </div>
                         <div className="relative" ref={profileRef}>
-                            <button
-                                className="flex items-center space-x-2 focus:outline-none"
-                                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            >
-                                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200 cursor-pointer hover:bg-indigo-200 transition-colors">
-                                    OZ
-                                </div>
-                                {isPro && (
-                                    <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
-                                        PRO
-                                    </span>
-                                )}
+                            <button className="flex items-center space-x-2 focus:outline-none" onClick={() => setIsProfileOpen(!isProfileOpen)}>
+                                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-xs border border-indigo-200 cursor-pointer hover:bg-indigo-200 transition-colors">OZ</div>
+                                {isPro && <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">PRO</span>}
                             </button>
-
-                            {/* DROPDOWN MENU */}
                             {isProfileOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 animate-fade-in-up origin-top-right">
                                     <div className="px-4 py-3 border-b border-gray-100">
                                         <p className="text-sm font-bold text-gray-900">Ozan</p>
                                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                                     </div>
-
-
-
                                     <div className="py-1">
-                                        <button
-                                            onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
-                                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
-                                        >
+                                        <button onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center">
                                             <Settings className="w-4 h-4 mr-2" /> {t('common.profile_settings')}
                                         </button>
-                                        <button
-                                            onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }}
-                                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center"
-                                        >
+                                        <button onClick={() => { setIsProfileOpen(false); setIsSettingsOpen(true); }} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors flex items-center">
                                             <Crown className="w-4 h-4 mr-2 text-amber-500" /> {t('common.subscription')}
                                         </button>
                                     </div>
-
                                     <div className="border-t border-gray-100 py-1">
-                                        <button
-                                            onClick={() => {
-                                                setIsProfileOpen(false);
-                                                signOut();
-                                                setIsLoggedIn(false);
-                                            }}
-                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center"
-                                        >
+                                        <button onClick={() => { setIsProfileOpen(false); signOut(); setIsLoggedIn(false); }} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center">
                                             <Trash2 className="w-4 h-4 mr-2" /> {t('common.logout')}
                                         </button>
                                     </div>
@@ -482,55 +323,69 @@ function AppContent() {
 
                 {/* CONTENT AREA */}
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
-                    {activeView === 'dashboard' && renderDashboard()}
-                    {activeView === 'my-shop' && (
-                        <MyShop
-                            listings={listings}
-                            analyzedProducts={analyzedProducts}
-                            onImportComplete={handleImportComplete}
-                            onOptimize={(e, listing) => handleOptimizeClick(e, listing)}
-                            userPlan={userPlan}
-                            dailyUsage={dailyUsage}
-                            // Inventory Props
-                            filterStatus={filterStatus}
-                            setFilterStatus={setFilterStatus}
-                            sortOption={sortOption}
-                            setSortOption={setSortOption}
-                            selectedIds={selectedIds}
-                            handleSelectAll={handleSelectAll}
-                            handleBulkAnalyze={handleBulkAnalyze}
-                            handleExportCSV={handleExportCSV}
-                            handleSelectListing={handleSelectListing}
-                            toggleSelect={toggleSelect}
-                            handleDeleteClick={handleDeleteClick}
-                            filteredListings={filteredListings}
-                            setInitialModalType={setInitialModalType}
-                            setIsModalOpen={setIsModalOpen}
-                        />
-                    )}
-                    {activeView === 'create-listing' && <CreateListing />}
-                    {activeView === 'keyword-explorer' && <KeywordExplorer />}
-                    {activeView === 'tag-spy' && <TagSpy />}
-                    {activeView === 'profit-calculator' && <ProfitCalculator />}
-                    {activeView === 'analysis' && renderAnalysis()}
-                    {activeView === 'product-detail' && (
-                        <ProductDetail
-                            listing={selectedListing}
-                            onNavigate={setActiveView}
-                            onUpdate={handleUpdateListing}
-                            onAnalyze={(force) => handleAnalyze(null, force)}
-                            isAnalyzing={isAnalyzing}
-                            analysisResult={analysisResult}
-                        />
-                    )}
-                    {activeView === 'competitor' && (
-                        <CompetitorView
-                            listings={listings}
-                            onAddCompetitor={() => { setInitialModalType('competitor'); setIsModalOpen(true); }}
-                            onSelectListing={handleSelectListing}
-                            onDelete={handleDeleteClick}
-                        />
-                    )}
+                    <Routes>
+                        <Route path="/" element={
+                            <DashboardHome
+                                onNavigate={(view, product) => {
+                                    if (product) handleSelectListing(product);
+                                    if (view === 'product-detail') navigate(`/product/${product.id}`);
+                                    else navigate(`/${view}`);
+                                }}
+                                userPlan={userPlan}
+                                listings={listings}
+                            />
+                        } />
+                        <Route path="/my-shop" element={
+                            <MyShop
+                                listings={listings}
+                                analyzedProducts={analyzedProducts}
+                                onImportComplete={handleImportComplete}
+                                onOptimize={(e, listing) => handleOptimizeClick(e, listing)}
+                                userPlan={userPlan}
+                                dailyUsage={dailyUsage}
+                                filterStatus={filterStatus}
+                                setFilterStatus={setFilterStatus}
+                                sortOption={sortOption}
+                                setSortOption={setSortOption}
+                                selectedIds={selectedIds}
+                                handleSelectAll={handleSelectAll}
+                                handleBulkAnalyze={handleBulkAnalyze}
+                                handleExportCSV={handleExportCSV}
+                                handleSelectListing={handleSelectListing}
+                                toggleSelect={toggleSelect}
+                                handleDeleteClick={handleDeleteClick}
+                                filteredListings={filteredListings}
+                                setInitialModalType={setInitialModalType}
+                                setIsModalOpen={setIsModalOpen}
+                            />
+                        } />
+                        <Route path="/create-listing" element={<CreateListing />} />
+                        <Route path="/keyword-explorer" element={<KeywordExplorer />} />
+                        <Route path="/tag-spy" element={<TagSpy />} />
+                        <Route path="/profit-calculator" element={<ProfitCalculator />} />
+                        <Route path="/product/:id" element={
+                            <ProductDetail
+                                listings={listings}
+                                onNavigate={(view) => {
+                                    if (view === 'dashboard') navigate('/');
+                                    else navigate(`/${view}`);
+                                }}
+                                onUpdate={handleUpdateListing}
+                                onAnalyze={(force) => handleAnalyze(null, force)}
+                                isAnalyzing={isAnalyzing}
+                                analysisResult={analysisResult}
+                            />
+                        } />
+                        <Route path="/competitor-tracking" element={
+                            <CompetitorView
+                                listings={listings}
+                                onAddCompetitor={() => { setInitialModalType('competitor'); setIsModalOpen(true); }}
+                                onSelectListing={handleSelectListing}
+                                onDelete={handleDeleteClick}
+                            />
+                        } />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
                 </main>
 
                 {/* NOTIFICATIONS */}
@@ -555,16 +410,11 @@ function AppContent() {
                 originalListing={selectedListing}
                 optimizedData={selectedListing}
                 onApply={() => {
-                    // Refresh or update logic if needed
                     setStatusMessage({ type: 'success', text: t('common.changes_applied') });
                     setTimeout(() => setStatusMessage(null), 3000);
                 }}
             />
-            <SubscriptionModal
-                isOpen={isSubscriptionOpen}
-                onClose={() => setIsSubscriptionOpen(false)}
-                onUpgrade={handleUpgrade}
-            />
+            <SubscriptionModal isOpen={isSubscriptionOpen} onClose={() => setIsSubscriptionOpen(false)} onUpgrade={handleUpgrade} />
             {deleteConfirmation && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden border border-gray-100 transform transition-all scale-100 p-6 text-center">
@@ -580,7 +430,6 @@ function AppContent() {
                     </div>
                 </div>
             )}
-            {/* AI SUPPORT WIDGET */}
             <AiSupportWidget />
         </div>
     );
