@@ -35,63 +35,101 @@
         "action_hospital_title": "Product Hospital",
         "action_hospital_desc": "Detailed Check-Up",
         "action_magic_title": "Magic Production",
-        "surgery": {
-            "monitor_title": "Live Health Monitor",
-            "fix_title_btn": "Write Magic Title",
-            "fix_tags_btn": "Complete Tags",
-            "diagnosis_short": "Too short! Must be at least 80 characters.",
-            "diagnosis_visibility": "Critical Error: Keyword not in 'Impact Zone' (first 40 chars).",
-            "diagnosis_tags_missing": "Wasting tag space (Missing tags).",
-            "save_changes": "Complete Treatment",
-            "impact_zone_label": "Impact Zone (First 40 Characters)"
-        },
-        "wizard": {
-            "title": "Define Product Idea",
-            "subtitle": "Let AI transform your idea into an Etsy-compatible listing.",
-            "tab_image": "I Have an Image",
-            "tab_prompt": "Create Image Prompt",
-            "upload_label": "Product Image (Optional)",
-            "drag_drop": "Drag and drop image",
-            "click_select": "or click to select",
-            "desc_label": "Product Description / Idea",
-            "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
-            "start_btn": "Start Wizard",
-            "error_min_char": "Please enter a description of at least 20 characters."
-        },
-        "tag_spy": {
-            "hero_title_prefix": "Competitor Tag",
-            "hero_title_highlight": "Spy",
-            "hero_subtitle": "Discover your competitors' hidden traffic sources.",
-            "search_placeholder": "Competitor link or keyword...",
-            "spy_button": "Analyze"
-        },
-        "keyword_explorer": {
-            "hero_title_prefix": "Keyword",
-            "hero_title_highlight": "Explorer",
-            "hero_title_suffix": "Treasure Hunt",
-            "hero_subtitle": "Find the most profitable keywords among millions of Etsy searches.",
-            "search_placeholder": "Enter a keyword (e.g. 'leather wallet')...",
-            "discover_button": "Discover",
-            "popular_searches": "POPULAR SEARCHES"
-        },
-        "competitor_tracking": {
-            "title": "Competitor Tracking",
-            "subtitle": "Monitor your competitors' daily sales and strategies.",
-            "add_competitor": "Add Competitor",
-            "placeholder": "Enter shop name..."
-        },
-        "profit_calculator": {
-            "title": "Etsy Profit Calculator",
-            "subtitle": "Learn exactly what stays in your pocket after fees.",
-            "price_label": "Sale Price",
-            "shipping_label": "Shipping Cost",
-            "cost_label": "Cost",
-            "calculate_btn": "Calculate"
-        },
-        "settings": {
-            "title": "Settings",
-            "profile": "Profile Information",
-            "subscription": "Subscription",
-            "language": "Language Selection"
-        }
+        "action_magic_desc": "New Product with AI",
+        "action_color_title": "Color Lab",
+        "action_color_desc": "Palette Analysis",
+        "action_spy_title": "Competitor Spy",
+        "action_spy_desc": "Market Observation"
+    },
+    "shop_link_import": {
+        "title": "Import Shop Link",
+        "subtitle": "Paste your Etsy shop link to start analysis.",
+        "analyze_button": "Scan Shop"
+    },
+    "my_shop": {
+        "title": "My Shop",
+        "product_count": "Products",
+        "add_new": "Add New",
+        "product_inventory": "Product Inventory",
+        "filter_all": "All Products",
+        "sort_newest": "Newest",
+        "no_products_found": "No products found yet.",
+        "search_placeholder": "Search products...",
+        "deal_of_the_day": "Deal of the Day",
+        "no_analyzed_products": "No analyzed products yet.",
+        "analyze_selected": "Analyze {{count}} Selected",
+        "filter_mine": "My Products",
+        "filter_competitors": "Competitor Products",
+        "filter_optimized": "Optimized",
+        "filter_pending": "Pending",
+        "sort_lqs_high": "LQS Score (High)",
+        "sort_price_high": "Price (High)",
+        "status_optimized": "Optimized",
+        "status_pending": "Pending"
+    },
+    "mini_stats": {
+        "total_products": "Total Products",
+        "total_value": "Total Value",
+        "avg_lqs": "Avg. LQS",
+        "analyzed": "Analyzed"
+    },
+    "surgery": {
+        "monitor_title": "Live Health Monitor",
+        "fix_title_btn": "Write Magic Title",
+        "fix_tags_btn": "Complete Tags",
+        "diagnosis_short": "Too short! Must be at least 80 characters.",
+        "diagnosis_visibility": "Critical Error: Keyword not in 'Impact Zone' (first 40 chars).",
+        "diagnosis_tags_missing": "Wasting tag space (Missing tags).",
+        "save_changes": "Complete Treatment",
+        "impact_zone_label": "Impact Zone (First 40 Characters)"
+    },
+    "wizard": {
+        "title": "Define Product Idea",
+        "subtitle": "Let AI transform your idea into an Etsy-compatible listing.",
+        "tab_image": "I Have an Image",
+        "tab_prompt": "Create Image Prompt",
+        "upload_label": "Product Image (Optional)",
+        "drag_drop": "Drag and drop image",
+        "click_select": "or click to select",
+        "desc_label": "Product Description / Idea",
+        "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
+        "start_btn": "Start Wizard",
+        "error_min_char": "Please enter a description of at least 20 characters."
+    },
+    "tag_spy": {
+        "hero_title_prefix": "Competitor Tag",
+        "hero_title_highlight": "Spy",
+        "hero_subtitle": "Discover your competitors' hidden traffic sources.",
+        "search_placeholder": "Competitor link or keyword...",
+        "spy_button": "Analyze"
+    },
+    "keyword_explorer": {
+        "hero_title_prefix": "Keyword",
+        "hero_title_highlight": "Explorer",
+        "hero_title_suffix": "Treasure Hunt",
+        "hero_subtitle": "Find the most profitable keywords among millions of Etsy searches.",
+        "search_placeholder": "Enter a keyword (e.g. 'leather wallet')...",
+        "discover_button": "Discover",
+        "popular_searches": "POPULAR SEARCHES"
+    },
+    "competitor_tracking": {
+        "title": "Competitor Tracking",
+        "subtitle": "Monitor your competitors' daily sales and strategies.",
+        "add_competitor": "Add Competitor",
+        "placeholder": "Enter shop name..."
+    },
+    "profit_calculator": {
+        "title": "Etsy Profit Calculator",
+        "subtitle": "Learn exactly what stays in your pocket after fees.",
+        "price_label": "Sale Price",
+        "shipping_label": "Shipping Cost",
+        "cost_label": "Cost",
+        "calculate_btn": "Calculate"
+    },
+    "settings": {
+        "title": "Settings",
+        "profile": "Profile Information",
+        "subscription": "Subscription",
+        "language": "Language Selection"
     }
+}
