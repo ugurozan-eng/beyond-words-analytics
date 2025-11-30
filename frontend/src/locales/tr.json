@@ -35,85 +35,63 @@
         "action_hospital_title": "Ürün Hastanesi",
         "action_hospital_desc": "Detaylı Check-Up",
         "action_magic_title": "Sihirli Üretim",
-        "action_magic_desc": "AI ile Yeni Ürün",
-        "action_color_title": "Renk Laboratuvarı",
-        "action_color_desc": "Palet Analizi",
-        "action_spy_title": "Rakip Ajanı",
-        "action_spy_desc": "Piyasa Gözlemi"
-    },
-    "my_shop": {
-        "title": "Mağazam",
-        "product_count": "Ürün",
-        "add_new": "Yeni Ekle",
-        "product_inventory": "Ürün Envanteri",
-        "filter_all": "Tüm Ürünler",
-        "sort_newest": "En Yeni",
-        "no_products_found": "Henüz ürün bulunamadı.",
-        "search_placeholder": "Ürünlerde ara..."
-    },
-    "mini_stats": {
-        "total_products": "Toplam Ürün",
-        "total_value": "Toplam Değer",
-        "avg_lqs": "Ort. LQS Puanı",
-        "analyzed": "Analiz Edilen"
-    },
-    "surgery": {
-        "monitor_title": "Canlı Sağlık Monitörü",
-        "fix_title_btn": "Sihirli Başlık Yaz",
-        "fix_tags_btn": "Etiketleri Tamamla",
-        "diagnosis_short": "Çok kısa! En az 80 karakter olmalı.",
-        "diagnosis_visibility": "Kritik Hata: Anahtar kelime 'Vuruş Bölgesi'nde (ilk 40 karakter) değil.",
-        "diagnosis_tags_missing": "Etiket hakkınız boşa gidiyor (Eksik var).",
-        "save_changes": "Tedaviyi Tamamla",
-        "impact_zone_label": "Vuruş Bölgesi (İlk 40 Karakter)"
-    },
-    "wizard": {
-        "title": "Ürün Fikrini Tanımla",
-        "subtitle": "Bırakın yapay zeka fikrinizi Etsy uyumlu bir listeye dönüştürsün.",
-        "tab_image": "Görselim Var",
-        "tab_prompt": "Görsel Prompt Oluştur",
-        "upload_label": "Ürün Görseli (Opsiyonel)",
-        "drag_drop": "Görseli sürükleyip bırakın",
-        "click_select": "veya seçmek için tıklayın",
-        "desc_label": "Ürün Açıklaması / Fikir",
-        "desc_placeholder": "Örn: Minimalist tarzda, suluboya çiçekli dijital düğün davetiyesi...",
-        "start_btn": "Sihirbazı Başlat",
-        "error_min_char": "Lütfen en az 20 karakterlik bir açıklama girin."
-    },
-    "tag_spy": {
-        "hero_title_prefix": "Rakip Etiket",
-        "hero_title_highlight": "Casusu",
-        "hero_subtitle": "Rakiplerinizin gizli trafik kaynaklarını keşfedin.",
-        "search_placeholder": "Rakip linki veya kelime...",
-        "spy_button": "Analiz Et"
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Anahtar Kelime",
-        "hero_title_highlight": "Kaşifi",
-        "hero_title_suffix": "İle Hazine Avı",
-        "hero_subtitle": "Milyonlarca Etsy araması içinde en kârlı kelimeleri bulun.",
-        "search_placeholder": "Bir kelime girin (örn: 'leather wallet')...",
-        "discover_button": "Keşfet",
-        "popular_searches": "POPÜLER ARAMALAR"
-    },
-    "competitor_tracking": {
-        "title": "Rakip Takibi",
-        "subtitle": "Rakiplerinizin günlük satışlarını ve stratejilerini izleyin.",
-        "add_competitor": "Rakip Ekle",
-        "placeholder": "Mağaza adı girin..."
-    },
-    "profit_calculator": {
-        "title": "Etsy Kâr Hesaplayıcı",
-        "subtitle": "Kesintilerden sonra cebinize ne kalacağını kuruşu kuruşuna öğrenin.",
-        "price_label": "Satış Fiyatı",
-        "shipping_label": "Kargo Ücreti",
-        "cost_label": "Maliyet",
-        "calculate_btn": "Hesapla"
-    },
-    "settings": {
-        "title": "Ayarlar",
-        "profile": "Profil Bilgileri",
-        "subscription": "Abonelik",
-        "language": "Dil Seçimi"
+        "surgery": {
+            "monitor_title": "Canlı Sağlık Monitörü",
+            "fix_title_btn": "Sihirli Başlık Yaz",
+            "fix_tags_btn": "Etiketleri Tamamla",
+            "diagnosis_short": "Çok kısa! En az 80 karakter olmalı.",
+            "diagnosis_visibility": "Kritik Hata: Anahtar kelime 'Vuruş Bölgesi'nde (ilk 40 karakter) değil.",
+            "diagnosis_tags_missing": "Etiket hakkınız boşa gidiyor (Eksik var).",
+            "save_changes": "Tedaviyi Tamamla",
+            "impact_zone_label": "Vuruş Bölgesi (İlk 40 Karakter)"
+        },
+        "wizard": {
+            "title": "Ürün Fikrini Tanımla",
+            "subtitle": "Bırakın yapay zeka fikrinizi Etsy uyumlu bir listeye dönüştürsün.",
+            "tab_image": "Görselim Var",
+            "tab_prompt": "Görsel Prompt Oluştur",
+            "upload_label": "Ürün Görseli (Opsiyonel)",
+            "drag_drop": "Görseli sürükleyip bırakın",
+            "click_select": "veya seçmek için tıklayın",
+            "desc_label": "Ürün Açıklaması / Fikir",
+            "desc_placeholder": "Örn: Minimalist tarzda, suluboya çiçekli dijital düğün davetiyesi...",
+            "start_btn": "Sihirbazı Başlat",
+            "error_min_char": "Lütfen en az 20 karakterlik bir açıklama girin."
+        },
+        "tag_spy": {
+            "hero_title_prefix": "Rakip Etiket",
+            "hero_title_highlight": "Casusu",
+            "hero_subtitle": "Rakiplerinizin gizli trafik kaynaklarını keşfedin.",
+            "search_placeholder": "Rakip linki veya kelime...",
+            "spy_button": "Analiz Et"
+        },
+        "keyword_explorer": {
+            "hero_title_prefix": "Anahtar Kelime",
+            "hero_title_highlight": "Kaşifi",
+            "hero_title_suffix": "İle Hazine Avı",
+            "hero_subtitle": "Milyonlarca Etsy araması içinde en kârlı kelimeleri bulun.",
+            "search_placeholder": "Bir kelime girin (örn: 'leather wallet')...",
+            "discover_button": "Keşfet",
+            "popular_searches": "POPÜLER ARAMALAR"
+        },
+        "competitor_tracking": {
+            "title": "Rakip Takibi",
+            "subtitle": "Rakiplerinizin günlük satışlarını ve stratejilerini izleyin.",
+            "add_competitor": "Rakip Ekle",
+            "placeholder": "Mağaza adı girin..."
+        },
+        "profit_calculator": {
+            "title": "Etsy Kâr Hesaplayıcı",
+            "subtitle": "Kesintilerden sonra cebinize ne kalacağını kuruşu kuruşuna öğrenin.",
+            "price_label": "Satış Fiyatı",
+            "shipping_label": "Kargo Ücreti",
+            "cost_label": "Maliyet",
+            "calculate_btn": "Hesapla"
+        },
+        "settings": {
+            "title": "Ayarlar",
+            "profile": "Profil Bilgileri",
+            "subscription": "Abonelik",
+            "language": "Dil Seçimi"
+        }
     }
-}
