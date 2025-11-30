@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Activity,
     Stethoscope,
     Wand2,
     Palette,
-    VenetianMask as Spy, // Using VenetianMask as a spy/incognito icon alternative or just Spy if available
+    VenetianMask as Spy,
     AlertTriangle,
     CheckCircle,
     Clock,
@@ -18,9 +18,66 @@ import { calculateLQS, getHealthStatus } from '../../utils/lqsCalculator';
 const DashboardHome = ({ onNavigate, listings = [] }) => {
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('critical');
+    const [displayListings, setDisplayListings] = useState([]);
+
+    // --- DEMO MODE DATA ---
+    const mockProducts = [
+        {
+            id: "demo-red",
+            title: "Leather Bag",
+            description: "A nice leather bag.",
+            tags: ["bag", "leather"],
+            images: ["https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200"],
+            price: { amount: 50, currency_code: "USD" },
+            views: 12,
+            favorites: 1,
+            is_mock: true
+        },
+        {
+            id: "demo-yellow",
+            title: "Handmade Brown Leather Crossbody Bag for Women Summer Style",
+            description: "Beautiful handmade crossbody bag for women. Perfect for summer.",
+            tags: ["leather bag", "crossbody", "women bag", "summer fashion", "brown purse"],
+            images: [
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200"
+            ],
+            price: { amount: 85, currency_code: "USD" },
+            views: 145,
+            favorites: 23,
+            is_mock: true
+        },
+        {
+            id: "demo-green",
+            title: "Personalized Leather Tote Bag, Large Zipper Tote, Work Bag for Women, Custom Laptop Bag with Pockets, Teacher Gift, Graduation Gift",
+            description: "High quality personalized leather tote bag. Great for work and daily use.",
+            tags: ["personalized bag", "leather tote", "work bag women", "custom laptop bag", "teacher gift", "graduation gift", "large zipper tote", "leather handbag", "custom tote", "monogram bag", "office bag", "gift for her", "shoulder bag"],
+            images: [
+                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200"
+            ],
+            price: { amount: 120, currency_code: "USD" },
+            views: 1250,
+            favorites: 450,
+            is_mock: true
+        }
+    ];
+
+    useEffect(() => {
+        if (listings && listings.length > 0) {
+            setDisplayListings(listings);
+        } else {
+            setDisplayListings(mockProducts);
+        }
+    }, [listings]);
 
     // Calculate Real Health Score & Triage
-    const processedListings = listings.map(item => {
+    const processedListings = displayListings.map(item => {
         const score = calculateLQS(item);
         const status = getHealthStatus(score);
         let diagnosis = "";
@@ -33,7 +90,7 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
             lqs: score,
             status: status,
             diagnosis: diagnosis,
-            img: item.image_url || "https://via.placeholder.com/100"
+            img: item.images && item.images.length > 0 ? item.images[0] : (item.image_url || "https://via.placeholder.com/100")
         };
     });
 
@@ -55,6 +112,10 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
     // Select a random scenario (stable for this render, in real app could be dynamic)
     const dailyDiagnosis = diagnosisScenarios[0];
 
+    const handleProductClick = (product) => {
+        if (onNavigate) onNavigate('analysis', product.id);
+    };
+
     const renderTriageList = () => {
         const items = triageData[activeTab] || [];
         return (
@@ -63,10 +124,14 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
                     <div className="text-center py-8 text-gray-400 text-sm">Bu kategoride ürün yok.</div>
                 ) : (
                     items.map((item) => (
-                        <div key={item.id} className="flex items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group">
+                        <div
+                            key={item.id}
+                            onClick={() => handleProductClick(item)}
+                            className="flex items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group"
+                        >
                             <img src={item.img} alt={item.title} className="w-12 h-12 rounded-lg object-cover shadow-sm" />
                             <div className="ml-4 flex-1">
-                                <h4 className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">{item.title}</h4>
+                                <h4 className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</h4>
                                 <span className="text-xs font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded-full inline-block mt-1">
                                     {item.diagnosis}
                                 </span>
