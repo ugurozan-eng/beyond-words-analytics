@@ -60,7 +60,12 @@
         "no_account": "Don't have an account? Sign Up",
         "forgot_password": "Forgot Password",
         "continue_google": "Continue with Google",
-        "start_demo": "Start Demo Mode"
+        "start_demo": "Start Demo Mode",
+        "upgrade_pro": "Upgrade to Pro",
+        "upgrade_desc": "Upgrade for unlimited analysis and advanced features.",
+        "upgrade_button": "Upgrade to Pro",
+        "pro_active": "PRO Active",
+        "pro_desc": "You have access to all professional features."
     },
     "subscription": {
         "title": "Take Your Business to the Next Level 🚀",
