@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
     Activity,
@@ -112,8 +113,10 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
     // Select a random scenario (stable for this render, in real app could be dynamic)
     const dailyDiagnosis = diagnosisScenarios[0];
 
+    const navigate = useNavigate();
+
     const handleProductClick = (product) => {
-        if (onNavigate) onNavigate('product-detail', product);
+        navigate(`/product/${product.id}`);
     };
 
     const renderTriageList = () => {

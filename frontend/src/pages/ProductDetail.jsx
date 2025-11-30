@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AnalysisPanel from '../components/analysis/AnalysisPanel';
 import { useTranslation } from 'react-i18next';
 import { LayoutDashboard } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const ProductDetail = ({ listing, onNavigate, onUpdate, onAnalyze, isAnalyzing, analysisResult }) => {
+const ProductDetail = ({ listings, onUpdate, onAnalyze, isAnalyzing, analysisResult }) => {
     const { t } = useTranslation();
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [listing, setListing] = useState(null);
+
+    useEffect(() => {
+        if (listings && id) {
+            const found = listings.find(l => l.id.toString() === id.toString());
+            setListing(found);
+        }
+    }, [listings, id]);
 
     if (!listing) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <p>Ürün bulunamadı.</p>
-                <button onClick={() => onNavigate('dashboard')} className="mt-4 text-indigo-600 hover:underline">
+                <p>Ürün bulunamadı veya yükleniyor...</p>
+                <button onClick={() => navigate('/')} className="mt-4 text-indigo-600 hover:underline">
                     Dashboard'a Dön
                 </button>
             </div>
@@ -23,7 +34,7 @@ const ProductDetail = ({ listing, onNavigate, onUpdate, onAnalyze, isAnalyzing, 
     return (
         <div className="h-full flex flex-col animate-fade-in">
             <div className="mb-6 flex items-center justify-between">
-                <button onClick={() => onNavigate('dashboard')} className="flex items-center text-gray-500 hover:text-indigo-600 font-bold transition-colors">
+                <button onClick={() => navigate('/')} className="flex items-center text-gray-500 hover:text-indigo-600 font-bold transition-colors">
                     <LayoutDashboard className="w-4 h-4 mr-2" /> {t('app.back_to_dashboard')}
                 </button>
                 <div className="flex items-center space-x-4">
