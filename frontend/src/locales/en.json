@@ -27,18 +27,6 @@
         "start_demo": "Start Demo Mode",
         "profile_settings": "Profile Settings",
         "subscription": "Subscription",
-        "delete_product": "Delete Product",
-        "delete_confirm_text": "Are you sure you want to delete this product? This action cannot be undone.",
-        "yes_delete": "Yes, Delete",
-        "changes_applied": "Changes Applied",
-        "settings": "Settings",
-        "general_search": "General Search...",
-        "copy": "Copy"
-    },
-    "sidebar": {
-        "dashboard": "Dashboard",
-        "my_shop": "My Shop",
-        "ai_wizard": "AI Product Wizard",
         "competitor_tracking": "Competitor Tracking",
         "tag_spy": "Tag Spy",
         "keyword_explorer": "Keyword Explorer",

@@ -359,6 +359,30 @@ function AppContent() {
                                 setIsModalOpen={setIsModalOpen}
                             />
                         } />
+                        <Route path="/shop" element={
+                            <MyShop
+                                listings={listings}
+                                analyzedProducts={analyzedProducts}
+                                onImportComplete={handleImportComplete}
+                                onOptimize={(e, listing) => handleOptimizeClick(e, listing)}
+                                userPlan={userPlan}
+                                dailyUsage={dailyUsage}
+                                filterStatus={filterStatus}
+                                setFilterStatus={setFilterStatus}
+                                sortOption={sortOption}
+                                setSortOption={setSortOption}
+                                selectedIds={selectedIds}
+                                handleSelectAll={handleSelectAll}
+                                handleBulkAnalyze={handleBulkAnalyze}
+                                handleExportCSV={handleExportCSV}
+                                handleSelectListing={handleSelectListing}
+                                toggleSelect={toggleSelect}
+                                handleDeleteClick={handleDeleteClick}
+                                filteredListings={filteredListings}
+                                setInitialModalType={setInitialModalType}
+                                setIsModalOpen={setIsModalOpen}
+                            />
+                        } />
                         <Route path="/create-listing" element={<CreateListing />} />
                         <Route path="/keyword-explorer" element={<KeywordExplorer />} />
                         <Route path="/tag-spy" element={<TagSpy />} />
