@@ -1,24 +1,17 @@
 {
     "common": {
-        "loading": "Loading...",
-        "error": "An error occurred",
-        "success": "Success",
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
         "edit": "Edit",
-        "search": "Search...",
-        "logout": "Logout",
-        "profile": "Profile",
-        "settings": "Settings",
-        "subscription": "Subscription",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "success": "Success",
         "language": "Language",
-        "general_search": "General Search...",
-        "profile_settings": "Profile Settings",
-        "delete_product": "Delete Product?",
-        "delete_confirm_text": "This action cannot be undone. Do you want to continue?",
-        "yes_delete": "Yes, Delete",
-        "changes_applied": "Changes applied!"
+        "profile": "Profile",
+        "logout": "Logout",
+        "upgrade_pro": "Upgrade to Pro",
+        "search_placeholder": "General Search..."
     },
     "sidebar": {
         "dashboard": "Dashboard",
@@ -29,12 +22,7 @@
         "keyword_explorer": "Keyword Explorer",
         "profit_calculator": "Profit Calculator",
         "analysis": "Analysis",
-        "settings": "Settings",
-        "upgrade_pro": "Upgrade to Pro",
-        "upgrade_desc": "Upgrade for unlimited analysis and competitor tracking.",
-        "upgrade_button": "UPGRADE",
-        "pro_active": "Pro Membership Active",
-        "pro_desc": "Enjoy unlimited analysis. 🚀"
+        "settings": "Settings"
     },
     "auth": {
         "signup_success": "Registration successful! Please check your email or login.",
