@@ -124,9 +124,9 @@ const CreateListing = () => {
                 <div className="mb-6">
                     <h2 className="text-2xl font-black text-gray-800 flex items-center mb-2">
                         <Wand2 className="w-6 h-6 mr-3 text-indigo-600" />
-                        {t('create_listing.define_product_idea')}
+                        {t('wizard.title')}
                     </h2>
-                    <p className="text-gray-500">{t('create_listing.ai_description')}</p>
+                    <p className="text-gray-500">{t('wizard.subtitle')}</p>
                 </div>
 
                 {/* TABS */}
@@ -139,7 +139,7 @@ const CreateListing = () => {
                             }`}
                     >
                         <Upload className="w-4 h-4 mr-2" />
-                        {t('create_listing.have_image')}
+                        {t('wizard.tab_image')}
                     </button>
                     <button
                         onClick={() => setActiveTab('prompt')}
@@ -149,7 +149,7 @@ const CreateListing = () => {
                             }`}
                     >
                         <Palette className="w-4 h-4 mr-2" />
-                        {t('create_listing.create_image_prompt')}
+                        {t('wizard.tab_prompt')}
                     </button>
                 </div>
 
@@ -157,7 +157,7 @@ const CreateListing = () => {
                 {activeTab === 'upload' ? (
                     /* UPLOAD MODE */
                     <div className="mb-8 animate-fade-in">
-                        <label className="block text-sm font-bold text-gray-700 mb-3">{t('create_listing.product_image_optional')}</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-3">{t('wizard.upload_label')}</label>
                         <input
                             type="file"
                             ref={fileInputRef}
@@ -185,8 +185,8 @@ const CreateListing = () => {
                                 <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                     <Upload className="w-8 h-8 text-indigo-500" />
                                 </div>
-                                <p className="font-bold text-gray-600">{t('create_listing.drag_drop_image')}</p>
-                                <p className="text-xs text-gray-400 mt-1">{t('create_listing.click_to_select')}</p>
+                                <p className="font-bold text-gray-600">{t('wizard.drag_drop')}</p>
+                                <p className="text-xs text-gray-400 mt-1">{t('wizard.click_select')}</p>
                             </div>
                         )}
                     </div>
@@ -254,7 +254,7 @@ const CreateListing = () => {
                 {/* Description Input */}
                 <div className="flex-1 flex flex-col mb-8">
                     <div className="flex justify-between items-center mb-3">
-                        <label className="block text-sm font-bold text-gray-700">{t('create_listing.product_description')}</label>
+                        <label className="block text-sm font-bold text-gray-700">{t('wizard.desc_label')}</label>
                         <span className={`text-xs font-bold ${description.length >= 20 ? 'text-emerald-500' : 'text-gray-400'}`}>
                             {description.length} / 20 min
                         </span>
@@ -264,7 +264,7 @@ const CreateListing = () => {
                             ? 'border-red-300 focus:ring-red-100'
                             : 'border-gray-200 focus:ring-indigo-100'
                             }`}
-                        placeholder={t('create_listing.description_placeholder')}
+                        placeholder={t('wizard.desc_placeholder')}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
@@ -287,14 +287,14 @@ const CreateListing = () => {
                         ) : (
                             <>
                                 <Wand2 className="w-5 h-5 mr-2" />
-                                {t('create_listing.start_wizard')}
+                                {t('wizard.start_btn')}
                             </>
                         )}
                     </button>
 
                     {!isDescriptionValid && !imagePreview && (
                         <p className="text-center text-xs text-red-500 font-medium animate-pulse">
-                            {t('create_listing.validation_error')}
+                            {t('wizard.error_min_char')}
                         </p>
                     )}
                 </div>
