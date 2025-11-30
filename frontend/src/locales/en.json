@@ -58,9 +58,7 @@
         "fix_title_btn": "Write Magic Title",
         "fix_tags_btn": "Complete Tags",
         "diagnosis_short": "Too short! Must be at least 80 characters.",
-        "diagnosis_visibility": "Critical Error: Keyword not in 'Impact Zone' (first 40 chars).",
-        "diagnosis_tags_missing": "Wasting tag space (Missing tags).",
-        "save_changes": "Complete Treatment",
-        "impact_zone_label": "Impact Zone (First 40 Characters)"
+        "diagnosis_tags_missing": "Wasting tag space.",
+        "save_changes": "Complete Treatment"
     }
 }

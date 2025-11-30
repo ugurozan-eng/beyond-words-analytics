@@ -1,120 +1,123 @@
-import React, { useEffect, useState } from 'react';
-import AnalysisPanel from '../components/analysis/AnalysisPanel';
-import { useTranslation } from 'react-i18next';
-import { LayoutDashboard } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ArrowLeft, MagicWand, Tag, Eye, Save } from '@phosphor-icons/react';
+import { calculateLQS, getHealthStatus } from '../utils/lqsCalculator';
 
-const ProductDetail = ({ listings, onUpdate, onAnalyze, isAnalyzing, analysisResult }) => {
-    const { t } = useTranslation();
+// MOCK DATA (Veritabanı boşsa bunlar çalışacak)
+const MOCK_DB = [
+    { id: 1, title: "Leather Bag", tags: ["bag", "leather"], images: ["https://placehold.co/400"], desc: "Small bag." },
+    { id: 2, title: "Handmade Brown Leather Crossbody Bag for Women Summer Style", tags: ["leather bag", "crossbody", "women bag", "summer fashion", "brown purse"], images: ["https://placehold.co/400", "https://placehold.co/400", "https://placehold.co/400"], desc: "Medium description." },
+    { id: 3, title: "Personalized Leather Tote Bag, Large Zipper Tote, Work Bag for Women, Custom Laptop Bag", tags: ["leather bag", "tote bag", "custom bag", "work bag", "gift for her", "zipper tote", "laptop bag", "large bag", "brown leather", "handmade", "women accessories", "summer bag", "beach bag"], images: Array(6).fill("https://placehold.co/400"), desc: "Long description..." }
+];
+
+const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [listing, setListing] = useState(null);
+    const { t } = useTranslation();
 
-    // --- MOCK DATA FOR FALLBACK ---
-    const mockProducts = [
-        {
-            id: "demo-red",
-            title: "Leather Bag",
-            description: "A nice leather bag.",
-            tags: ["bag", "leather"],
-            images: ["https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200"],
-            price: { amount: 50, currency_code: "USD" },
-            views: 12,
-            favorites: 1,
-            is_mock: true,
-            lqs_score: 45
-        },
-        {
-            id: "demo-yellow",
-            title: "Handmade Brown Leather Crossbody Bag for Women Summer Style",
-            description: "Beautiful handmade crossbody bag for women. Perfect for summer.",
-            tags: ["leather bag", "crossbody", "women bag", "summer fashion", "brown purse"],
-            images: [
-                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200"
-            ],
-            price: { amount: 85, currency_code: "USD" },
-            views: 145,
-            favorites: 23,
-            is_mock: true,
-            lqs_score: 65
-        },
-        {
-            id: "demo-green",
-            title: "Personalized Leather Tote Bag, Large Zipper Tote, Work Bag for Women, Custom Laptop Bag with Pockets, Teacher Gift, Graduation Gift",
-            description: "High quality personalized leather tote bag. Great for work and daily use.",
-            tags: ["personalized bag", "leather tote", "work bag women", "custom laptop bag", "teacher gift", "graduation gift", "large zipper tote", "leather handbag", "custom tote", "monogram bag", "office bag", "gift for her", "shoulder bag"],
-            images: [
-                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
-                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200"
-            ],
-            price: { amount: 120, currency_code: "USD" },
-            views: 1250,
-            favorites: 450,
-            is_mock: true,
-            lqs_score: 95
-        }
-    ];
+    const [product, setProduct] = useState(null);
+    const [lqsScore, setLqsScore] = useState(0);
 
+    // Ürünü Bul ve Yükle
     useEffect(() => {
-        if (id) {
-            // 1. Try to find in real listings
-            let found = listings?.find(l => l.id.toString() === id.toString());
-
-            // 2. If not found, try to find in mock products
-            if (!found) {
-                found = mockProducts.find(p => p.id === id);
-            }
-
-            // 3. If still not found, fallback to the first mock product (Red Patient)
-            if (!found) {
-                found = mockProducts[0];
-            }
-
-            setListing(found);
+        const found = MOCK_DB.find(p => p.id === parseInt(id));
+        if (found) {
+            setProduct(found);
+            setLqsScore(calculateLQS(found));
+        } else {
+            // Bulamazsa varsayılan olarak ilkini yükle (Hata vermesin)
+            setProduct(MOCK_DB[0]);
+            setLqsScore(calculateLQS(MOCK_DB[0]));
         }
-    }, [listings, id]);
+    }, [id]);
 
-    if (!listing) return <div>Loading...</div>;
+    // Input değiştikçe LQS Hesapla (Canlı Monitör)
+    const handleUpdate = (field, value) => {
+        const updated = { ...product, [field]: value };
+        setProduct(updated);
+        setLqsScore(calculateLQS(updated));
+    };
 
-    // Use passed analysisResult or fallback to listing data if available
-    const activeResult = analysisResult || (listing.is_analyzed ? { ...listing, suggested_tags: listing.tags || [] } : null);
+    if (!product) return <div>{t('common.loading')}</div>;
 
     return (
-        <div className="h-full flex flex-col animate-fade-in">
-            <div className="mb-6 flex items-center justify-between">
-                <button onClick={() => navigate('/')} className="flex items-center text-gray-500 hover:text-indigo-600 font-bold transition-colors">
-                    <LayoutDashboard className="w-4 h-4 mr-2" /> {t('app.back_to_dashboard')}
-                </button>
-                <div className="flex items-center space-x-4">
-                    <img src={listing.image_url || (listing.images && listing.images[0])} className="w-10 h-10 rounded-lg object-cover border border-gray-200" alt={listing.title} />
-                    <div>
-                        <h2 className="font-bold text-gray-900 line-clamp-1">{listing.title}</h2>
-                        <span className="text-xs text-gray-500">{listing.price ? `${listing.price.amount || listing.price} ${listing.price.currency_code || ''}` : ''}</span>
-                    </div>
+        <div className="p-6 bg-gray-50 min-h-screen">
+            {/* HEADER & LQS BAR */}
+            <div className="sticky top-0 z-10 bg-white shadow-md p-4 rounded-xl mb-6">
+                <div className="flex items-center justify-between mb-2">
+                    <button onClick={() => navigate('/')} className="flex items-center text-gray-500 hover:text-gray-800">
+                        <ArrowLeft className="mr-2" /> {t('common.cancel')} (Dashboard)
+                    </button>
+                    <h2 className="text-xl font-bold">{t('surgery.monitor_title')}</h2>
+                    <span className={`text-2xl font-bold ${lqsScore < 50 ? 'text-red-500' : 'text-green-500'}`}>
+                        {lqsScore} / 100
+                    </span>
+                </div>
+                {/* Progress Bar */}
+                <div className="w-full bg-gray-200 rounded-full h-4">
+                    <div
+                        className={`h-4 rounded-full transition-all duration-500 ${lqsScore < 50 ? 'bg-red-500' : lqsScore < 80 ? 'bg-yellow-400' : 'bg-green-500'}`}
+                        style={{ width: `${lqsScore}%` }}
+                    ></div>
                 </div>
             </div>
-            <div className="flex-1 overflow-y-auto">
-                <AnalysisPanel
-                    analysisResult={activeResult}
-                    listingId={listing.id}
-                    currentPrice={listing.price}
-                    onCopy={(msg) => { /* Handle copy feedback if needed */ }}
-                    onUpdate={onUpdate}
-                    onAnalyzeClick={onAnalyze}
-                    isAnalyzing={isAnalyzing}
-                    listingType={listing.listing_type}
-                    onShowReport={() => { /* Handle report modal */ }}
-                    // Pass initial data for editing
-                    initialTitle={listing.title}
-                    initialDescription={listing.description}
-                    initialTags={listing.tags}
-                />
+
+            {/* SPLIT SCREEN: SOL FORM vs SAĞ AI */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                {/* SOL: HASTA DOSYASI (INPUTS) */}
+                <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium mb-1">Title</label>
+                        <input
+                            type="text"
+                            value={product.title}
+                            onChange={(e) => handleUpdate('title', e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                        {/* Canlı Teşhis */}
+                        {product.title.length < 80 && (
+                            <p className="text-red-500 text-xs mt-1">⚠️ {t('surgery.diagnosis_short')}</p>
+                        )}
+                        <p className="text-gray-400 text-xs mt-1 text-right">{product.title.length} chars</p>
+                    </div>
+
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium mb-1">Tags (Comma separated)</label>
+                        <textarea
+                            rows="3"
+                            value={product.tags.join(", ")}
+                            onChange={(e) => handleUpdate('tags', e.target.value.split(","))}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                        {product.tags.length < 13 && (
+                            <p className="text-yellow-600 text-xs mt-1">⚠️ {t('surgery.diagnosis_tags_missing')} ({product.tags.length}/13)</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* SAĞ: AI TEDAVİ MASASI */}
+                <div className="space-y-4">
+                    <div className="bg-purple-50 p-6 rounded-xl border border-purple-100">
+                        <h3 className="font-bold text-purple-900 mb-4 flex items-center">
+                            <MagicWand className="mr-2" /> AI Tedavi
+                        </h3>
+
+                        <button className="w-full bg-white text-purple-700 border border-purple-200 p-3 rounded-lg mb-3 hover:bg-purple-100 text-left flex items-center">
+                            <Eye className="mr-2" /> {t('surgery.fix_title_btn')}
+                        </button>
+
+                        <button className="w-full bg-white text-purple-700 border border-purple-200 p-3 rounded-lg mb-3 hover:bg-purple-100 text-left flex items-center">
+                            <Tag className="mr-2" /> {t('surgery.fix_tags_btn')}
+                        </button>
+
+                        <button className="w-full bg-purple-600 text-white p-3 rounded-lg mt-4 font-bold flex justify-center items-center hover:bg-purple-700">
+                            <Save className="mr-2" /> {t('surgery.save_changes')}
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
