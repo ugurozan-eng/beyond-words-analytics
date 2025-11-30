@@ -378,21 +378,6 @@
         "listing_fee": "Listing Fee",
         "transaction_fee": "Transaction Fee (6.5%)",
         "processing_fee": "Processing Fee (3% + 0.25)",
-        "offsite_ads_fee": "Offsite Ads Fee",
-        "total_fees": "Total Fees",
-        "total_costs": "Total Costs",
-        "disclaimer": "This calculation contains estimated values. Etsy fees and taxes may vary by region."
-    },
-    "shop_link_import": {
-        "title": "Import Shop Link",
-        "subtitle": "Paste your Etsy shop link to start analysis.",
-        "analyze_button": "Scan Shop"
-    },
-    "health_check": {
-        "title": "Shop Health Status",
-        "subtitle": "Overall score and critical issues.",
-        "critical_products": "Critical Products",
-        "lqs_below_50": "LQS score below 50.",
         "fix_button": "Fix Now",
         "missing_tags": "Missing Tags",
         "tags_below_13": "Tags are incomplete (less than 13).",
