@@ -103,6 +103,44 @@
     },
     "mini_stats": {
         "total_products": "Toplam Ürün",
+        "total_value": "Toplam Değer",
+        "avg_lqs": "Ort. LQS",
+        "analyzed": "Analiz Edilen",
+        "market_volume": "Pazar Hacmi",
+        "active_sellers": "Aktif Satıcı",
+        "trend_keywords": "Trend Kelimeler",
+        "opportunity_score": "Fırsat Skoru"
+    },
+    "market_trends": {
+        "summary_title": "Market Trendleri Özeti",
+        "summary_desc": "Kategorinizdeki genel satış trendleri ve mevsimsel dalgalanmalar burada görüntülenecek."
+    },
+    "dashboard": {
+        "health_score_title": "Mağaza Sağlık Puanı",
+        "health_msg_stable": "Durum Stabil, müdahale gerekenler var.",
+        "tab_critical": "Yoğun Bakım",
+        "tab_warning": "Müşahede",
+        "tab_healthy": "Taburcu",
+        "diagnosis_title": "Günün Teşhisi",
+        "action_hospital_title": "Ürün Hastanesi",
+        "action_hospital_desc": "Detaylı Check-Up",
+        "action_magic_title": "Sihirli Üretim",
+        "action_magic_desc": "AI ile Yeni Ürün",
+        "action_color_title": "Renk Laboratuvarı",
+        "action_color_desc": "Palet Analizi",
+        "action_spy_title": "Rakip Ajanı",
+        "action_spy_desc": "Piyasa Gözlemi"
+    },
+    "currency": {
+        "usd_try": "USD / TRY",
+        "eur_try": "EUR / TRY"
+    },
+    "trends": {
+        "title": "Haftanın Trend Aramaları"
+    },
+    "usage": {
+        "title": "Hesap Durumu",
+        "remaining_credits": "Kalan AI Hakkı",
         "reset_date": "Sıfırlanma: {date}",
         "upgrade": "Limitleri Kaldır"
     },

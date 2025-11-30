@@ -147,7 +147,7 @@ const DashboardHome = ({ onNavigate }) => {
                                 <dailyDiagnosis.icon className="w-8 h-8" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-medium text-indigo-100 mb-1 uppercase tracking-wider">{t('dashboard.diagnosis_title')}</h3>
+                                <h3 className="text-sm font-medium text-indigo-100 mb-1">{t('dashboard.diagnosis_title')}</h3>
                                 <h2 className="text-xl font-bold mb-2">{dailyDiagnosis.title}</h2>
                                 <p className="text-indigo-50 text-sm leading-relaxed max-w-lg">
                                     {dailyDiagnosis.desc}
