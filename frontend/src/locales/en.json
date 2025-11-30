@@ -112,24 +112,5 @@
         "discover_button": "Discover",
         "popular_searches": "POPULAR SEARCHES"
     },
-    "competitor_tracking": {
-        "title": "Competitor Tracking",
-        "subtitle": "Monitor your competitors' daily sales and strategies.",
-        "add_competitor": "Add Competitor",
-        "placeholder": "Enter shop name..."
-    },
-    "profit_calculator": {
-        "title": "Etsy Profit Calculator",
-        "subtitle": "Learn exactly what stays in your pocket after fees.",
-        "price_label": "Sale Price",
-        "shipping_label": "Shipping Cost",
-        "cost_label": "Cost",
-        "calculate_btn": "Calculate"
-    },
-    "settings": {
-        "title": "Settings",
-        "profile": "Profile Information",
-        "subscription": "Subscription",
-        "language": "Language Selection"
-    }
+}
 }

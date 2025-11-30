@@ -112,24 +112,5 @@
         "discover_button": "Keşfet",
         "popular_searches": "POPÜLER ARAMALAR"
     },
-    "competitor_tracking": {
-        "title": "Rakip Takibi",
-        "subtitle": "Rakiplerinizin günlük satışlarını ve stratejilerini izleyin.",
-        "add_competitor": "Rakip Ekle",
-        "placeholder": "Mağaza adı girin..."
-    },
-    "profit_calculator": {
-        "title": "Etsy Kâr Hesaplayıcı",
-        "subtitle": "Kesintilerden sonra cebinize ne kalacağını kuruşu kuruşuna öğrenin.",
-        "price_label": "Satış Fiyatı",
-        "shipping_label": "Kargo Ücreti",
-        "cost_label": "Maliyet",
-        "calculate_btn": "Hesapla"
-    },
-    "settings": {
-        "title": "Ayarlar",
-        "profile": "Profil Bilgileri",
-        "subscription": "Abonelik",
-        "language": "Dil Seçimi"
-    }
+}
 }
