@@ -13,27 +13,37 @@ import {
     HeartPulse,
     Search
 } from 'lucide-react';
+import { calculateLQS, getHealthStatus } from '../../utils/lqsCalculator';
 
-const DashboardHome = ({ onNavigate }) => {
+const DashboardHome = ({ onNavigate, listings = [] }) => {
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('critical');
 
-    // Mock Data for Health Score
-    const healthScore = 72;
+    // Calculate Real Health Score & Triage
+    const processedListings = listings.map(item => {
+        const score = calculateLQS(item);
+        const status = getHealthStatus(score);
+        let diagnosis = "";
+        if (status === 'critical') diagnosis = "Kritik Seviye (LQS < 50)";
+        else if (status === 'warning') diagnosis = "İyileştirilebilir (LQS 50-80)";
+        else diagnosis = "Mükemmel";
 
-    // Mock Data for Triage System
+        return {
+            ...item,
+            lqs: score,
+            status: status,
+            diagnosis: diagnosis,
+            img: item.image_url || "https://via.placeholder.com/100"
+        };
+    });
+
+    const totalScore = processedListings.reduce((acc, curr) => acc + curr.lqs, 0);
+    const avgHealthScore = processedListings.length > 0 ? Math.round(totalScore / processedListings.length) : 0;
+
     const triageData = {
-        critical: [
-            { id: 1, title: "Vintage Leather Journal", img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=100&q=80", diagnosis: "Zombi Liste (0 Trafik)" },
-            { id: 2, title: "Handmade Ceramic Mug", img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=100&q=80", diagnosis: "Kayıp Etiketler" },
-            { id: 3, title: "Boho Wall Decor", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=100&q=80", diagnosis: "Fiyat Uyumsuzluğu" }
-        ],
-        warning: [
-            { id: 4, title: "Silver Ring Set", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=100&q=80", diagnosis: "Düşük Dönüşüm" }
-        ],
-        healthy: [
-            { id: 5, title: "Custom Name Necklace", img: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=100&q=80", diagnosis: "Mükemmel" }
-        ]
+        critical: processedListings.filter(i => i.status === 'critical'),
+        warning: processedListings.filter(i => i.status === 'warning'),
+        healthy: processedListings.filter(i => i.status === 'healthy')
     };
 
     // Random Diagnosis Scenario
@@ -83,9 +93,9 @@ const DashboardHome = ({ onNavigate }) => {
                         {/* Circular Progress (Simplified with CSS conic-gradient) */}
                         <div className="relative w-32 h-32 flex-shrink-0">
                             <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center"
-                                style={{ background: `conic-gradient(#10b981 ${healthScore}%, #e5e7eb 0)` }}>
+                                style={{ background: `conic-gradient(#10b981 ${avgHealthScore}%, #e5e7eb 0)` }}>
                                 <div className="w-28 h-28 bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                                    <span className="text-3xl font-bold text-gray-800">{healthScore}</span>
+                                    <span className="text-3xl font-bold text-gray-800">{avgHealthScore}</span>
                                     <span className="text-xs text-gray-400 font-medium">/ 100</span>
                                 </div>
                             </div>
@@ -97,10 +107,10 @@ const DashboardHome = ({ onNavigate }) => {
                             <p className="text-gray-600 text-base mb-4">{t('dashboard.health_msg_stable')}</p>
                             <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
                                 <div className="flex items-center gap-1.5 text-xs font-medium bg-red-50 text-red-600 px-3 py-1.5 rounded-full border border-red-100">
-                                    <AlertTriangle className="w-3.5 h-3.5" /> 3 {t('dashboard.tab_critical')}
+                                    <AlertTriangle className="w-3.5 h-3.5" /> {triageData.critical.length} {t('dashboard.tab_critical')}
                                 </div>
                                 <div className="flex items-center gap-1.5 text-xs font-medium bg-yellow-50 text-yellow-600 px-3 py-1.5 rounded-full border border-yellow-100">
-                                    <Clock className="w-3.5 h-3.5" /> 1 {t('dashboard.tab_warning')}
+                                    <Clock className="w-3.5 h-3.5" /> {triageData.warning.length} {t('dashboard.tab_warning')}
                                 </div>
                             </div>
                         </div>
