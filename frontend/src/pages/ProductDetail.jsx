@@ -10,23 +10,77 @@ const ProductDetail = ({ listings, onUpdate, onAnalyze, isAnalyzing, analysisRes
     const navigate = useNavigate();
     const [listing, setListing] = useState(null);
 
+    // --- MOCK DATA FOR FALLBACK ---
+    const mockProducts = [
+        {
+            id: "demo-red",
+            title: "Leather Bag",
+            description: "A nice leather bag.",
+            tags: ["bag", "leather"],
+            images: ["https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200"],
+            price: { amount: 50, currency_code: "USD" },
+            views: 12,
+            favorites: 1,
+            is_mock: true,
+            lqs_score: 45
+        },
+        {
+            id: "demo-yellow",
+            title: "Handmade Brown Leather Crossbody Bag for Women Summer Style",
+            description: "Beautiful handmade crossbody bag for women. Perfect for summer.",
+            tags: ["leather bag", "crossbody", "women bag", "summer fashion", "brown purse"],
+            images: [
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200"
+            ],
+            price: { amount: 85, currency_code: "USD" },
+            views: 145,
+            favorites: 23,
+            is_mock: true,
+            lqs_score: 65
+        },
+        {
+            id: "demo-green",
+            title: "Personalized Leather Tote Bag, Large Zipper Tote, Work Bag for Women, Custom Laptop Bag with Pockets, Teacher Gift, Graduation Gift",
+            description: "High quality personalized leather tote bag. Great for work and daily use.",
+            tags: ["personalized bag", "leather tote", "work bag women", "custom laptop bag", "teacher gift", "graduation gift", "large zipper tote", "leather handbag", "custom tote", "monogram bag", "office bag", "gift for her", "shoulder bag"],
+            images: [
+                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=200",
+                "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=200"
+            ],
+            price: { amount: 120, currency_code: "USD" },
+            views: 1250,
+            favorites: 450,
+            is_mock: true,
+            lqs_score: 95
+        }
+    ];
+
     useEffect(() => {
-        if (listings && id) {
-            const found = listings.find(l => l.id.toString() === id.toString());
+        if (id) {
+            // 1. Try to find in real listings
+            let found = listings?.find(l => l.id.toString() === id.toString());
+
+            // 2. If not found, try to find in mock products
+            if (!found) {
+                found = mockProducts.find(p => p.id === id);
+            }
+
+            // 3. If still not found, fallback to the first mock product (Red Patient)
+            if (!found) {
+                found = mockProducts[0];
+            }
+
             setListing(found);
         }
     }, [listings, id]);
 
-    if (!listing) {
-        return (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <p>Ürün bulunamadı veya yükleniyor...</p>
-                <button onClick={() => navigate('/')} className="mt-4 text-indigo-600 hover:underline">
-                    Dashboard'a Dön
-                </button>
-            </div>
-        );
-    }
+    if (!listing) return <div>Loading...</div>;
 
     // Use passed analysisResult or fallback to listing data if available
     const activeResult = analysisResult || (listing.is_analyzed ? { ...listing, suggested_tags: listing.tags || [] } : null);

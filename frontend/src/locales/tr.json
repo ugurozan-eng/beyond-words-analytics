@@ -1,16 +1,3 @@
-{
-    "common": {
-        "general_search": "Genel Arama...",
-        "save": "Kaydet",
-        "cancel": "İptal",
-        "loading": "Yükleniyor...",
-        "search_placeholder": "Genel Arama..."
-    },
-    "sidebar": {
-        "dashboard": "Panel",
-        "my_shop": "Mağazam",
-        "ai_wizard": "AI Ürün Sihirbazı",
-        "competitor_tracking": "Rakip Takibi",
         "tag_spy": "Etiket Casusu",
         "keyword_explorer": "Kelime Kaşifi",
         "profit_calculator": "Kâr Hesapla",
