@@ -9,7 +9,8 @@
         "loading": "Yükleniyor...",
         "logout": "Çıkış Yap",
         "error": "Hata",
-        "success": "Başarılı"
+        "success": "Başarılı",
+        "copy": "Kopyala"
     },
     "sidebar": {
         "dashboard": "Panel",
@@ -56,18 +57,6 @@
         "avg_lqs": "Ort. LQS Puanı",
         "analyzed": "Analiz Edilen"
     },
-    "health_check": {
-        "title": "Mağaza Sağlık Durumu",
-        "subtitle": "Genel skor ve acil müdahale listesi.",
-        "critical_products": "Kritik Ürün",
-        "lqs_below_50": "LQS kalitesi 50 puanın altında.",
-        "fix_button": "Düzelt (Ameliyathane)",
-        "missing_tags": "Eksik Etiketli",
-        "tags_below_13": "13 etiket tamamlanmamış.",
-        "complete_button": "Tamamla",
-        "unanalyzed": "Analiz Edilmemiş",
-        "not_scanned_yet": "Henüz taranmamış ürünler."
-    },
     "surgery": {
         "monitor_title": "Canlı Sağlık Monitörü",
         "fix_title_btn": "Sihirli Başlık Yaz",
@@ -91,8 +80,40 @@
         "start_btn": "Sihirbazı Başlat",
         "error_min_char": "Lütfen en az 20 karakterlik bir açıklama girin."
     },
-    "create_listing": {
-        "results_placeholder_title": "Sihirli Sonuçlar Burada Görünecek",
-        "results_placeholder_desc": "Sol taraftan formu doldurup sihirbazı başlattığınızda, yapay zeka tarafından üretilen başlık, etiket ve açıklamalar burada listelenecektir."
+    "tag_spy": {
+        "hero_title_prefix": "Rakip Etiket",
+        "hero_title_highlight": "Casusu",
+        "hero_subtitle": "Rakiplerinizin gizli trafik kaynaklarını keşfedin.",
+        "search_placeholder": "Rakip linki veya kelime...",
+        "spy_button": "Analiz Et"
+    },
+    "keyword_explorer": {
+        "hero_title_prefix": "Anahtar Kelime",
+        "hero_title_highlight": "Kaşifi",
+        "hero_title_suffix": "İle Hazine Avı",
+        "hero_subtitle": "Milyonlarca Etsy araması içinde en kârlı kelimeleri bulun.",
+        "search_placeholder": "Bir kelime girin (örn: 'leather wallet')...",
+        "discover_button": "Keşfet",
+        "popular_searches": "POPÜLER ARAMALAR"
+    },
+    "competitor_tracking": {
+        "title": "Rakip Takibi",
+        "subtitle": "Rakiplerinizin günlük satışlarını ve stratejilerini izleyin.",
+        "add_competitor": "Rakip Ekle",
+        "placeholder": "Mağaza adı girin..."
+    },
+    "profit_calculator": {
+        "title": "Etsy Kâr Hesaplayıcı",
+        "subtitle": "Kesintilerden sonra cebinize ne kalacağını kuruşu kuruşuna öğrenin.",
+        "price_label": "Satış Fiyatı",
+        "shipping_label": "Kargo Ücreti",
+        "cost_label": "Maliyet",
+        "calculate_btn": "Hesapla"
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "profile": "Profil Bilgileri",
+        "subscription": "Abonelik",
+        "language": "Dil Seçimi"
     }
 }
