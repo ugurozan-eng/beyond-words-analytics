@@ -17,7 +17,7 @@ import KeywordExplorer from './pages/KeywordExplorer';
 import ProfitCalculator from './pages/ProfitCalculator';
 import TagSpy from './pages/TagSpy';
 import MyShop from './pages/MyShop';
-import ProductDetail from './pages/ProductDetail';
+import SurgeryRoom from './pages/SurgeryRoom';
 import { API_BASE_URL } from './config';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
