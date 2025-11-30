@@ -1,3 +1,17 @@
+{
+    "common": {
+        "general_search": "General Search...",
+        "save": "Save",
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "search_placeholder": "General Search...",
+        "logout": "Logout"
+    },
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "my_shop": "My Shop",
+        "ai_wizard": "AI Product Wizard",
+        "competitor_tracking": "Competitor Tracking",
         "tag_spy": "Tag Spy",
         "keyword_explorer": "Keyword Explorer",
         "profit_calculator": "Profit Calculator",
