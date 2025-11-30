@@ -11,7 +11,7 @@ const MOCK_DB = [
     { id: 3, title: "Personalized Leather Tote Bag, Large Zipper Tote, Work Bag for Women, Custom Laptop Bag", tags: ["leather bag", "tote bag", "custom bag", "work bag", "gift for her", "zipper tote", "laptop bag", "large bag", "brown leather", "handmade", "women accessories", "summer bag", "beach bag"], images: Array(6).fill("https://placehold.co/400"), desc: "Long description..." }
 ];
 
-const ProductDetail = () => {
+const SurgeryRoom = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -123,4 +123,4 @@ const ProductDetail = () => {
     );
 };
 
-export default ProductDetail;
+export default SurgeryRoom;

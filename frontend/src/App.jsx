@@ -388,17 +388,7 @@ function AppContent() {
                         <Route path="/tag-spy" element={<TagSpy />} />
                         <Route path="/profit-calculator" element={<ProfitCalculator />} />
                         <Route path="/product/:id" element={
-                            <ProductDetail
-                                listings={listings}
-                                onNavigate={(view) => {
-                                    if (view === 'dashboard') navigate('/');
-                                    else navigate(`/${view}`);
-                                }}
-                                onUpdate={handleUpdateListing}
-                                onAnalyze={(force) => handleAnalyze(null, force)}
-                                isAnalyzing={isAnalyzing}
-                                analysisResult={analysisResult}
-                            />
+                            <SurgeryRoom />
                         } />
                         <Route path="/competitor-tracking" element={
                             <CompetitorView
