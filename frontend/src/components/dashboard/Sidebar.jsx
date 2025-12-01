@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Search, ShieldAlert, Settings, LogOut, Crown, Wand2, Calculator, BarChart2, Eye, Store } from 'lucide-react';
+import { LayoutGrid, Search, ShieldAlert, Settings, LogOut, Crown, Wand2, Calculator, BarChart3 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 
@@ -8,13 +8,12 @@ const Sidebar = ({ activeView, onNavigate, onLogout, onUpgrade }) => {
     const { isPro } = useAuth();
 
     const menuItems = [
-        { id: 'dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard },
-        { id: 'my-shop', label: t('sidebar.my_shop'), icon: Store },
+        { id: 'dashboard', label: t('sidebar.dashboard'), icon: LayoutGrid },
         { id: 'create-listing', label: t('sidebar.ai_wizard'), icon: Wand2 },
         { id: 'competitor-analysis', label: t('sidebar.competitor_analysis'), icon: ShieldAlert },
         { id: 'keyword-explorer', label: t('sidebar.keyword_explorer'), icon: Search },
         { id: 'profit-calculator', label: t('sidebar.profit_calculator'), icon: Calculator },
-        { id: 'analysis', label: t('sidebar.analysis'), icon: BarChart2 },
+        { id: 'analysis', label: t('sidebar.analysis'), icon: BarChart3 },
         { id: 'settings', label: t('sidebar.settings'), icon: Settings },
     ];
 
