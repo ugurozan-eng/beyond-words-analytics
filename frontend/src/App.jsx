@@ -13,7 +13,6 @@ import Sidebar from './components/dashboard/Sidebar';
 import CompetitorTracking from './pages/CompetitorTracking';
 import AiSupportWidget from './components/AiSupportWidget';
 import CreateListing from './pages/CreateListing';
-import CreateListing from './pages/CreateListing';
 import KeywordExplorer from './pages/KeywordExplorer';
 import ProfitCalculator from './pages/ProfitCalculator';
 import CompetitorAnalysis from './pages/CompetitorAnalysis';
