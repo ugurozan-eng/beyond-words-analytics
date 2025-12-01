@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Activity, AlertCircle, CheckCircle, ArrowRight, Zap } from 'lucide-react';
+import { Activity, AlertCircle, CheckCircle, ArrowRight, Zap, Siren } from 'lucide-react';
 
 const HealthCheckWidget = ({ listings = [], onOptimize }) => {
     const { t } = useTranslation();
@@ -51,6 +51,7 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                         onClick={() => onOptimize && onOptimize()}
                         className="px-3 py-1.5 bg-white text-red-600 text-xs font-bold rounded-lg shadow-sm border border-red-100 hover:bg-red-50 transition-colors"
                     >
+                        <Siren className="text-red-600 animate-pulse w-5 h-5 mr-2" />
                         {t('health_check.fix_button')}
                     </button>
                 </div>

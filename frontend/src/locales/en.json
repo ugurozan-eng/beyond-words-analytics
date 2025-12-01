@@ -78,7 +78,7 @@
         "critical_products": "Critical Product",
         "critical_product": "Critical Products",
         "lqs_below_50": "LQS quality is below 50 points.",
-        "fix_button": "Fix (Surgery Room)",
+        "fix_button": "Fix (First Aid)",
         "missing_tags": "Missing Tags",
         "tags_below_13": "13 tags not completed.",
         "complete_button": "Complete",
@@ -104,19 +104,6 @@
         "drag_drop": "Drag and drop image",
         "click_select": "or click to select",
         "desc_label": "Product Description / Idea",
-        "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
-        "start_btn": "Start Wizard",
-        "error_min_char": "Please enter a description of at least 20 characters."
-    },
-    "create_listing": {
-        "results_placeholder_title": "Magic Results Will Appear Here",
-        "results_placeholder_desc": "Results will be listed here when you fill out the form on the left and start the wizard."
-    },
-    "tag_spy": {
-        "hero_title_prefix": "Competitor Tag",
-        "hero_title_highlight": "Spy",
-        "hero_subtitle": "Discover your competitors' hidden traffic sources.",
-        "search_placeholder": "Competitor link or keyword...",
         "spy_button": "Analyze"
     },
     "keyword_explorer": {

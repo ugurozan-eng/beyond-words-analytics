@@ -78,7 +78,7 @@
         "critical_products": "Kritik Ürün",
         "critical_product": "Kritik Ürün (LQS < 50)",
         "lqs_below_50": "LQS kalitesi 50 puanın altında.",
-        "fix_button": "Düzelt (Ameliyathane)",
+        "fix_button": "Düzelt (İlk Yardım)",
         "missing_tags": "Eksik Etiketli",
         "tags_below_13": "13 etiket tamamlanmamış.",
         "complete_button": "Tamamla",
@@ -104,19 +104,6 @@
         "drag_drop": "Görseli sürükleyip bırakın",
         "click_select": "veya seçmek için tıklayın",
         "desc_label": "Ürün Açıklaması / Fikir",
-        "desc_placeholder": "Örn: Minimalist tarzda, suluboya çiçekli dijital düğün davetiyesi...",
-        "start_btn": "Sihirbazı Başlat",
-        "error_min_char": "Lütfen en az 20 karakterlik bir açıklama girin."
-    },
-    "create_listing": {
-        "results_placeholder_title": "Sihirli Sonuçlar Burada Görünecek",
-        "results_placeholder_desc": "Sol taraftan formu doldurup sihirbazı başlattığınızda sonuçlar burada listelenecektir."
-    },
-    "tag_spy": {
-        "hero_title_prefix": "Rakip Etiket",
-        "hero_title_highlight": "Casusu",
-        "hero_subtitle": "Rakiplerinizin gizli trafik kaynaklarını keşfedin.",
-        "search_placeholder": "Rakip linki veya kelime...",
         "spy_button": "Analiz Et"
     },
     "keyword_explorer": {
