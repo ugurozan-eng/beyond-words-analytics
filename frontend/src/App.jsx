@@ -288,7 +288,7 @@ function AppContent() {
                                 <span className="text-xl">🇹🇷</span>
                             </button>
                             <button onClick={() => i18n.changeLanguage('en')} className={`transition-opacity hover:opacity-100 ${i18n.language === 'en' ? 'opacity-100' : 'opacity-50 grayscale'}`} title="English">
-                                <span className="text-xl">🇺🇸</span>
+                                <span className="text-xl">🇬🇧</span>
                             </button>
                         </div>
                         <div className="relative" ref={profileRef}>
