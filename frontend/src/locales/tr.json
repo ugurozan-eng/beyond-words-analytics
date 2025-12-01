@@ -125,6 +125,12 @@
         "subscription": "Abonelik",
         "language": "Dil Seçimi"
     },
+    "CREATE_LISTING": {
+        "IMAGE_TYPE": "Görsel Tipi",
+        "PRODUCT_FORMAT": "Ürün Formatı",
+        "PLATFORM_SIZE": "Platform Boyutu",
+        "STYLE": "Tasarım Tarzı"
+    },
     "create_listing": {
         "results_placeholder_title": "Sihirli Sonuçlar Burada Görünecek",
         "results_placeholder_desc": "Sol taraftan formu doldurup sihirbazı başlattığınızda sonuçlar burada listelenecektir.",
@@ -132,19 +138,6 @@
         "digital_format": "Dijital Dosya İndirme",
         "etsy_listing_size": "Etsy Standart (2700x2025px)",
         "style_boho": "Boho / Bohem"
-    },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Görsel Tipi",
-        "PRODUCT_FORMAT": "Ürün Formatı",
-        "PLATFORM_SIZE": "Platform Boyutu",
-        "STYLE": "Tasarım Tarzı"
-    },
-    "tag_spy": {
-        "hero_title_prefix": "Rakip",
-        "hero_title_highlight": "Etiketlerini Yakala",
-        "hero_subtitle": "En çok satan ürünlerin gizli anahtar kelimelerini saniyeler içinde bulun.",
-        "search_placeholder": "Etsy ürün linkini buraya yapıştırın...",
-        "spy_button": "Etiketleri Getir"
     },
     "competitor_analysis": {
         "tab_tracking": "Rakip Takibi",
@@ -155,6 +148,13 @@
         "subtitle": "Rakiplerinizin günlük performansını ve stratejilerini izleyin.",
         "add_competitor": "Rakip Ekle",
         "placeholder": "Mağaza adı veya linki girin..."
+    },
+    "tag_spy": {
+        "hero_title_prefix": "Rakip",
+        "hero_title_highlight": "Etiketlerini Yakala",
+        "hero_subtitle": "En çok satan ürünlerin gizli anahtar kelimelerini saniyeler içinde bulun.",
+        "search_placeholder": "Etsy ürün linkini buraya yapıştırın...",
+        "spy_button": "Etiketleri Getir"
     },
     "wizard": {
         "title": "Ürün Fikrini Tanımla",

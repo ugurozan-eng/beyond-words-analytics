@@ -1,7 +1,7 @@
 {
     "common": {
         "general_search": "General Search...",
-        "search_placeholder": "General Search...",
+        "search_placeholder": "Search...",
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
@@ -28,19 +28,19 @@
     },
     "dashboard": {
         "health_score_title": "Shop Health Score",
-        "health_msg_stable": "Stable condition, intervention needed.",
-        "tab_critical": "Intensive Care",
+        "health_msg_stable": "Status Stable, some actions needed.",
+        "tab_critical": "Critical Care",
         "tab_warning": "Observation",
         "tab_healthy": "Discharged",
-        "diagnosis_title": "Diagnosis of the Day",
+        "diagnosis_title": "Daily Diagnosis",
         "action_hospital_title": "Product Hospital",
         "action_hospital_desc": "Detailed Check-Up",
-        "action_magic_title": "Magic Production",
-        "action_magic_desc": "New Product with AI",
+        "action_magic_title": "Magic Creation",
+        "action_magic_desc": "AI New Product",
         "action_color_title": "Color Lab",
         "action_color_desc": "Palette Analysis",
         "action_spy_title": "Competitor Spy",
-        "action_spy_desc": "Market Observation"
+        "action_spy_desc": "Market Watch"
     },
     "my_shop": {
         "title": "My Shop",
@@ -71,14 +71,14 @@
     "mini_stats": {
         "total_products": "Total Products",
         "total_value": "Total Value",
-        "avg_lqs": "Avg. LQS",
+        "avg_lqs": "Avg. LQS Score",
         "analyzed": "Analyzed"
     },
     "health_check": {
         "title": "Shop Health Status",
-        "subtitle": "General score and urgent intervention list.",
-        "critical_products": "Critical Product",
-        "critical_product": "Critical Products",
+        "subtitle": "General score and urgent action list.",
+        "critical_products": "Critical Products",
+        "critical_product": "Critical Product (LQS < 50)",
         "lqs_below_50": "LQS quality is below 50 points.",
         "fix_button": "Fix (First Aid)",
         "missing_tags": "Missing Tags",
@@ -93,7 +93,7 @@
     },
     "profit_calculator": {
         "title": "Etsy Profit Calculator",
-        "subtitle": "Calculate exactly how much you'll keep after fees.",
+        "subtitle": "Learn exactly what stays in your pocket after fees.",
         "sales_details": "Sales Details",
         "physical_product": "Physical Product",
         "digital_product": "Digital Product",
@@ -106,38 +106,48 @@
         "shipping_cost_you": "Shipping Cost (You pay)",
         "offsite_ads": "Offsite Ads",
         "offsite_ads_none": "None",
-        "offsite_ads_15": "15% (Standard)",
-        "offsite_ads_12": "12% (Over $10k Revenue)",
+        "offsite_ads_15": "15% (Standard Seller)",
+        "offsite_ads_12": "12% (Over 10k$ Revenue)",
         "net_profit": "NET PROFIT",
         "profit_margin": "PROFIT MARGIN",
-        "summary_title": "Summary",
+        "summary_title": "Calculation Summary",
         "total_revenue": "Total Revenue",
         "listing_fee": "Listing Fee",
         "transaction_fee": "Transaction Fee (6.5%)",
-        "processing_fee": "Processing Fee",
+        "processing_fee": "Payment Processing Fee",
         "total_fees": "Total Fees",
         "total_costs": "Total Costs",
-        "disclaimer": "Estimates only."
+        "disclaimer": "These calculations are estimates."
     },
     "settings": {
         "title": "Settings",
-        "profile": "Profile Information",
+        "profile": "Profile Info",
         "subscription": "Subscription",
         "language": "Language Selection"
-    },
-    "create_listing": {
-        "results_placeholder_title": "Magic Results Will Appear Here",
-        "results_placeholder_desc": "When you fill out the form on the left and start the wizard, results will be listed here.",
-        "listing_image_mockup": "Mockup Image",
-        "digital_format": "Digital Download",
-        "etsy_listing_size": "Etsy Standard (2700x2025px)",
-        "style_boho": "Boho / Bohemian"
     },
     "CREATE_LISTING": {
         "IMAGE_TYPE": "Image Type",
         "PRODUCT_FORMAT": "Product Format",
         "PLATFORM_SIZE": "Platform Size",
         "STYLE": "Design Style"
+    },
+    "create_listing": {
+        "results_placeholder_title": "Magic Results Appear Here",
+        "results_placeholder_desc": "Results will be listed here when you fill the form and start the wizard.",
+        "listing_image_mockup": "Mockup Image",
+        "digital_format": "Digital File Download",
+        "etsy_listing_size": "Etsy Standard (2700x2025px)",
+        "style_boho": "Boho / Bohemian"
+    },
+    "competitor_analysis": {
+        "tab_tracking": "Competitor Tracking",
+        "tab_spy": "Tag Spy"
+    },
+    "competitor_tracking": {
+        "title": "Competitor Tracking",
+        "subtitle": "Track your competitors' daily performance and strategies.",
+        "add_competitor": "Add Competitor",
+        "placeholder": "Enter shop name or link..."
     },
     "tag_spy": {
         "hero_title_prefix": "Catch Competitor",
@@ -146,26 +156,16 @@
         "search_placeholder": "Paste Etsy product link here...",
         "spy_button": "Get Tags"
     },
-    "competitor_analysis": {
-        "tab_tracking": "Competitor Tracking",
-        "tab_spy": "Tag Spy"
-    },
-    "competitor_tracking": {
-        "title": "Competitor Tracking",
-        "subtitle": "Monitor your competitors' daily performance and strategies.",
-        "add_competitor": "Add Competitor",
-        "placeholder": "Enter shop name or link..."
-    },
     "wizard": {
         "title": "Define Product Idea",
-        "subtitle": "Let AI transform your idea into an Etsy-compatible listing.",
-        "tab_image": "I Have an Image",
+        "subtitle": "Let AI turn your idea into an Etsy-compatible listing.",
+        "tab_image": "I Have Image",
         "tab_prompt": "Create Image Prompt",
         "upload_label": "Product Image (Optional)",
         "drag_drop": "Drag and drop image",
         "click_select": "or click to select",
         "desc_label": "Product Description / Idea",
-        "desc_placeholder": "E.g. Minimalist style, watercolor floral digital wedding invitation...",
+        "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
         "start_btn": "Start Wizard",
         "error_min_char": "Please enter a description of at least 20 characters."
     }
