@@ -8,7 +8,7 @@ import ReportModal from './components/modals/ReportModal';
 import SettingsModal from './components/modals/SettingsModal';
 import OptimizationModal from './components/modals/OptimizationModal';
 import LoginPage from './components/LoginPage';
-import DashboardHome from './components/dashboard/DashboardHome';
+import Dashboard from './pages/Dashboard';
 import SubscriptionModal from './components/modals/SubscriptionModal';
 import Sidebar from './components/dashboard/Sidebar';
 import CompetitorTracking from './pages/CompetitorTracking';
@@ -334,15 +334,7 @@ function AppContent() {
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
                     <Routes>
                         <Route path="/" element={
-                            <DashboardHome
-                                onNavigate={(view, product) => {
-                                    if (product) handleSelectListing(product);
-                                    if (view === 'product-detail') navigate(`/product/${product.id}`);
-                                    else navigate(`/${view}`);
-                                }}
-                                userPlan={userPlan}
-                                listings={listings}
-                            />
+                            <Dashboard />
                         } />
                         <Route path="/my-shop" element={
                             <MyShop
