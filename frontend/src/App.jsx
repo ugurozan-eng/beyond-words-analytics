@@ -13,9 +13,10 @@ import Sidebar from './components/dashboard/Sidebar';
 import CompetitorTracking from './pages/CompetitorTracking';
 import AiSupportWidget from './components/AiSupportWidget';
 import CreateListing from './pages/CreateListing';
+import CreateListing from './pages/CreateListing';
 import KeywordExplorer from './pages/KeywordExplorer';
 import ProfitCalculator from './pages/ProfitCalculator';
-import TagSpy from './pages/TagSpy';
+import CompetitorAnalysis from './pages/CompetitorAnalysis';
 import MyShop from './pages/MyShop';
 import SurgeryRoom from './pages/SurgeryRoom';
 import { API_BASE_URL } from './config';
@@ -385,12 +386,12 @@ function AppContent() {
                         } />
                         <Route path="/create-listing" element={<CreateListing />} />
                         <Route path="/keyword-explorer" element={<KeywordExplorer />} />
-                        <Route path="/tag-spy" element={<TagSpy />} />
+                        <Route path="/competitor-analysis" element={<CompetitorAnalysis />} />
                         <Route path="/profit-calculator" element={<ProfitCalculator />} />
                         <Route path="/product/:id" element={
                             <SurgeryRoom />
                         } />
-                        <Route path="/competitors" element={<CompetitorTracking />} />
+
                         <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                 </main>
