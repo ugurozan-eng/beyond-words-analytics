@@ -100,24 +100,6 @@
         "subtitle": "Let AI transform your idea into an Etsy-compatible listing.",
         "tab_image": "I Have an Image",
         "tab_prompt": "Create Image Prompt",
-        "upload_label": "Product Image (Optional)",
-        "drag_drop": "Drag and drop image",
-        "click_select": "or click to select",
-        "desc_label": "Product Description / Idea",
-        "spy_button": "Analyze"
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Keyword",
-        "hero_title_highlight": "Explorer",
-        "hero_title_suffix": "Treasure Hunt",
-        "hero_subtitle": "Find the most profitable keywords among millions of Etsy searches.",
-        "search_placeholder": "Enter a keyword (e.g. 'leather wallet')...",
-        "discover_button": "Discover",
-        "popular_searches": "POPULAR SEARCHES"
-    },
-    "competitor_analysis": {
-        "tab_tracking": "Competitor Tracking",
-        "tab_spy": "Tag Spy"
     },
     "competitor_tracking": {
         "title": "Competitor Tracking",

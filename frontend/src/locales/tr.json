@@ -100,24 +100,6 @@
         "subtitle": "Bırakın yapay zeka fikrinizi Etsy uyumlu bir listeye dönüştürsün.",
         "tab_image": "Görselim Var",
         "tab_prompt": "Görsel Prompt Oluştur",
-        "upload_label": "Ürün Görseli (Opsiyonel)",
-        "drag_drop": "Görseli sürükleyip bırakın",
-        "click_select": "veya seçmek için tıklayın",
-        "desc_label": "Ürün Açıklaması / Fikir",
-        "spy_button": "Analiz Et"
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Anahtar Kelime",
-        "hero_title_highlight": "Kaşifi",
-        "hero_title_suffix": "İle Hazine Avı",
-        "hero_subtitle": "Milyonlarca Etsy araması içinde en kârlı kelimeleri bulun.",
-        "search_placeholder": "Bir kelime girin (örn: 'leather wallet')...",
-        "discover_button": "Keşfet",
-        "popular_searches": "POPÜLER ARAMALAR"
-    },
-    "competitor_analysis": {
-        "tab_tracking": "Rakip Takibi",
-        "tab_spy": "Etiket Casusu"
     },
     "competitor_tracking": {
         "title": "Rakip Takibi",
