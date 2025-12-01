@@ -106,9 +106,9 @@ const DashboardHome = ({ onNavigate, listings = [] }) => {
 
     // Random Diagnosis Scenario
     const diagnosisScenarios = [
-        { title: "Vitrin Gezicisi", desc: "Ürünlerin çok görüntüleniyor ama tıklanmıyor. Ana görseli test etmelisin.", icon: Search, color: "text-blue-500", bg: "bg-blue-50" },
-        { title: "Kargo Şoku", desc: "Sepete ekleme yüksek ama satın alma düşük. Kargo fiyatlarını gözden geçir.", icon: Activity, color: "text-red-500", bg: "bg-red-50" },
-        { title: "Hayalet Ürün", desc: "Bu ürün aramalarda hiç görünmüyor. SEO başlığını acilen yenile.", icon: Spy, color: "text-purple-500", bg: "bg-purple-50" }
+        { title: t('dashboard.diagnosis_window_shopper_title'), desc: t('dashboard.diagnosis_window_shopper_desc'), icon: Search, color: "text-blue-500", bg: "bg-blue-50" },
+        { title: t('dashboard.diagnosis_shipping_shock_title'), desc: t('dashboard.diagnosis_shipping_shock_desc'), icon: Activity, color: "text-red-500", bg: "bg-red-50" },
+        { title: t('dashboard.diagnosis_ghost_product_title'), desc: t('dashboard.diagnosis_ghost_product_desc'), icon: Spy, color: "text-purple-500", bg: "bg-purple-50" }
     ];
     // Select a random scenario (stable for this render, in real app could be dynamic)
     const dailyDiagnosis = diagnosisScenarios[0];

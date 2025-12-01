@@ -40,7 +40,13 @@
         "action_color_title": "Renk Laboratuvarı",
         "action_color_desc": "Palet Analizi",
         "action_spy_title": "Rakip Ajanı",
-        "action_spy_desc": "Piyasa Gözlemi"
+        "action_spy_desc": "Piyasa Gözlemi",
+        "diagnosis_window_shopper_title": "Vitrin Gezicisi",
+        "diagnosis_window_shopper_desc": "Ürünlerin çok görüntüleniyor ama tıklanmıyor. Ana görseli test etmelisin.",
+        "diagnosis_shipping_shock_title": "Kargo Şoku",
+        "diagnosis_shipping_shock_desc": "Sepete ekleme yüksek ama satın alma düşük. Kargo fiyatlarını gözden geçir.",
+        "diagnosis_ghost_product_title": "Hayalet Ürün",
+        "diagnosis_ghost_product_desc": "Bu ürün aramalarda hiç görünmüyor. SEO başlığını acilen yenile."
     },
     "my_shop": {
         "title": "Mağazam",

@@ -40,7 +40,13 @@
         "action_color_title": "Color Lab",
         "action_color_desc": "Palette Analysis",
         "action_spy_title": "Competitor Spy",
-        "action_spy_desc": "Market Watch"
+        "action_spy_desc": "Market Watch",
+        "diagnosis_window_shopper_title": "Window Shopper",
+        "diagnosis_window_shopper_desc": "Your products are getting views but no clicks. You should test the main image.",
+        "diagnosis_shipping_shock_title": "Shipping Shock",
+        "diagnosis_shipping_shock_desc": "High add-to-cart rate but low conversion. Review your shipping prices.",
+        "diagnosis_ghost_product_title": "Ghost Product",
+        "diagnosis_ghost_product_desc": "This product doesn't appear in search. Update your SEO title immediately."
     },
     "my_shop": {
         "title": "My Shop",
