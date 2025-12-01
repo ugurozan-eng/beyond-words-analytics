@@ -1,37 +1,3 @@
-{
-    "common": {
-        "general_search": "Genel Arama...",
-        "search_placeholder": "Genel Arama...",
-        "save": "Kaydet",
-        "cancel": "İptal",
-        "delete": "Sil",
-        "edit": "Düzenle",
-        "loading": "Yükleniyor...",
-        "logout": "Çıkış Yap",
-        "error": "Hata",
-        "success": "Başarılı",
-        "copy": "Kopyala",
-        "profile_settings": "Profil Ayarları",
-        "subscription": "Abonelik",
-        "attention": "Dikkat"
-    },
-    "sidebar": {
-        "dashboard": "Panel",
-        "my_shop": "Mağazam",
-        "ai_wizard": "AI Ürün Sihirbazı",
-        "competitor_analysis": "Rakip Analizi",
-        "keyword_explorer": "Kelime Kaşifi",
-        "profit_calculator": "Kâr Hesapla",
-        "analysis": "Analizler",
-        "settings": "Ayarlar",
-        "pro_active": "PRO Aktif",
-        "pro_desc": "Tüm özellikler açık."
-    },
-    "dashboard": {
-        "health_score_title": "Mağaza Sağlık Puanı",
-        "health_msg_stable": "Durum Stabil, müdahale gerekenler var.",
-        "tab_critical": "Yoğun Bakım",
-        "tab_warning": "Müşahede",
         "tab_healthy": "Taburcu",
         "diagnosis_title": "Günün Teşhisi",
         "action_hospital_title": "Ürün Hastanesi",
