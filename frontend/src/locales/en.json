@@ -29,15 +29,15 @@
     },
     "dashboard": {
         "title": "Shop Management",
-        "subtitle": "General performance summary and improvement opportunities.",
+        "subtitle": "Performance overview and improvement opportunities.",
         "stat_products": "Total Products",
         "stat_value": "Inventory Value",
-        "stat_lqs": "Average LQS",
-        "section_actions": "Actions Required",
+        "stat_lqs": "Avg. LQS",
+        "section_actions": "Action Required",
         "card_critical": "Critical Level",
         "card_critical_desc": "Products with LQS < 50",
         "card_missing": "Missing Tags",
-        "card_missing_desc": "13 tags not completed",
+        "card_missing_desc": "13 tags incomplete",
         "card_unanalyzed": "Pending Analysis",
         "card_unanalyzed_desc": "Not scanned yet",
         "inventory_title": "Smart Inventory",
@@ -46,32 +46,11 @@
     },
     "profit_calculator": {
         "title": "Etsy Profit Calculator",
-        "subtitle": "Learn exactly what stays in your pocket after fees.",
-        "shipping_warning": "Charging shipping to the buyer may reduce conversion rate.",
+        "subtitle": "Learn exactly what stays in your pocket.",
+        "shipping_warning": "Charging for shipping may reduce conversion rates.",
         "shipping_charge_label": "Shipping Charge (From Customer)",
         "product_cost": "Product Cost",
-        "sale_price": "Sale Price",
-        "sales_details": "Sales Details",
-        "physical_product": "Physical Product",
-        "digital_product": "Digital Product",
-        "discount_rate": "Discount Rate (%)",
-        "free_shipping": "Free Shipping",
-        "costs": "Costs",
-        "shipping_cost_you": "Shipping Cost (You pay)",
-        "offsite_ads": "Offsite Ads",
-        "offsite_ads_none": "None",
-        "offsite_ads_15": "15% (Standard Seller)",
-        "offsite_ads_12": "12% (Over 10k$ Revenue)",
-        "net_profit": "NET PROFIT",
-        "profit_margin": "PROFIT MARGIN",
-        "summary_title": "Calculation Summary",
-        "total_revenue": "Total Revenue",
-        "listing_fee": "Listing Fee",
-        "transaction_fee": "Transaction Fee (6.5%)",
-        "processing_fee": "Payment Processing Fee",
-        "total_fees": "Total Fees",
-        "total_costs": "Total Costs",
-        "disclaimer": "These calculations are estimates."
+        "sale_price": "Sale Price"
     },
     "competitor_tracking": {
         "title": "Competitor Tracking",
@@ -98,87 +77,6 @@
         "listing_image_mockup": "Mockup Image",
         "digital_format": "Digital File",
         "etsy_listing_size": "Etsy Standard",
-        "style_boho": "Boho / Bohemian",
-        "results_placeholder_title": "Magic Results Appear Here",
-        "results_placeholder_desc": "Results will be listed here when you fill the form and start the wizard."
-    },
-    "competitor_analysis": {
-        "tab_tracking": "Competitor Tracking",
-        "tab_spy": "Tag Spy"
-    },
-    "tag_spy": {
-        "hero_title_prefix": "Catch Competitor",
-        "hero_title_highlight": "Keywords",
-        "hero_subtitle": "Discover the hidden keywords of best-selling products in seconds.",
-        "search_placeholder": "Paste Etsy product link here...",
-        "spy_button": "Get Tags"
-    },
-    "wizard": {
-        "title": "Define Product Idea",
-        "subtitle": "Let AI turn your idea into an Etsy-compatible listing.",
-        "tab_image": "I Have Image",
-        "tab_prompt": "Create Image Prompt",
-        "upload_label": "Product Image (Optional)",
-        "drag_drop": "Drag and drop image",
-        "click_select": "or click to select",
-        "desc_label": "Product Description / Idea",
-        "desc_placeholder": "Ex: Minimalist style, watercolor floral digital wedding invitation...",
-        "start_btn": "Start Wizard",
-        "error_min_char": "Please enter a description of at least 20 characters."
-    },
-    "shop_link_import": {
-        "title": "Import Shop Link",
-        "subtitle": "Paste your Etsy shop link to start analysis.",
-        "analyze_button": "Scan Shop"
-    },
-    "mini_stats": {
-        "total_products": "Total Products",
-        "total_value": "Total Value",
-        "avg_lqs": "Avg. LQS Score",
-        "analyzed": "Analyzed"
-    },
-    "health_check": {
-        "title": "Shop Health Status",
-        "subtitle": "General score and urgent action list.",
-        "critical_products": "Critical Products",
-        "critical_product": "Critical Product (LQS < 50)",
-        "lqs_below_50": "LQS quality is below 50 points.",
-        "fix_button": "Fix",
-        "missing_tags": "Missing Tags",
-        "tags_below_13": "13 tags not completed.",
-        "complete_button": "Complete",
-        "unanalyzed": "Unanalyzed",
-        "not_scanned_yet": "Products not scanned yet."
-    },
-    "surgery": {
-        "monitor_title": "Live Health Monitor",
-        "fix_title_btn": "Write Magic Title"
-    },
-    "settings": {
-        "title": "Settings",
-        "profile": "Profile Info",
-        "subscription": "Subscription",
-        "language": "Language Selection"
-    },
-    "my_shop": {
-        "title": "My Shop",
-        "product_count": "Products",
-        "add_new": "Add New",
-        "product_inventory": "Product Inventory",
-        "filter_all": "All Products",
-        "sort_newest": "Newest",
-        "no_products_found": "No products found yet.",
-        "search_placeholder": "Search products...",
-        "deal_of_the_day": "Deal of the Day",
-        "no_analyzed_products": "No analyzed products yet.",
-        "analyze_selected": "Analyze {{count}} Selected",
-        "filter_mine": "My Products",
-        "filter_competitors": "Competitor Products",
-        "filter_optimized": "Optimized",
-        "filter_pending": "Pending",
-        "sort_lqs_high": "LQS Score (High)",
-        "sort_price_high": "Price (High)",
-        "status_optimized": "Optimized",
-        "status_pending": "Pending"
+        "style_boho": "Boho / Bohemian"
     }
 }
