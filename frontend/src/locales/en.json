@@ -76,6 +76,7 @@
         "title": "Shop Health Status",
         "subtitle": "General score and urgent intervention list.",
         "critical_products": "Critical Product",
+        "critical_product": "Critical Products",
         "lqs_below_50": "LQS quality is below 50 points.",
         "fix_button": "Fix (Surgery Room)",
         "missing_tags": "Missing Tags",

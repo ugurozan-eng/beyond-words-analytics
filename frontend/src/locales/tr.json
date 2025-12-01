@@ -76,6 +76,7 @@
         "title": "Mağaza Sağlık Durumu",
         "subtitle": "Genel skor ve acil müdahale listesi.",
         "critical_products": "Kritik Ürün",
+        "critical_product": "Kritik Ürün (LQS < 50)",
         "lqs_below_50": "LQS kalitesi 50 puanın altında.",
         "fix_button": "Düzelt (Ameliyathane)",
         "missing_tags": "Eksik Etiketli",
