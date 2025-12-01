@@ -51,6 +51,13 @@ const MyShop = ({
                 <MiniStatCard title={t('mini_stats.analyzed')} value={listings.filter(i => i.is_analyzed).length} icon={Zap} color="bg-orange-500" />
             </div>
 
+            {/* HEALTH CHECK WIDGET (Horizontal) */}
+            <HealthCheckWidget
+                listings={listings}
+                onOptimize={onOptimize}
+                horizontal={true}
+            />
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
                 {/* PRODUCT GRID (Col-span-8) */}
                 <div className="lg:col-span-8">
@@ -59,10 +66,7 @@ const MyShop = ({
 
                 {/* HEALTH CHECK & NEURO PRICING (Col-span-4) */}
                 <div className="lg:col-span-4 space-y-6">
-                    <HealthCheckWidget
-                        listings={listings}
-                        onOptimize={onOptimize}
-                    />
+
 
                     {/* NEURO PRICING WIDGET */}
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col relative z-10">

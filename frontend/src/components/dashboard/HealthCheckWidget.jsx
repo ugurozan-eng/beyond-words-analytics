@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Activity, AlertCircle, CheckCircle, ArrowRight, Zap, Siren } from 'lucide-react';
 
-const HealthCheckWidget = ({ listings = [], onOptimize }) => {
+const HealthCheckWidget = ({ listings = [], onOptimize, horizontal = false }) => {
     const { t } = useTranslation();
     // Calculate health metrics
     const criticalLQS = listings.filter(l => l.lqs_score > 0 && l.lqs_score < 50).length;
@@ -21,7 +21,7 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full flex flex-col">
+        <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${horizontal ? 'mb-6' : 'h-full flex flex-col'}`}>
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
                     <div className="bg-rose-50 p-2 rounded-lg">
@@ -37,7 +37,7 @@ const HealthCheckWidget = ({ listings = [], onOptimize }) => {
                 </div>
             </div>
 
-            <div className="space-y-4 flex-1">
+            <div className={horizontal ? "grid grid-cols-1 md:grid-cols-3 gap-4" : "space-y-4 flex-1"}>
                 {/* CRITICAL LQS */}
                 <div className="flex items-center justify-between p-3 bg-red-50 rounded-xl border border-red-100">
                     <div className="flex items-center space-x-3">
