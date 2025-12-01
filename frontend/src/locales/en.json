@@ -12,7 +12,8 @@
         "success": "Success",
         "copy": "Copy",
         "profile_settings": "Profile Settings",
-        "subscription": "Subscription"
+        "subscription": "Subscription",
+        "attention": "Attention"
     },
     "sidebar": {
         "dashboard": "Dashboard",
@@ -123,7 +124,8 @@
         "processing_fee": "Payment Processing Fee",
         "total_fees": "Total Fees",
         "total_costs": "Total Costs",
-        "disclaimer": "These calculations are estimates."
+        "disclaimer": "These calculations are estimates.",
+        "shipping_warning": "If you charge shipping to the customer, this amount is included in revenue and Etsy fees are calculated on this total."
     },
     "settings": {
         "title": "Settings",

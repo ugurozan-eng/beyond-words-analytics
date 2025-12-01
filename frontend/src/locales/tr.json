@@ -12,7 +12,8 @@
         "success": "Başarılı",
         "copy": "Kopyala",
         "profile_settings": "Profil Ayarları",
-        "subscription": "Abonelik"
+        "subscription": "Abonelik",
+        "attention": "Dikkat"
     },
     "sidebar": {
         "dashboard": "Panel",
@@ -123,7 +124,8 @@
         "processing_fee": "Ödeme İşlem Ücreti",
         "total_fees": "Toplam Kesintiler",
         "total_costs": "Toplam Maliyetler",
-        "disclaimer": "Bu hesaplama tahmini değerlerdir."
+        "disclaimer": "Bu hesaplama tahmini değerlerdir.",
+        "shipping_warning": "Kargo ücretini müşteriden alıyorsanız, bu tutar ciroya dahil edilir ve Etsy kesintileri bu toplam üzerinden yapılır."
     },
     "settings": {
         "title": "Ayarlar",
