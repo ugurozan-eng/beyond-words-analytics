@@ -86,7 +86,7 @@
         "critical_products": "Critical Products",
         "critical_product": "Critical Product (LQS < 50)",
         "lqs_below_50": "LQS quality is below 50 points.",
-        "fix_button": "Fix (First Aid)",
+        "fix_button": "Fix",
         "missing_tags": "Missing Tags",
         "tags_below_13": "13 tags not completed.",
         "complete_button": "Complete",
