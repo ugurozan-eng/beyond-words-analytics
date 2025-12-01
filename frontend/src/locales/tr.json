@@ -131,13 +131,11 @@
         "subscription": "Abonelik",
         "language": "Dil Seçimi"
     },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Görsel Tipi",
-        "PRODUCT_FORMAT": "Ürün Formatı",
-        "PLATFORM_SIZE": "Platform Boyutu",
-        "STYLE": "Tasarım Tarzı"
-    },
     "create_listing": {
+        "image_type": "Görsel Tipi",
+        "product_format": "Ürün Formatı",
+        "platform_size": "Platform Boyutu",
+        "style": "Tasarım Tarzı",
         "results_placeholder_title": "Sihirli Sonuçlar Burada Görünecek",
         "results_placeholder_desc": "Sol taraftan formu doldurup sihirbazı başlattığınızda sonuçlar burada listelenecektir.",
         "listing_image_mockup": "Mockup Görseli",

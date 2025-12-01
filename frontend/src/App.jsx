@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Search, List, Trash2, Settings, Crown } from 'lucide-react';
+import { TurkeyFlag, UKFlag } from './components/common/Flags';
 import NewProductModal from './components/modals/NewProductModal';
 import ReportModal from './components/modals/ReportModal';
 import SettingsModal from './components/modals/SettingsModal';
@@ -283,12 +284,20 @@ function AppContent() {
                         </div>
                     </div>
                     <div className="flex items-center space-x-2 lg:space-x-4">
-                        <div className="flex items-center space-x-2 mr-2">
-                            <button onClick={() => i18n.changeLanguage('tr')} className={`transition-opacity hover:opacity-100 ${i18n.language === 'tr' ? 'opacity-100' : 'opacity-50 grayscale'}`} title="Türkçe">
-                                <span className="text-xl">🇹🇷</span>
+                        <div className="flex items-center space-x-3 mr-4">
+                            <button
+                                onClick={() => i18n.changeLanguage('tr')}
+                                className={`transition-all duration-200 hover:scale-110 ${i18n.language === 'tr' ? 'opacity-100 scale-110 ring-2 ring-offset-1 ring-indigo-500 rounded-sm shadow-md' : 'opacity-50 hover:opacity-100 grayscale hover:grayscale-0'}`}
+                                title="Türkçe"
+                            >
+                                <TurkeyFlag className="w-7 h-5 rounded-sm shadow-sm" />
                             </button>
-                            <button onClick={() => i18n.changeLanguage('en')} className={`transition-opacity hover:opacity-100 ${i18n.language === 'en' ? 'opacity-100' : 'opacity-50 grayscale'}`} title="English">
-                                <span className="text-xl">🇬🇧</span>
+                            <button
+                                onClick={() => i18n.changeLanguage('en')}
+                                className={`transition-all duration-200 hover:scale-110 ${i18n.language === 'en' ? 'opacity-100 scale-110 ring-2 ring-offset-1 ring-indigo-500 rounded-sm shadow-md' : 'opacity-50 hover:opacity-100 grayscale hover:grayscale-0'}`}
+                                title="English"
+                            >
+                                <UKFlag className="w-7 h-5 rounded-sm shadow-sm" />
                             </button>
                         </div>
                         <div className="relative" ref={profileRef}>

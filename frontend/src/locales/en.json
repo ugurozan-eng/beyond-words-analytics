@@ -131,13 +131,11 @@
         "subscription": "Subscription",
         "language": "Language Selection"
     },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Image Type",
-        "PRODUCT_FORMAT": "Product Format",
-        "PLATFORM_SIZE": "Platform Size",
-        "STYLE": "Design Style"
-    },
     "create_listing": {
+        "image_type": "Image Type",
+        "product_format": "Product Format",
+        "platform_size": "Platform Size",
+        "style": "Design Style",
         "results_placeholder_title": "Magic Results Appear Here",
         "results_placeholder_desc": "Results will be listed here when you fill the form and start the wizard.",
         "listing_image_mockup": "Mockup Image",
