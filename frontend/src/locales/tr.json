@@ -1,18 +1,9 @@
 ﻿{
     "common": {
         "general_search": "Genel Arama...",
-        "search_placeholder": "Genel Arama...",
         "save": "Kaydet",
         "cancel": "İptal",
-        "delete": "Sil",
-        "edit": "Düzenle",
         "loading": "Yükleniyor...",
-        "logout": "Çıkış Yap",
-        "error": "Hata",
-        "success": "Başarılı",
-        "copy": "Kopyala",
-        "profile_settings": "Profil Ayarları",
-        "subscription": "Abonelik",
         "attention": "Dikkat"
     },
     "sidebar": {
@@ -21,12 +12,11 @@
         "competitor_analysis": "Rakip Analizi",
         "keyword_explorer": "Kelime Kaşifi",
         "profit_calculator": "Kâr Hesapla",
-        "analysis": "Analizler",
         "settings": "Ayarlar"
     },
     "dashboard": {
         "title": "Mağaza Yönetimi",
-        "subtitle": "LQS performansına göre ürünlerinizi yönetin.",
+        "subtitle": "Genel performans özeti ve iyileştirme fırsatları.",
         "stat_products": "Toplam Ürün",
         "stat_value": "Envanter Değeri",
         "stat_lqs": "Ortalama LQS",
@@ -42,17 +32,17 @@
         "inventory_title": "Akıllı Envanter",
         "btn_optimize": "İyileştir",
         "btn_analyze": "Analiz Et",
+        "btn_import_link": "Link ile Mağaza Ekle",
+        "btn_sync": "Etsy ile Eşle",
+        "btn_analyze_all": "Tümünü Analiz Et",
+        "last_updated": "Son Güncelleme",
+        "syncing": "Eşleniyor...",
+        "analyzing": "Analiz Başlatılıyor...",
         "lqs_explainer_title": "ℹ️ LQS (Listing Quality Score) Nedir?",
         "lqs_explainer_text": "Ürününüzün Etsy başarısını ölçen 100 puanlık kalite skorudur. Puanı artırmak, daha çok görünürlük ve satış demektir.",
         "legend_visual": "Görsel Çekicilik",
         "legend_seo": "SEO Uyumu",
-        "legend_trend": "Trend Gücü",
-        "btn_import_link": "Link ile Mağaza Ekle",
-        "last_updated": "Son Güncelleme",
-        "syncing": "Senkronize Ediliyor...",
-        "btn_sync": "Senkronize Et",
-        "analyzing": "Analiz Ediliyor...",
-        "btn_analyze_all": "Tümünü Analiz Et"
+        "legend_trend": "Trend Gücü"
     },
     "drawer": {
         "title": "Hızlı Optimizasyon",
@@ -65,45 +55,14 @@
         "mannequin_desc": "Ürün çok görüntüleniyor ama tıklanmıyor. Görsel ilgi çekmiyor.",
         "ghost_alert": "Hayalet Ürün!",
         "ghost_desc": "Ürün Etsy'de neredeyse hiç görünmüyor. SEO veya Pazar sorunu.",
-        "actions_title": "İyileştirme Aksiyonları",
-        "btn_visual_studio": "AI Görsel Stüdyosu'nu Aç",
-        "btn_seo_magic": "Sihirli SEO Uygula",
-        "btn_phoenix": "Zümrüdüanka Protokolü (Yeniden Listele)",
-        "apply_success": "Değişiklikler uygulandı!"
-    },
-    "profit_calculator": {
-        "title": "Etsy Kâr Hesaplayıcı",
-        "subtitle": "Kesintilerden sonra cebinize ne kalacağını öğrenin.",
-        "shipping_warning": "Kargo ücretini alıcıya ödetmek dönüşüm oranını düşürebilir.",
-        "shipping_charge_label": "Kargo Ücreti (Müşteriden)",
-        "product_cost": "Ürün Maliyeti",
-        "sale_price": "Satış Fiyatı"
-    },
-    "competitor_tracking": {
-        "title": "Rakip Takibi",
-        "subtitle": "Rakiplerinizin günlük performansını izleyin.",
-        "add_competitor": "Rakip Ekle",
-        "placeholder": "Mağaza adı veya linki girin..."
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Kârlı",
-        "hero_title_highlight": "Anahtar Kelimeleri",
-        "hero_title_suffix": "Keşfet",
-        "hero_subtitle": "En kârlı fırsatları bulun.",
-        "search_placeholder": "Bir kelime arayın...",
-        "discover_button": "Keşfet",
-        "popular_searches": "POPÜLER ARAMALAR"
-    },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Görsel Tipi",
-        "PRODUCT_FORMAT": "Ürün Formatı",
-        "PLATFORM_SIZE": "Platform Boyutu",
-        "STYLE": "Tasarım Tarzı"
-    },
-    "create_listing": {
-        "listing_image_mockup": "Mockup Görseli",
-        "digital_format": "Dijital Dosya",
-        "etsy_listing_size": "Etsy Standart",
-        "style_boho": "Boho / Bohem"
+        "actions_title": "Hızlı Aksiyonlar (Vuruş 1.0)",
+        "advanced_title": "İleri Seviye (Vuruş 1.5)",
+        "btn_visual_studio": "AI Görsel Stüdyosu",
+        "btn_visual_desc": "Yeni mockup üret ve dene",
+        "btn_phoenix": "Zümrüdüanka Protokolü",
+        "btn_phoenix_desc": "Ürünü sil ve yeniden listele",
+        "btn_seo_fix": "Sihirli Değişim",
+        "missing_tags": "Eksik Etiketler",
+        "seo_fix_title": "Başlık İyileştirme"
     }
 }

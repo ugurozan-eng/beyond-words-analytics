@@ -1,35 +1,22 @@
 ﻿{
     "common": {
         "general_search": "General Search...",
-        "search_placeholder": "Search...",
         "save": "Save",
         "cancel": "Cancel",
-        "delete": "Delete",
-        "edit": "Edit",
         "loading": "Loading...",
-        "logout": "Logout",
-        "error": "Error",
-        "success": "Success",
-        "copy": "Copy",
-        "profile_settings": "Profile Settings",
-        "subscription": "Subscription",
         "attention": "Attention"
     },
     "sidebar": {
         "dashboard": "Operations Center",
-        "my_shop": "My Shop",
         "ai_wizard": "AI Product Wizard",
         "competitor_analysis": "Competitor Analysis",
         "keyword_explorer": "Keyword Explorer",
         "profit_calculator": "Profit Calculator",
-        "analysis": "Analysis",
-        "settings": "Settings",
-        "pro_active": "PRO Active",
-        "pro_desc": "All features unlocked."
+        "settings": "Settings"
     },
     "dashboard": {
         "title": "Shop Management",
-        "subtitle": "Manage your products based on LQS performance.",
+        "subtitle": "Performance overview and improvement opportunities.",
         "stat_products": "Total Products",
         "stat_value": "Inventory Value",
         "stat_lqs": "Avg. LQS",
@@ -45,51 +32,37 @@
         "inventory_title": "Smart Inventory",
         "btn_optimize": "Optimize",
         "btn_analyze": "Analyze",
-        "lqs_explainer_title": "ℹ️ What is LQS (Listing Quality Score)?",
-        "lqs_explainer_text": "A 100-point quality score measuring your product's Etsy success potential. Increasing it means more visibility and sales.",
-        "legend_visual": "Visual Appeal",
-        "legend_seo": "SEO Strength",
-        "legend_trend": "Trend Power",
-        "btn_import_link": "Import Shop via Link",
+        "btn_import_link": "Import via Link",
+        "btn_sync": "Sync with Etsy",
+        "btn_analyze_all": "Analyze All",
         "last_updated": "Last Updated",
         "syncing": "Syncing...",
-        "btn_sync": "Sync Shop",
-        "analyzing": "Analyzing...",
-        "btn_analyze_all": "Analyze All"
+        "analyzing": "Starting Analysis...",
+        "lqs_explainer_title": "ℹ️ What is LQS?",
+        "lqs_explainer_text": "A 100-point score measuring Etsy success potential. Higher score means better visibility.",
+        "legend_visual": "Visual Appeal",
+        "legend_seo": "SEO Strength",
+        "legend_trend": "Trend Power"
     },
-    "profit_calculator": {
-        "title": "Etsy Profit Calculator",
-        "subtitle": "Learn exactly what stays in your pocket.",
-        "shipping_warning": "Charging for shipping may reduce conversion rates.",
-        "shipping_charge_label": "Shipping Charge (From Customer)",
-        "product_cost": "Product Cost",
-        "sale_price": "Sale Price"
-    },
-    "competitor_tracking": {
-        "title": "Competitor Tracking",
-        "subtitle": "Track your competitors' daily performance.",
-        "add_competitor": "Add Competitor",
-        "placeholder": "Enter shop name or link..."
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Discover",
-        "hero_title_highlight": "Profitable",
-        "hero_title_suffix": "Keywords",
-        "hero_subtitle": "Find the most profitable opportunities.",
-        "search_placeholder": "Search a keyword...",
-        "discover_button": "Discover",
-        "popular_searches": "POPULAR SEARCHES"
-    },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Image Type",
-        "PRODUCT_FORMAT": "Product Format",
-        "PLATFORM_SIZE": "Platform Size",
-        "STYLE": "Design Style"
-    },
-    "create_listing": {
-        "listing_image_mockup": "Mockup Image",
-        "digital_format": "Digital File",
-        "etsy_listing_size": "Etsy Standard",
-        "style_boho": "Boho / Bohemian"
+    "drawer": {
+        "title": "Quick Optimization",
+        "scorecard_title": "LQS Scorecard",
+        "visual": "Visual",
+        "seo": "SEO",
+        "trend": "Trend",
+        "diagnosis_title": "Traffic Diagnosis",
+        "mannequin_alert": "Mannequin Detected!",
+        "mannequin_desc": "High views but low clicks. Visuals might be unappealing.",
+        "ghost_alert": "Ghost Product!",
+        "ghost_desc": "Product is barely visible on Etsy. SEO or Market issue.",
+        "actions_title": "Quick Actions",
+        "advanced_title": "Advanced Actions",
+        "btn_visual_studio": "Open AI Visual Studio",
+        "btn_visual_desc": "Generate and test new mockups",
+        "btn_phoenix": "Phoenix Protocol (Relist)",
+        "btn_phoenix_desc": "Delete and relist as new",
+        "btn_seo_fix": "Magic Fix",
+        "missing_tags": "Missing Tags",
+        "seo_fix_title": "Title Optimization"
     }
 }
