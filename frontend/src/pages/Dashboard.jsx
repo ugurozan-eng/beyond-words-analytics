@@ -144,35 +144,34 @@ const Dashboard = () => {
                     )}
                 </div>
 
-                <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="flex items-start gap-3 flex-1">
-                        <div className="p-2 bg-white rounded-lg text-blue-600 shadow-sm mt-0.5">
+                <div className="mb-6 bg-blue-50 border border-blue-100 rounded-xl overflow-hidden">
+                    <div className="p-4 flex flex-col md:flex-row md:items-start gap-4">
+                        <div className="p-2 bg-white rounded-lg text-blue-600 shadow-sm mt-0.5 shrink-0">
                             <TrendingUp size={20} />
                         </div>
-                        <div>
+                        <div className="flex-1">
                             <h4 className="text-sm font-bold text-blue-900 mb-1">
-                                ℹ️ LQS (Listing Quality Score) Nedir?
+                                {t('dashboard.lqs_explainer_title')}
                             </h4>
                             <p className="text-sm text-blue-700 leading-relaxed">
-                                Ürününüzün Etsy başarısını ölçen 100 puanlık kalite skorudur.
-                                Puanı artırmak, daha çok görünürlük ve satış demektir.
+                                {t('dashboard.lqs_explainer_text')}
                             </p>
                         </div>
                     </div>
 
-                    {/* COLOR LEGEND */}
-                    <div className="flex gap-4 border-t md:border-t-0 md:border-l border-blue-200 pt-3 md:pt-0 md:pl-4">
+                    {/* NEW BAR-STYLE LEGEND (Bottom Strip) */}
+                    <div className="bg-blue-100/50 px-4 py-3 flex flex-wrap gap-6 border-t border-blue-200">
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-indigo-500"></div>
-                            <span className="text-xs font-bold text-blue-800">Görsel</span>
+                            <div className="w-10 h-2.5 rounded-sm bg-indigo-500"></div> {/* 1cm Bar */}
+                            <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_visual')}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                            <span className="text-xs font-bold text-blue-800">SEO</span>
+                            <div className="w-10 h-2.5 rounded-sm bg-blue-400"></div> {/* 1cm Bar */}
+                            <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_seo')}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-purple-400"></div>
-                            <span className="text-xs font-bold text-blue-800">Trend</span>
+                            <div className="w-10 h-2.5 rounded-sm bg-purple-400"></div> {/* 1cm Bar */}
+                            <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_trend')}</span>
                         </div>
                     </div>
                 </div>
