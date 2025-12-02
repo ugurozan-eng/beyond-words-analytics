@@ -104,23 +104,6 @@ const generateMockInventory = () => {
                 suggested_title: title + " | 2025 Trending Gift Idea (SEO Optimized)",
 
                 description_issue: "Açıklama metni ilk 160 karakterde anahtar kelime içermiyor.",
-                current_description_snippet: "This is a handmade item. Very good quality...",
-                suggested_description: "Elevate your space with this **" + title + "**... Perfect for modern homes...",
-
-                missing_tags: missingTags
-            },
-
-            // C. Visual & AI
-            visual_analysis: {
-                issue: "Görsel karanlık (Low Exposure) ve ürün odaklı değil.",
-                suggestion: "Ürünü merkeze alarak 'Studio Lighting' efekti uygulanmalı.",
-                ai_prompt: "Professional studio photography of " + title + ", white background, soft lighting, 4k resolution."
-            },
-
-            // D. Google / External Data (Ek Bilgiler)
-            external_data: {
-                google_impressions: Math.floor(Math.random() * 2000) + 100,
-                ctr: (Math.random() * 3 + 0.5).toFixed(1) + "%", // e.g. 2.1%
                 bounce_rate: (Math.random() * 40 + 30).toFixed(1) + "%", // e.g. 45%
                 market_advice: lqs < 50
                     ? "Google verilerine göre bu ürün aranmıyor. 'Phoenix Protokolü' (Sil-Yükle) önerilir."
