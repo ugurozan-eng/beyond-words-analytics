@@ -4,7 +4,8 @@
         "save": "Save",
         "cancel": "Cancel",
         "loading": "Loading...",
-        "attention": "Attention"
+        "attention": "Attention",
+        "apply": "Apply"
     },
     "sidebar": {
         "dashboard": "Operations Center",
@@ -12,6 +13,7 @@
         "competitor_analysis": "Competitor Analysis",
         "keyword_explorer": "Keyword Explorer",
         "profit_calculator": "Profit Calculator",
+        "analysis": "Analysis",
         "settings": "Settings"
     },
     "dashboard": {
@@ -45,7 +47,7 @@
         "legend_trend": "Trend Power"
     },
     "drawer": {
-        "title": "Quick Optimization",
+        "title": "Strategic Intervention",
         "scorecard_title": "LQS Scorecard",
         "visual": "Visual",
         "seo": "SEO",
@@ -55,14 +57,57 @@
         "mannequin_desc": "High views but low clicks. Visuals might be unappealing.",
         "ghost_alert": "Ghost Product!",
         "ghost_desc": "Product is barely visible on Etsy. SEO or Market issue.",
-        "actions_title": "Quick Actions",
-        "advanced_title": "Advanced Actions",
-        "btn_visual_studio": "Open AI Visual Studio",
-        "btn_visual_desc": "Generate and test new mockups",
-        "btn_phoenix": "Phoenix Protocol (Relist)",
-        "btn_phoenix_desc": "Delete and relist as new",
-        "btn_seo_fix": "Magic Fix",
-        "missing_tags": "Missing Tags",
-        "seo_fix_title": "Title Optimization"
+        "scenario_urgent_title": "🔴 Urgent Recovery Plan",
+        "scenario_urgent_msg": "This product is underperforming. Replacement is recommended.",
+        "btn_relist": "✨ Smart Relist (New Draft)",
+        "btn_relist_desc": "Create LQS 95+ draft",
+        "scenario_improve_title": "🟠 Improvement Opportunities",
+        "scenario_improve_msg": "Good potential but missing key elements.",
+        "btn_fill_tags": "Fill Missing Tags",
+        "btn_expand_title": "Expand Title",
+        "scenario_potential_title": "🔵 Competitive Edge",
+        "scenario_potential_msg": "You are close to the top. Make competitive moves.",
+        "btn_price_war": "Apply Competitive Price",
+        "btn_ab_test": "Start Visual A/B Test",
+        "scenario_star_title": "🟢 Protection Mode",
+        "scenario_star_msg": "Excellent performance. Monitor stock and reviews.",
+        "btn_check_stock": "Check Stock Level",
+        "btn_visual_studio": "AI Visual Studio",
+        "btn_visual_desc": "Generate new mockups"
+    },
+    "profit_calculator": {
+        "title": "Etsy Profit Calculator",
+        "subtitle": "Learn exactly what stays in your pocket.",
+        "shipping_warning": "Charging for shipping may reduce conversion rates.",
+        "shipping_charge_label": "Shipping Charge (From Customer)",
+        "product_cost": "Product Cost",
+        "sale_price": "Sale Price"
+    },
+    "competitor_tracking": {
+        "title": "Competitor Tracking",
+        "subtitle": "Track your competitors' daily performance.",
+        "add_competitor": "Add Competitor",
+        "placeholder": "Enter shop name or link..."
+    },
+    "keyword_explorer": {
+        "hero_title_prefix": "Discover",
+        "hero_title_highlight": "Profitable",
+        "hero_title_suffix": "Keywords",
+        "hero_subtitle": "Find the most profitable opportunities.",
+        "search_placeholder": "Search a keyword...",
+        "discover_button": "Discover",
+        "popular_searches": "POPULAR SEARCHES"
+    },
+    "CREATE_LISTING": {
+        "IMAGE_TYPE": "Image Type",
+        "PRODUCT_FORMAT": "Product Format",
+        "PLATFORM_SIZE": "Platform Size",
+        "STYLE": "Design Style"
+    },
+    "create_listing": {
+        "listing_image_mockup": "Mockup Image",
+        "digital_format": "Digital File",
+        "etsy_listing_size": "Etsy Standard",
+        "style_boho": "Boho / Bohemian"
     }
 }

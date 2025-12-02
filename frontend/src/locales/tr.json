@@ -4,7 +4,8 @@
         "save": "Kaydet",
         "cancel": "İptal",
         "loading": "Yükleniyor...",
-        "attention": "Dikkat"
+        "attention": "Dikkat",
+        "apply": "Uygula"
     },
     "sidebar": {
         "dashboard": "Operasyon Merkezi",
@@ -12,6 +13,7 @@
         "competitor_analysis": "Rakip Analizi",
         "keyword_explorer": "Kelime Kaşifi",
         "profit_calculator": "Kâr Hesapla",
+        "analysis": "Analizler",
         "settings": "Ayarlar"
     },
     "dashboard": {
@@ -45,7 +47,7 @@
         "legend_trend": "Trend Gücü"
     },
     "drawer": {
-        "title": "Hızlı Optimizasyon",
+        "title": "Stratejik Müdahale",
         "scorecard_title": "LQS Karnesi",
         "visual": "Görsel",
         "seo": "SEO",
@@ -55,14 +57,57 @@
         "mannequin_desc": "Ürün çok görüntüleniyor ama tıklanmıyor. Görsel ilgi çekmiyor.",
         "ghost_alert": "Hayalet Ürün!",
         "ghost_desc": "Ürün Etsy'de neredeyse hiç görünmüyor. SEO veya Pazar sorunu.",
-        "actions_title": "Hızlı Aksiyonlar (Vuruş 1.0)",
-        "advanced_title": "İleri Seviye (Vuruş 1.5)",
+        "scenario_urgent_title": "🔴 Acil Kurtarma Planı",
+        "scenario_urgent_msg": "Bu ürün performans göstermiyor. Tamir etmek yerine yenisini kurmalıyız.",
+        "btn_relist": "✨ Akıllı Yeniden Listeleme (Smart Relist)",
+        "btn_relist_desc": "LQS 95+ puanlı yeni taslak oluştur",
+        "scenario_improve_title": "🟠 İyileştirme Fırsatları",
+        "scenario_improve_msg": "Potansiyel var ama eksikler görünürlüğü engelliyor.",
+        "btn_fill_tags": "Eksik Etiketleri Doldur",
+        "btn_expand_title": "Başlığı Genişlet",
+        "scenario_potential_title": "🔵 Rekabet Avantajı",
+        "scenario_potential_msg": "Zirveye çok yakınsın. Rekabetçi hamleler yap.",
+        "btn_price_war": "Rekabetçi Fiyat Uygula",
+        "btn_ab_test": "Görsel A/B Testi Başlat",
+        "scenario_star_title": "🟢 Koruma Modu",
+        "scenario_star_msg": "Mükemmel performans. Sadece stok ve yorumları izle.",
+        "btn_check_stock": "Stok Durumu Kontrolü",
         "btn_visual_studio": "AI Görsel Stüdyosu",
-        "btn_visual_desc": "Yeni mockup üret ve dene",
-        "btn_phoenix": "Zümrüdüanka Protokolü",
-        "btn_phoenix_desc": "Ürünü sil ve yeniden listele",
-        "btn_seo_fix": "Sihirli Değişim",
-        "missing_tags": "Eksik Etiketler",
-        "seo_fix_title": "Başlık İyileştirme"
+        "btn_visual_desc": "Yeni mockup üret ve dene"
+    },
+    "profit_calculator": {
+        "title": "Etsy Kâr Hesaplayıcı",
+        "subtitle": "Kesintilerden sonra cebinize ne kalacağını öğrenin.",
+        "shipping_warning": "Kargo ücretini alıcıya ödetmek dönüşüm oranını düşürebilir.",
+        "shipping_charge_label": "Kargo Ücreti (Müşteriden)",
+        "product_cost": "Ürün Maliyeti",
+        "sale_price": "Satış Fiyatı"
+    },
+    "competitor_tracking": {
+        "title": "Rakip Takibi",
+        "subtitle": "Rakiplerinizin günlük performansını izleyin.",
+        "add_competitor": "Rakip Ekle",
+        "placeholder": "Mağaza adı veya linki girin..."
+    },
+    "keyword_explorer": {
+        "hero_title_prefix": "Kârlı",
+        "hero_title_highlight": "Anahtar Kelimeleri",
+        "hero_title_suffix": "Keşfet",
+        "hero_subtitle": "En kârlı fırsatları bulun.",
+        "search_placeholder": "Bir kelime arayın...",
+        "discover_button": "Keşfet",
+        "popular_searches": "POPÜLER ARAMALAR"
+    },
+    "CREATE_LISTING": {
+        "IMAGE_TYPE": "Görsel Tipi",
+        "PRODUCT_FORMAT": "Ürün Formatı",
+        "PLATFORM_SIZE": "Platform Boyutu",
+        "STYLE": "Tasarım Tarzı"
+    },
+    "create_listing": {
+        "listing_image_mockup": "Mockup Görseli",
+        "digital_format": "Dijital Dosya",
+        "etsy_listing_size": "Etsy Standart",
+        "style_boho": "Boho / Bohem"
     }
 }
