@@ -144,6 +144,22 @@ const Dashboard = () => {
                     )}
                 </div>
 
+                <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-3">
+                    <div className="p-2 bg-white rounded-lg text-blue-600 shadow-sm mt-0.5">
+                        <TrendingUp size={20} />
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-bold text-blue-900 mb-1">
+                            ℹ️ LQS (Listing Quality Score) Nedir?
+                        </h4>
+                        <p className="text-sm text-blue-700 leading-relaxed">
+                            Ürününüzün Etsy algoritmasındaki başarı potansiyelini ölçen 100 puanlık kalite skorudur.
+                            <strong> Görsel çekicilik, SEO uyumu ve Trend gücünün</strong> bileşimidir.
+                            Puanı artırmak, daha çok görünürlük ve satış demektir.
+                        </p>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <ActionCard title={t('dashboard.card_urgent')} desc={t('dashboard.card_urgent_desc')} count={stats.urgent} icon={AlertTriangle} color="red" filterType="urgent" />
                     <ActionCard title={t('dashboard.card_improve')} desc={t('dashboard.card_improve_desc')} count={stats.improve} icon={Hammer} color="orange" filterType="improve" />
