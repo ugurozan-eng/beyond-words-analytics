@@ -40,34 +40,43 @@
         "last_updated": "Son Güncelleme",
         "syncing": "Eşleniyor...",
         "analyzing": "Analiz Başlatılıyor...",
-        "product_cost": "Ürün Maliyeti",
-        "sale_price": "Satış Fiyatı"
+        "lqs_explainer_title": "ℹ️ LQS (Listing Quality Score) Nedir?",
+        "lqs_explainer_text": "Ürününüzün Etsy başarısını ölçen 100 puanlık kalite skorudur. Puanı artırmak, daha çok görünürlük ve satış demektir.",
+        "legend_visual": "Görsel Çekicilik",
+        "legend_seo": "SEO Uyumu",
+        "legend_trend": "Trend Gücü"
     },
-    "competitor_tracking": {
-        "title": "Rakip Takibi",
-        "subtitle": "Rakiplerinizin günlük performansını izleyin.",
-        "add_competitor": "Rakip Ekle",
-        "placeholder": "Mağaza adı veya linki girin..."
-    },
-    "keyword_explorer": {
-        "hero_title_prefix": "Kârlı",
-        "hero_title_highlight": "Anahtar Kelimeleri",
-        "hero_title_suffix": "Keşfet",
-        "hero_subtitle": "En kârlı fırsatları bulun.",
-        "search_placeholder": "Bir kelime arayın...",
-        "discover_button": "Keşfet",
-        "popular_searches": "POPÜLER ARAMALAR"
-    },
-    "CREATE_LISTING": {
-        "IMAGE_TYPE": "Görsel Tipi",
-        "PRODUCT_FORMAT": "Ürün Formatı",
-        "PLATFORM_SIZE": "Platform Boyutu",
-        "STYLE": "Tasarım Tarzı"
-    },
-    "create_listing": {
-        "listing_image_mockup": "Mockup Görseli",
-        "digital_format": "Dijital Dosya",
-        "etsy_listing_size": "Etsy Standart",
-        "style_boho": "Boho / Bohem"
+    "drawer": {
+        "title": "Stratejik Müdahale",
+        "mannequin_alert": "Vitrin Mankeni Tespit Edildi!",
+        "mannequin_desc": "Görüntülenme yüksek ama Tıklama (Visit) düşük. Görseliniz rakip kadar çekici değil.",
+        "ghost_alert": "Hayalet Ürün!",
+        "ghost_desc": "Ürün Etsy'de görünmüyor. Pazar veya SEO sorunu.",
+        "card_visual_title": "Görsel Çekicilik",
+        "card_visual_problem": "Problem: Görsel karanlık ve ürün odaklı değil.",
+        "card_visual_benchmark": "Kategori Lideri (Örnek)",
+        "btn_visual_studio": "AI Görsel Stüdyosu'nu Aç",
+        "card_seo_title": "Bulunabilirlik (SEO)",
+        "card_seo_problem": "Problem: Başlık kısa ve 'Long Tail' anahtar kelime içermiyor.",
+        "lbl_current_title": "Mevcut Başlık",
+        "lbl_suggested_title": "Önerilen Başlık",
+        "btn_update_etsy": "Etsy'de Güncelle",
+        "card_trend_title": "Pazar Uyumu (Trend)",
+        "card_trend_problem": "Ürün sezon trendlerine uygun ancak fiyat rekabeti yüksek.",
+        "footer_urgent": "BU ÜRÜNLE VAKİT KAYBETMEYİN",
+        "btn_relist": "Akıllı Yeniden Listeleme (Sil ve Yeni Ekle)",
+        "scenario_urgent_title": "Acil Kurtarma Planı",
+        "scenario_urgent_msg": "Bu ürün performans göstermiyor. Tamir etmek yerine yenisini kurmalıyız.",
+        "btn_relist_desc": "LQS 95+ puanlı yeni taslak oluştur",
+        "scenario_improve_title": "İyileştirme Fırsatları",
+        "scenario_improve_msg": "Potansiyel var ama eksikler görünürlüğü engelliyor.",
+        "btn_fill_tags": "Eksik Etiketleri Doldur",
+        "btn_expand_title": "Başlığı Genişlet",
+        "scenario_potential_title": "Rekabet Avantajı",
+        "scenario_potential_msg": "Zirveye çok yakınsın. Rekabetçi hamleler yap.",
+        "btn_price_war": "Rekabetçi Fiyat Uygula",
+        "btn_ab_test": "Görsel A/B Testi Başlat",
+        "scenario_star_title": "Koruma Modu",
+        "scenario_star_msg": "Mükemmel performans. Sadece stok ve yorumları izle."
     }
 }
