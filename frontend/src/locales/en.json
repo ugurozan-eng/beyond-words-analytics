@@ -44,7 +44,9 @@
         "btn_optimize": "Optimize",
         "btn_analyze": "Analyze",
         "card_optimized": "Optimized",
-        "card_optimized_desc": "High LQS and no issues"
+        "card_optimized_desc": "High LQS and no issues",
+        "status_excellent": "Excellent",
+        "status_needs_improvement": "Needs Improvement"
     },
     "profit_calculator": {
         "title": "Etsy Profit Calculator",

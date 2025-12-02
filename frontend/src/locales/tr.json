@@ -44,7 +44,9 @@
         "btn_optimize": "İyileştir",
         "btn_analyze": "Analiz Et",
         "card_optimized": "Optimize Edilmiş",
-        "card_optimized_desc": "LQS skoru yüksek ve sorunsuz"
+        "card_optimized_desc": "LQS skoru yüksek ve sorunsuz",
+        "status_excellent": "Mükemmel",
+        "status_needs_improvement": "Geliştirilmeli"
     },
     "profit_calculator": {
         "title": "Etsy Kâr Hesaplayıcı",

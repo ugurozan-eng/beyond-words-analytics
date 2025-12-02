@@ -30,13 +30,16 @@ const generateMockInventory = () => {
             status = "critical";
             lqs = Math.floor(Math.random() * 49);
             issues.push("Low Contrast", "Title too short");
-        } else if (index % 3 === 0) { // Missing Tags
+        } else if (index % 3 === 0) { // Warning items (LQS 50-79)
             status = "warning";
-            lqs = Math.floor(Math.random() * (70 - 50) + 50);
-            issues.push("Missing Tags");
+            lqs = Math.floor(Math.random() * (79 - 50) + 50);
+            issues.push("LQS < 80");
         } else if (index > 20) { // Unanalyzed
             status = "unanalyzed";
             lqs = 0;
+        } else { // Optimized (LQS 80-100)
+            status = "optimized";
+            lqs = Math.floor(Math.random() * (100 - 80) + 80);
         }
 
         return {
@@ -219,7 +222,12 @@ const Dashboard = () => {
                                         ))}
                                         {item.status === 'optimized' && (
                                             <span className="text-[10px] font-bold bg-green-50 text-green-600 px-1.5 py-0.5 rounded border border-green-100">
-                                                Good Job
+                                                {t('dashboard.status_excellent')}
+                                            </span>
+                                        )}
+                                        {item.status === 'warning' && (
+                                            <span className="text-[10px] font-bold bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded border border-orange-100">
+                                                {t('dashboard.status_needs_improvement')}
                                             </span>
                                         )}
                                     </div>
