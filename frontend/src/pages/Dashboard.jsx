@@ -6,9 +6,8 @@ import {
 } from 'lucide-react';
 import OptimizationDrawer from '../components/OptimizationDrawer';
 
-// --- MOCK DATA 5.0: ETSY API v3 SIMULATION ---
+// --- MOCK DATA 6.0: WAR ROOM INTELLIGENCE ---
 const generateMockInventory = () => {
-    // Real-world Etsy-style titles
     const titles = [
         "Minimalist Beige Wall Art Printable Abstract Line Drawing",
         "Boho Wedding Invitation Template Editable Canva Download",
@@ -37,15 +36,18 @@ const generateMockInventory = () => {
         "Travel Journal Notebook Refillable Leather Cover"
     ];
 
-    const tagsPool = ["Boho", "Minimalist", "Gift for Her", "Digital Download", "Custom", "Handmade", "Vintage", "Decor", "Art", "Printable", "Wedding", "Jewelry"];
+    const categories = {
+        art: ["Wall Art", "Digital Print", "Home Decor", "Abstract", "Boho"],
+        wedding: ["Wedding", "Invitation", "Template", "Bridal", "Editable"],
+        jewelry: ["Necklace", "Gold", "Custom", "Gift", "Personalized"]
+    };
 
     return titles.map((title, index) => {
-        // 1. Etsy API Listing Fields Simulation
-        const price = (Math.random() * 50 + 5).toFixed(2); // Random price between $5 - $55
+        // 1. Basic Stats
+        const price = (Math.random() * 50 + 5).toFixed(2);
         const quantity = Math.floor(Math.random() * 100);
-        const state = index === 20 ? "draft" : "active"; // Simulate a draft item
 
-        // 2. LQS & Status Logic
+        // 2. LQS Scoring & Status
         let lqs;
         if (index < 5) lqs = Math.floor(Math.random() * 49); // Urgent
         else if (index < 12) lqs = Math.floor(Math.random() * (74 - 50) + 50); // Improve
@@ -58,53 +60,79 @@ const generateMockInventory = () => {
         else if (lqs < 90) status = "potential";
         else status = "star";
 
-        // 3. Traffic Logic (Analytics)
-        let views = Math.floor(Math.random() * 1200);
-        let visits = Math.floor(views * (Math.random() * 0.08));
-        let sales = Math.floor(visits * 0.1); // 10% conversion from visits
+        // 3. Detailed SEO Intelligence (The Missing Link)
+        const tagsPool = ["Boho", "Minimalist", "Gift for Her", "Digital Download", "Custom", "Handmade", "Vintage", "Decor", "Art", "Printable"];
+        const currentTags = tagsPool.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3);
+        const missingTags = tagsPool.filter(t => !currentTags.includes(t)).slice(0, 4);
 
-        // Force specific scenarios
-        if (index === 0) { views = 3000; visits = 15; sales = 0; } // Mannequin
-        if (index === 4) { views = 10; visits = 0; sales = 0; }   // Ghost
-
-        // 4. Images & Tags
-        const productImg = `https://source.unsplash.com/random/300x300?sig=${index}&product`;
-        const benchmarkImg = `https://source.unsplash.com/random/300x300?sig=${index + 500}&bestseller`;
-
-        // Randomize tags (Some have full 13, some missing)
-        const currentTags = tagsPool.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 13));
-        const missingTagsCount = 13 - currentTags.length;
-        const missingTagsList = tagsPool.filter(t => !currentTags.includes(t)).slice(0, 3); // Suggest 3
+        // 4. Competitor Intelligence
+        const compPrice = (parseFloat(price) * (Math.random() < 0.5 ? 0.8 : 1.2)).toFixed(2);
+        const compSales = Math.floor(Math.random() * 5000) + 200;
 
         return {
-            // Standard Etsy API v3 Fields
+            id: index + 1,
             listing_id: 1000 + index,
             title: title,
-            description: "This is a detailed description of the product...",
-            state: state,
+            img: `https://source.unsplash.com/random/300x300?sig=${index}&product`,
+
+            // Financials
             price: price,
             currency_code: "USD",
             quantity: quantity,
-            url: "#",
-            tags: currentTags,
 
-            // Cyclear Calculated Fields
-            id: index + 1,
-            img: productImg,
-            bestSellerImg: benchmarkImg,
-            suggestedTitle: `${title} | 2025 Trending | SEO Optimized Gift`,
+            // LQS Breakdown
             lqs: lqs,
             visual_score: Math.floor(lqs * 0.4),
             seo_score: Math.floor(lqs * 0.35),
             trend_score: Math.floor(lqs * 0.25),
-            views,
-            visits,
-            sales,
-            revenue: (sales * price).toFixed(2),
-            status,
+            status: status,
+
+            // --- NEW: WAR ROOM DATA FIELDS ---
+
+            // A. Competitor Data (Kategori Lideri)
+            competitor: {
+                title: "Best Seller: " + title.split(' ').slice(0, 4).join(' ') + "...",
+                price: compPrice,
+                sales: compSales,
+                img: `https://source.unsplash.com/random/300x300?sig=${index + 500}&bestseller`,
+                tags: ["Trending 2025", "Best Seller", ...missingTags.slice(0, 2)]
+            },
+
+            // B. SEO Operations
+            seo_analysis: {
+                title_issue: "Başlık 'Long Tail' yapısına uymuyor ve çok kısa.",
+                suggested_title: title + " | 2025 Trending Gift Idea (SEO Optimized)",
+
+                description_issue: "Açıklama metni ilk 160 karakterde anahtar kelime içermiyor.",
+                current_description_snippet: "This is a handmade item. Very good quality...",
+                suggested_description: "Elevate your space with this **" + title + "**... Perfect for modern homes...",
+
+                missing_tags: missingTags
+            },
+
+            // C. Visual & AI
+            visual_analysis: {
+                issue: "Görsel karanlık (Low Exposure) ve ürün odaklı değil.",
+                suggestion: "Ürünü merkeze alarak 'Studio Lighting' efekti uygulanmalı.",
+                ai_prompt: "Professional studio photography of " + title + ", white background, soft lighting, 4k resolution."
+            },
+
+            // D. Google / External Data (Ek Bilgiler)
+            external_data: {
+                google_impressions: Math.floor(Math.random() * 2000) + 100,
+                ctr: (Math.random() * 3 + 0.5).toFixed(1) + "%", // e.g. 2.1%
+                bounce_rate: (Math.random() * 40 + 30).toFixed(1) + "%", // e.g. 45%
+                market_advice: lqs < 50
+                    ? "Google verilerine göre bu ürün aranmıyor. 'Phoenix Protokolü' (Sil-Yükle) önerilir."
+                    : "Görüntülenme yüksek ama Tıklama (CTR) düşük. Görseli değiştirin."
+            },
+
+            views: Math.floor(Math.random() * 1200),
+            visits: Math.floor(Math.random() * 100),
+            sales: Math.floor(Math.random() * 10),
+            revenue: (Math.floor(Math.random() * 10) * price).toFixed(2),
             issues: lqs < 90 ? ["Optimization Needed"] : [],
-            missingTags: missingTagsList,
-            missingTagsCount: missingTagsCount
+            missingTagsCount: missingTags.length
         };
     });
 };
