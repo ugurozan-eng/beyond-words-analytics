@@ -67,7 +67,8 @@ const Dashboard = () => {
         return {
             critical: MOCK_INVENTORY.filter(i => i.status === 'critical').length,
             warning: MOCK_INVENTORY.filter(i => i.status === 'warning').length,
-            unanalyzed: MOCK_INVENTORY.filter(i => i.status === 'unanalyzed').length
+            unanalyzed: MOCK_INVENTORY.filter(i => i.status === 'unanalyzed').length,
+            optimized: MOCK_INVENTORY.filter(i => i.status === 'optimized').length
         };
     }, []);
 
@@ -151,7 +152,7 @@ const Dashboard = () => {
                     )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <ActionCard
                         title={t('dashboard.card_critical')}
                         desc={t('dashboard.card_critical_desc')}
@@ -175,6 +176,14 @@ const Dashboard = () => {
                         icon={ScanLine}
                         color="gray"
                         filterType="unanalyzed"
+                    />
+                    <ActionCard
+                        title={t('dashboard.card_optimized')}
+                        desc={t('dashboard.card_optimized_desc')}
+                        count={stats.optimized}
+                        icon={TrendingUp}
+                        color="emerald"
+                        filterType="optimized"
                     />
                 </div>
             </div>

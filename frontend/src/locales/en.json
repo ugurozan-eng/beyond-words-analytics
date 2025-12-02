@@ -1,4 +1,4 @@
-{
+﻿{
     "common": {
         "general_search": "General Search...",
         "search_placeholder": "Search...",
@@ -42,7 +42,9 @@
         "card_unanalyzed_desc": "Not scanned yet",
         "inventory_title": "Smart Inventory",
         "btn_optimize": "Optimize",
-        "btn_analyze": "Analyze"
+        "btn_analyze": "Analyze",
+        "card_optimized": "Optimized",
+        "card_optimized_desc": "High LQS and no issues"
     },
     "profit_calculator": {
         "title": "Etsy Profit Calculator",
