@@ -321,7 +321,7 @@ const Dashboard = () => {
             {/* RIGHT SIDE: OPTIMIZATION PANEL (Collapsible Width) */}
             <div
                 className={`transition-all duration-300 ease-in-out border-l border-gray-200 bg-white flex-shrink-0 
-        ${isDrawerOpen ? 'w-[450px] translate-x-0' : 'w-0 translate-x-full overflow-hidden'}`}
+        ${isDrawerOpen ? 'w-[550px] translate-x-0' : 'w-0 translate-x-full overflow-hidden'}`}
             >
                 <OptimizationDrawer
                     isOpen={isDrawerOpen} // Pass true, handled by parent width
