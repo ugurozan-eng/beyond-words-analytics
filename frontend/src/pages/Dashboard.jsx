@@ -48,6 +48,7 @@ const generateMockInventory = () => {
             id: index + 1,
             title: title,
             img: `https://source.unsplash.com/random/150x150?sig=${index}&product`,
+            bestSellerImg: `https://source.unsplash.com/random/150x150?sig=${index + 100}&best_seller`,
             lqs: lqs,
             visual_score: Math.floor(lqs * 0.4),
             seo_score: Math.floor(lqs * 0.35),
