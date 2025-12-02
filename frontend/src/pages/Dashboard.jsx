@@ -154,169 +154,183 @@ const Dashboard = () => {
         : MOCK_INVENTORY.filter(item => item.status === filter);
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-8 animate-fade-in relative">
+        <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+            {/* 64px accounts for the Header height if fixed, adjust if needed */}
 
-            {/* --- HEADER & GLOBAL ACTIONS --- */}
-            <div className="flex flex-col md:flex-row justify-between items-end gap-4">
-                <div>
-                    <h1 className="text-3xl font-black text-gray-900">{t('dashboard.title')}</h1>
-                    <p className="text-gray-500 mt-1">{t('dashboard.subtitle')}</p>
-                </div>
+            {/* LEFT SIDE: DASHBOARD CONTENT (Flexible Width) */}
+            <div className="flex-1 overflow-y-auto p-6 transition-all duration-300 ease-in-out">
+                <div className="max-w-7xl mx-auto space-y-8 animate-fade-in relative">
 
-                {/* ACTION TOOLBAR */}
-                <div className="flex items-center gap-2">
-                    <div className="text-xs text-gray-400 mr-2 hidden lg:block">
-                        {t('dashboard.last_updated')}: <span className="font-mono text-gray-600">{lastUpdated}</span>
-                    </div>
+                    {/* --- HEADER & GLOBAL ACTIONS --- */}
+                    <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+                        <div>
+                            <h1 className="text-3xl font-black text-gray-900">{t('dashboard.title')}</h1>
+                            <p className="text-gray-500 mt-1">{t('dashboard.subtitle')}</p>
+                        </div>
 
-                    {/* IMPORT BUTTON */}
-                    <button
-                        onClick={handleImport}
-                        disabled={isImporting}
-                        className="flex items-center px-3 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-70"
-                    >
-                        <Link size={18} className={`mr-2 ${isImporting ? 'animate-pulse' : ''}`} />
-                        {isImporting ? t('common.loading') : t('dashboard.btn_import_link')}
-                    </button>
+                        {/* ACTION TOOLBAR */}
+                        <div className="flex items-center gap-2">
+                            <div className="text-xs text-gray-400 mr-2 hidden lg:block">
+                                {t('dashboard.last_updated')}: <span className="font-mono text-gray-600">{lastUpdated}</span>
+                            </div>
 
-                    {/* SYNC BUTTON */}
-                    <button
-                        onClick={handleSync}
-                        disabled={isSyncing}
-                        className="flex items-center px-3 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-70"
-                    >
-                        <RefreshCw size={18} className={`mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
-                        {isSyncing ? t('dashboard.syncing') : t('dashboard.btn_sync')}
-                    </button>
-
-                    {/* ANALYZE BUTTON */}
-                    <button
-                        onClick={handleAnalyzeAll}
-                        disabled={isAnalyzing}
-                        className="flex items-center px-4 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg disabled:opacity-70"
-                    >
-                        {isAnalyzing ? (
-                            <ScanLine size={18} className="mr-2 animate-pulse" />
-                        ) : (
-                            <Play size={18} className="mr-2 fill-current" />
-                        )}
-                        {isAnalyzing ? t('dashboard.analyzing') : t('dashboard.btn_analyze_all')}
-                    </button>
-                </div>
-            </div>
-
-            {/* PULSE BAR */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <MiniStat label={t('dashboard.stat_products')} value={MOCK_INVENTORY.length} icon={LayoutGrid} color="bg-indigo-100" />
-                <MiniStat label="Envanter Değeri" value="$12,450" icon={Zap} color="bg-emerald-100" />
-                <MiniStat label={t('dashboard.stat_lqs')} value="58.2" icon={TrendingUp} color="bg-purple-100" />
-            </div>
-
-            {/* LQS EXPLAINER BANNER (Fixed with Bars) */}
-            <div className="mb-6 bg-blue-50 border border-blue-100 rounded-xl overflow-hidden">
-                <div className="p-4 flex flex-col md:flex-row md:items-start gap-4">
-                    <div className="p-2 bg-white rounded-lg text-blue-600 shadow-sm mt-0.5 shrink-0">
-                        <TrendingUp size={20} />
-                    </div>
-                    <div className="flex-1">
-                        <h4 className="text-sm font-bold text-blue-900 mb-1">
-                            {t('dashboard.lqs_explainer_title')}
-                        </h4>
-                        <p className="text-sm text-blue-700 leading-relaxed">
-                            {t('dashboard.lqs_explainer_text')}
-                        </p>
-                    </div>
-                </div>
-                <div className="bg-blue-100/50 px-4 py-3 flex flex-wrap gap-6 border-t border-blue-200">
-                    <div className="flex items-center gap-2">
-                        <div className="w-10 h-2.5 rounded-sm bg-indigo-500"></div>
-                        <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_visual')}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-10 h-2.5 rounded-sm bg-blue-400"></div>
-                        <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_seo')}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-10 h-2.5 rounded-sm bg-purple-400"></div>
-                        <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_trend')}</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* ACTION STREAM */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <ActionCard title={t('dashboard.card_urgent')} desc={t('dashboard.card_urgent_desc')} count={stats.urgent} icon={AlertTriangle} color="red" filterType="urgent" />
-                <ActionCard title={t('dashboard.card_improve')} desc={t('dashboard.card_improve_desc')} count={stats.improve} icon={RefreshCw} color="orange" filterType="improve" />
-                <ActionCard title={t('dashboard.card_potential')} desc={t('dashboard.card_potential_desc')} count={stats.potential} icon={Zap} color="blue" filterType="potential" />
-                <ActionCard title={t('dashboard.card_star')} desc={t('dashboard.card_star_desc')} count={stats.star} icon={CheckCircle} color="green" filterType="star" />
-            </div>
-
-            {/* SMART INVENTORY */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
-                <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                    <h3 className="font-bold text-gray-800 flex items-center">
-                        <LayoutGrid size={18} className="mr-2 text-indigo-600" />
-                        {t('dashboard.inventory_title')}
-                        {filter !== 'all' && (
-                            <button onClick={() => setFilter('all')} className="ml-4 text-xs font-bold text-indigo-600 flex items-center hover:underline bg-indigo-50 px-2 py-1 rounded-lg">
-                                <RotateCcw size={12} className="mr-1" /> Filtreyi Temizle
+                            {/* IMPORT BUTTON */}
+                            <button
+                                onClick={handleImport}
+                                disabled={isImporting}
+                                className="flex items-center px-3 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-70"
+                            >
+                                <Link size={18} className={`mr-2 ${isImporting ? 'animate-pulse' : ''}`} />
+                                {isImporting ? t('common.loading') : t('dashboard.btn_import_link')}
                             </button>
-                        )}
-                    </h3>
-                </div>
 
-                <div className="divide-y divide-gray-100">
-                    {filteredData.map((item) => (
-                        <div key={item.id} className="p-4 hover:bg-gray-50 transition-colors group">
-                            <div className="flex flex-col md:flex-row md:items-center gap-4">
+                            {/* SYNC BUTTON */}
+                            <button
+                                onClick={handleSync}
+                                disabled={isSyncing}
+                                className="flex items-center px-3 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-70"
+                            >
+                                <RefreshCw size={18} className={`mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                                {isSyncing ? t('dashboard.syncing') : t('dashboard.btn_sync')}
+                            </button>
 
-                                <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200 bg-gray-100">
-                                    <img src={item.img} alt="" className="w-full h-full object-cover" />
-                                </div>
+                            {/* ANALYZE BUTTON */}
+                            <button
+                                onClick={handleAnalyzeAll}
+                                disabled={isAnalyzing}
+                                className="flex items-center px-4 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg disabled:opacity-70"
+                            >
+                                {isAnalyzing ? (
+                                    <ScanLine size={18} className="mr-2 animate-pulse" />
+                                ) : (
+                                    <Play size={18} className="mr-2 fill-current" />
+                                )}
+                                {isAnalyzing ? t('dashboard.analyzing') : t('dashboard.btn_analyze_all')}
+                            </button>
+                        </div>
+                    </div>
 
-                                <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-gray-900 truncate pr-4">{item.title}</h4>
-                                    <div className="flex items-center space-x-2 mt-1">
-                                        {item.status === 'urgent' && <span className="text-[10px] font-bold bg-red-50 text-red-600 px-1.5 py-0.5 rounded border border-red-100">Acil</span>}
-                                        {item.status === 'improve' && <span className="text-[10px] font-bold bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded border border-orange-100">Geliştirilmeli</span>}
-                                        {item.status === 'potential' && <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100">Potansiyel</span>}
-                                        {item.status === 'star' && <span className="text-[10px] font-bold bg-green-50 text-green-600 px-1.5 py-0.5 rounded border border-green-100">Mükemmel</span>}
-                                    </div>
-                                </div>
+                    {/* PULSE BAR */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <MiniStat label={t('dashboard.stat_products')} value={MOCK_INVENTORY.length} icon={LayoutGrid} color="bg-indigo-100" />
+                        <MiniStat label="Envanter Değeri" value="$12,450" icon={Zap} color="bg-emerald-100" />
+                        <MiniStat label={t('dashboard.stat_lqs')} value="58.2" icon={TrendingUp} color="bg-purple-100" />
+                    </div>
 
-                                <div className="w-full md:w-48">
-                                    <div className="flex justify-between text-xs mb-1">
-                                        <span className="font-bold text-gray-500">LQS</span>
-                                        <span className={`font-bold ${item.lqs < 50 ? 'text-red-600' : item.lqs < 75 ? 'text-orange-500' : item.lqs < 90 ? 'text-blue-500' : 'text-green-600'}`}>{item.lqs}</span>
-                                    </div>
-                                    <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden flex">
-                                        <div style={{ width: `${item.visual_score * 0.4}%` }} className="h-full bg-indigo-500"></div>
-                                        <div style={{ width: `${item.seo_score * 0.4}%` }} className="h-full bg-blue-400"></div>
-                                        <div style={{ width: `${item.trend_score * 0.4}%` }} className="h-full bg-purple-400"></div>
-                                    </div>
-                                </div>
-
-                                <div className="flex-shrink-0">
-                                    <button
-                                        onClick={() => handleOptimizeClick(item)}
-                                        className="flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200"
-                                    >
-                                        <Zap size={16} className="mr-2" /> {t('dashboard.btn_optimize')}
-                                    </button>
-                                </div>
-
+                    {/* LQS EXPLAINER BANNER (Fixed with Bars) */}
+                    <div className="mb-6 bg-blue-50 border border-blue-100 rounded-xl overflow-hidden">
+                        <div className="p-4 flex flex-col md:flex-row md:items-start gap-4">
+                            <div className="p-2 bg-white rounded-lg text-blue-600 shadow-sm mt-0.5 shrink-0">
+                                <TrendingUp size={20} />
+                            </div>
+                            <div className="flex-1">
+                                <h4 className="text-sm font-bold text-blue-900 mb-1">
+                                    {t('dashboard.lqs_explainer_title')}
+                                </h4>
+                                <p className="text-sm text-blue-700 leading-relaxed">
+                                    {t('dashboard.lqs_explainer_text')}
+                                </p>
                             </div>
                         </div>
-                    ))}
+                        <div className="bg-blue-100/50 px-4 py-3 flex flex-wrap gap-6 border-t border-blue-200">
+                            <div className="flex items-center gap-2">
+                                <div className="w-10 h-2.5 rounded-sm bg-indigo-500"></div>
+                                <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_visual')}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-10 h-2.5 rounded-sm bg-blue-400"></div>
+                                <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_seo')}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-10 h-2.5 rounded-sm bg-purple-400"></div>
+                                <span className="text-xs font-bold text-blue-900">{t('dashboard.legend_trend')}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ACTION STREAM */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <ActionCard title={t('dashboard.card_urgent')} desc={t('dashboard.card_urgent_desc')} count={stats.urgent} icon={AlertTriangle} color="red" filterType="urgent" />
+                        <ActionCard title={t('dashboard.card_improve')} desc={t('dashboard.card_improve_desc')} count={stats.improve} icon={RefreshCw} color="orange" filterType="improve" />
+                        <ActionCard title={t('dashboard.card_potential')} desc={t('dashboard.card_potential_desc')} count={stats.potential} icon={Zap} color="blue" filterType="potential" />
+                        <ActionCard title={t('dashboard.card_star')} desc={t('dashboard.card_star_desc')} count={stats.star} icon={CheckCircle} color="green" filterType="star" />
+                    </div>
+
+                    {/* SMART INVENTORY */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
+                        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <h3 className="font-bold text-gray-800 flex items-center">
+                                <LayoutGrid size={18} className="mr-2 text-indigo-600" />
+                                {t('dashboard.inventory_title')}
+                                {filter !== 'all' && (
+                                    <button onClick={() => setFilter('all')} className="ml-4 text-xs font-bold text-indigo-600 flex items-center hover:underline bg-indigo-50 px-2 py-1 rounded-lg">
+                                        <RotateCcw size={12} className="mr-1" /> Filtreyi Temizle
+                                    </button>
+                                )}
+                            </h3>
+                        </div>
+
+                        <div className="divide-y divide-gray-100">
+                            {filteredData.map((item) => (
+                                <div key={item.id} className="p-4 hover:bg-gray-50 transition-colors group">
+                                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+
+                                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200 bg-gray-100">
+                                            <img src={item.img} alt="" className="w-full h-full object-cover" />
+                                        </div>
+
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-bold text-gray-900 truncate pr-4">{item.title}</h4>
+                                            <div className="flex items-center space-x-2 mt-1">
+                                                {item.status === 'urgent' && <span className="text-[10px] font-bold bg-red-50 text-red-600 px-1.5 py-0.5 rounded border border-red-100">Acil</span>}
+                                                {item.status === 'improve' && <span className="text-[10px] font-bold bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded border border-orange-100">Geliştirilmeli</span>}
+                                                {item.status === 'potential' && <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100">Potansiyel</span>}
+                                                {item.status === 'star' && <span className="text-[10px] font-bold bg-green-50 text-green-600 px-1.5 py-0.5 rounded border border-green-100">Mükemmel</span>}
+                                            </div>
+                                        </div>
+
+                                        <div className="w-full md:w-48">
+                                            <div className="flex justify-between text-xs mb-1">
+                                                <span className="font-bold text-gray-500">LQS</span>
+                                                <span className={`font-bold ${item.lqs < 50 ? 'text-red-600' : item.lqs < 75 ? 'text-orange-500' : item.lqs < 90 ? 'text-blue-500' : 'text-green-600'}`}>{item.lqs}</span>
+                                            </div>
+                                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden flex">
+                                                <div style={{ width: `${item.visual_score * 0.4}%` }} className="h-full bg-indigo-500"></div>
+                                                <div style={{ width: `${item.seo_score * 0.4}%` }} className="h-full bg-blue-400"></div>
+                                                <div style={{ width: `${item.trend_score * 0.4}%` }} className="h-full bg-purple-400"></div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-shrink-0">
+                                            <button
+                                                onClick={() => handleOptimizeClick(item)}
+                                                className="flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200"
+                                            >
+                                                <Zap size={16} className="mr-2" /> {t('dashboard.btn_optimize')}
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <OptimizationDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                product={selectedProduct}
-                onApply={() => setIsDrawerOpen(false)}
-            />
+            {/* RIGHT SIDE: OPTIMIZATION PANEL (Collapsible Width) */}
+            <div
+                className={`transition-all duration-300 ease-in-out border-l border-gray-200 bg-white flex-shrink-0 
+        ${isDrawerOpen ? 'w-[450px] translate-x-0' : 'w-0 translate-x-full overflow-hidden'}`}
+            >
+                <OptimizationDrawer
+                    isOpen={isDrawerOpen} // Pass true, handled by parent width
+                    onClose={() => setIsDrawerOpen(false)}
+                    product={selectedProduct}
+                    onApply={() => setIsDrawerOpen(false)}
+                />
+            </div>
+
         </div>
     );
 };
