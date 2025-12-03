@@ -10,7 +10,6 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
     const [showBenchmark, setShowBenchmark] = useState(false);
     const [copiedTagId, setCopiedTagId] = useState(null);
-    const [allTagsCopied, setAllTagsCopied] = useState(false);
 
     if (!product) return null;
 
@@ -19,21 +18,13 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const ext = product.external_data || {};
     const vis = product.visual_analysis || {};
 
-    // Mock data fallbacks
     const fullCompTags = comp.tags || [];
     const compDescSnippet = comp.description_snippet || "Description unavailable...";
+    const monthlySales = Math.floor((parseFloat(comp.daily_sales || 5) * 30));
 
     // --- HANDLERS ---
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
     const handleOpenSEOEditor = () => console.log("OPEN: SEO Editor Modal");
-
-    const handleCopyAllTags = (e) => {
-        e.stopPropagation();
-        const textToCopy = fullCompTags.join(", ");
-        navigator.clipboard.writeText(textToCopy);
-        setAllTagsCopied(true);
-        setTimeout(() => setAllTagsCopied(false), 2000);
-    };
 
     const handleCopySingleTag = (tag, index) => {
         navigator.clipboard.writeText(tag);
@@ -73,7 +64,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS (MERGED & CLEANED) --- */}
+                    {/* --- A. CATEGORY LEADER CARD (SYNCED & CLEANED) --- */}
                     <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden transition-all duration-300 group">
 
                         {/* Header (CTA Logic) */}
@@ -113,16 +104,24 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             <div className="p-4 border-t border-slate-100 bg-white space-y-4">
 
                                 <div className="flex gap-4">
-                                    {/* Clean Image (No Badges) */}
+                                    {/* CLEAN IMAGE (No Badges, No Tooltips) */}
                                     <div className="relative w-24 h-24 bg-gray-100 rounded-md shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden">
-                                        <img src={comp.img} alt="Competitor" className="w-full h-full object-cover" />
+                                        <img src={comp.img} alt="Benchmark" className="w-full h-full object-cover" />
                                     </div>
 
                                     <div className="flex-1 min-w-0">
-                                        {/* Stats */}
-                                        <div className="flex flex-wrap gap-2 mb-1">
-                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">${comp.price}</span>
-                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">{comp.sales} Satış</span>
+                                        {/* STATS ROW (Updated) */}
+                                        <div className="flex flex-wrap gap-2 mb-2">
+                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                Ürün Fiyatı: ${comp.price}
+                                            </span>
+                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                {comp.sales} Satış
+                                            </span>
+                                            {/* NEW: Monthly Sales */}
+                                            <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                Aylık Ort: {monthlySales}
+                                            </span>
                                         </div>
 
                                         {/* Title with Link */}
@@ -130,14 +129,25 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                             {comp.title} <ExternalLink size={10} />
                                         </a>
 
-                                        {/* --- LQS EQUATION BAR --- */}
+                                        {/* --- LQS BAR (COMPACT) --- */}
                                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
                                             <div className="flex items-center gap-1 text-sm text-slate-700">
-                                                <div className="flex items-baseline gap-1 mr-3 border-r border-slate-300 pr-3">
+                                                {/* Main Score + Tooltip on same line */}
+                                                <div className="flex items-center gap-1 mr-3 border-r border-slate-300 pr-3">
                                                     <span className="font-bold text-slate-900 text-base">LQS</span>
                                                     <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
-                                                    <span className="text-[10px] text-slate-400">/100</span>
+                                                    <span className="text-[10px] text-slate-400 self-end mb-0.5">/100</span>
+
+                                                    {/* Mini Tooltip */}
+                                                    <div className="group relative ml-1 cursor-help">
+                                                        <div className="w-3.5 h-3.5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[9px] font-bold hover:bg-indigo-600 hover:text-white transition-colors">?</div>
+                                                        <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-800 text-white text-[10px] rounded hidden group-hover:block z-20 shadow-lg pointer-events-none">
+                                                            LQS Puanı: Görsel, SEO ve Trend başarısının toplamıdır.
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                                {/* Breakdown */}
                                                 <div className="flex items-center gap-2 text-xs">
                                                     <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">Vis <b className="text-indigo-600">{comp.lqs_visual || 32}</b></span>
                                                     <span className="text-slate-300">+</span>
@@ -160,13 +170,10 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                     </p>
                                 </div>
 
-                                {/* Tags (Click-to-Copy) */}
+                                {/* Tags (Clean - No Copy All Button) */}
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
-                                        <button onClick={handleCopyAllTags} className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors">
-                                            {allTagsCopied ? <Check size={12} /> : <Copy size={12} />} {allTagsCopied ? "Kopyalandı!" : "Tümünü Kopyala"}
-                                        </button>
                                     </div>
                                     <div className="flex flex-wrap gap-1.5">
                                         {fullCompTags.map((tag, i) => (
@@ -181,7 +188,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                         )}
                     </div>
 
-                    {/* --- B. VISUAL ANALYSIS (User Product) --- */}
+                    {/* --- B. VISUAL ANALYSIS --- */}
                     <div className="border-2 border-blue-400 bg-blue-50 rounded-xl overflow-hidden shadow-sm">
                         <div className="p-4 flex gap-4 bg-blue-100/50 border-b border-blue-200">
                             <div className="w-20 h-20 bg-white rounded-lg border border-blue-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden relative">
