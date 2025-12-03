@@ -20,10 +20,8 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const vis = product.visual_analysis || {};
 
     // Mock data fallbacks
-    const compAge = comp.age || "14 Ay";
-    const compDaily = comp.daily_sales || "5.2";
-    const compDescSnippet = comp.description_snippet || "Description unavailable...";
     const fullCompTags = comp.tags || [];
+    const compDescSnippet = comp.description_snippet || "Description unavailable...";
 
     // --- HANDLERS ---
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
@@ -75,54 +73,97 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS --- */}
-                    <div className="bg-white border border-amber-200 rounded-xl shadow-sm overflow-hidden transition-all duration-300">
-                        <button
+                    {/* --- A. COMPETITOR SPYGLASS (MERGED & CLEANED) --- */}
+                    <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden transition-all duration-300 group">
+
+                        {/* Header (CTA Logic) */}
+                        <div
                             onClick={() => setShowBenchmark(!showBenchmark)}
-                            className="w-full px-4 py-3 bg-amber-50/30 flex justify-between items-center hover:bg-amber-50/60 transition-colors group"
+                            className="flex items-center justify-between p-3 cursor-pointer bg-slate-50 hover:bg-white hover:shadow-md transition-all select-none"
                         >
-                            <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-                                <Trophy size={16} className="text-amber-500" /> Kategori Lideri
+                            <div className="flex items-center gap-3">
+                                <span className="font-bold text-slate-700 flex items-center gap-2 text-sm">
+                                    <Trophy size={16} className="text-amber-500" /> Kategori Lideri
+                                </span>
+
+                                {!showBenchmark && (
+                                    <div className="hidden sm:flex items-center gap-2 text-sm text-slate-500 animate-fadeIn">
+                                        <span className="w-px h-4 bg-slate-300 mx-1"></span>
+                                        <span className="font-semibold text-slate-800 line-clamp-1 max-w-[150px]">{comp.title}</span>
+                                        <span className="text-xs text-slate-400">•</span>
+                                        <span className="text-green-600 font-medium">${comp.price}</span>
+                                    </div>
+                                )}
                             </div>
 
-                            {!showBenchmark && (
-                                <div className="flex items-center gap-3 animate-in fade-in zoom-in">
-                                    <span className="text-xs text-amber-700/70 font-medium hidden sm:inline">LQS {comp.lqs_total || 95} • ${comp.price}</span>
-                                    <span className="text-[10px] font-bold text-blue-600 bg-white border border-blue-100 px-2 py-0.5 rounded shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <div className="flex items-center gap-2">
+                                {!showBenchmark && (
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded group-hover:bg-blue-600 group-hover:text-white transition-colors">
                                         Analizi Göster
                                     </span>
+                                )}
+                                <div className={`transform transition-transform duration-300 text-slate-400 ${showBenchmark ? 'rotate-180' : ''}`}>
+                                    <ChevronDown size={18} />
                                 </div>
-                            )}
-
-                            <div className={`text-amber-400 transition-transform duration-300 ${showBenchmark ? 'rotate-180' : ''}`}>
-                                <ChevronDown size={18} />
                             </div>
-                        </button>
+                        </div>
 
+                        {/* Body */}
                         {showBenchmark && (
-                            <div className="p-5 border-t border-amber-100 space-y-5 bg-white">
-                                {/* Identity */}
+                            <div className="p-4 border-t border-slate-100 bg-white space-y-4">
+
                                 <div className="flex gap-4">
-                                    <div className="relative shrink-0">
-                                        <img src={comp.img} className="w-20 h-20 object-cover rounded-lg border border-gray-100 shadow-sm" alt="Benchmark" />
-                                        <div className="absolute -bottom-2 -right-2 bg-indigo-50 text-indigo-700 text-[9px] font-black px-1.5 py-0.5 rounded border border-indigo-100 shadow-sm z-10">Vis {comp.lqs_visual || 32}</div>
+                                    {/* Clean Image (No Badges) */}
+                                    <div className="relative w-24 h-24 bg-gray-100 rounded-md shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden">
+                                        <img src={comp.img} alt="Competitor" className="w-full h-full object-cover" />
                                     </div>
-                                    <div className="space-y-2 flex-1 min-w-0">
-                                        <div className="flex flex-wrap gap-2 items-center">
-                                            <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">${comp.price}</span>
-                                            <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">{comp.sales} Satış</span>
-                                            <span className="text-[10px] font-black text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Trend {comp.lqs_trend || 28}</span>
+
+                                    <div className="flex-1 min-w-0">
+                                        {/* Stats */}
+                                        <div className="flex flex-wrap gap-2 mb-1">
+                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">${comp.price}</span>
+                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">{comp.sales} Satış</span>
                                         </div>
-                                        <a href={comp.url || "#"} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline leading-snug flex items-start gap-1">
-                                            {comp.title} <ExternalLink size={10} className="mt-0.5 shrink-0" />
+
+                                        {/* Title with Link */}
+                                        <a href={comp.url || "#"} target="_blank" rel="noopener noreferrer" className="font-bold text-blue-600 hover:underline text-sm leading-snug truncate pr-4 flex items-center gap-1 mb-2">
+                                            {comp.title} <ExternalLink size={10} />
                                         </a>
+
+                                        {/* --- LQS EQUATION BAR --- */}
+                                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
+                                            <div className="flex items-center gap-1 text-sm text-slate-700">
+                                                <div className="flex items-baseline gap-1 mr-3 border-r border-slate-300 pr-3">
+                                                    <span className="font-bold text-slate-900 text-base">LQS</span>
+                                                    <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
+                                                    <span className="text-[10px] text-slate-400">/100</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-xs">
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">Vis <b className="text-indigo-600">{comp.lqs_visual || 32}</b></span>
+                                                    <span className="text-slate-300">+</span>
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">SEO <b className="text-indigo-600">{comp.lqs_seo || 33}</b></span>
+                                                    <span className="text-slate-300">+</span>
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">Trend <b className="text-pink-600">{comp.lqs_trend || 27}</b></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Tags */}
+                                {/* Description */}
                                 <div>
-                                    <div className="flex justify-between items-end mb-2">
-                                        <span className="text-[9px] font-bold text-gray-400 uppercase flex items-center gap-1"><Tag size={10} /> Rakip Etiketleri</span>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ürün Açıklaması</span>
+                                    </div>
+                                    <p className="text-sm text-gray-600 italic bg-slate-50 p-3 rounded border border-slate-100 border-l-4 border-l-blue-200">
+                                        "{compDescSnippet}"
+                                    </p>
+                                </div>
+
+                                {/* Tags (Click-to-Copy) */}
+                                <div>
+                                    <div className="flex justify-between items-center mb-2">
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
                                         <button onClick={handleCopyAllTags} className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors">
                                             {allTagsCopied ? <Check size={12} /> : <Copy size={12} />} {allTagsCopied ? "Kopyalandı!" : "Tümünü Kopyala"}
                                         </button>
@@ -135,69 +176,50 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                         ))}
                                     </div>
                                 </div>
+
                             </div>
                         )}
                     </div>
 
-                    {/* --- B. VISUAL ANALYSIS (NEW USER DESIGN - SOFT FOOTER FIX) --- */}
+                    {/* --- B. VISUAL ANALYSIS (User Product) --- */}
                     <div className="border-2 border-blue-400 bg-blue-50 rounded-xl overflow-hidden shadow-sm">
-
-                        {/* Header: Görsel ve Başlık */}
                         <div className="p-4 flex gap-4 bg-blue-100/50 border-b border-blue-200">
-                            {/* Görsel */}
                             <div className="w-20 h-20 bg-white rounded-lg border border-blue-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden relative">
                                 <img src={product.img} alt="User Product" className="w-full h-full object-cover" />
                             </div>
-
-                            {/* Bilgi ve Puan */}
                             <div className="flex-1 flex justify-between items-start">
                                 <div className="pr-2">
                                     <h3 className="font-bold text-slate-800 text-sm mb-1 line-clamp-2">Senin Ürünün: {product.title}</h3>
                                     <a href="#" className="text-xs text-blue-600 hover:underline flex items-center gap-1">Ürüne Git ↗</a>
                                 </div>
-                                {/* VIS SCORE KUTUSU */}
                                 <div className="flex flex-col items-center bg-white border-2 border-slate-800 p-2 rounded shadow-sm shrink-0">
                                     <span className="text-[10px] font-bold text-slate-500 uppercase">VIS SCORE</span>
                                     <span className="text-xl font-black text-slate-900">{product.visual_score}<span className="text-xs text-slate-400">/35</span></span>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Teşhis ve Öneri */}
                         <div className="p-4 space-y-4">
-                            {/* Teşhis */}
                             <div className="flex gap-3 items-start">
-                                <div className="bg-red-100 text-red-600 p-1.5 rounded-md shrink-0 mt-0.5">
-                                    <AlertCircle size={20} />
-                                </div>
+                                <div className="bg-red-100 text-red-600 p-1.5 rounded-md shrink-0 mt-0.5"><AlertCircle size={20} /></div>
                                 <div>
                                     <h4 className="font-bold text-slate-700 text-sm">Teşhis: Tespit Edilen Sorun</h4>
                                     <p className="text-sm text-slate-600 leading-snug">{vis.issue || "Analiz bekleniyor..."}</p>
                                 </div>
                             </div>
-
-                            {/* Öneri */}
                             <div className="flex gap-3 items-start">
-                                <div className="bg-blue-100 text-blue-600 p-1.5 rounded-md shrink-0 mt-0.5">
-                                    <Lightbulb size={20} />
-                                </div>
+                                <div className="bg-blue-100 text-blue-600 p-1.5 rounded-md shrink-0 mt-0.5"><Lightbulb size={20} /></div>
                                 <div className="bg-white/60 p-3 rounded-lg border border-blue-100 w-full">
                                     <h4 className="font-bold text-slate-700 text-sm mb-1">Etsy Kriteri & Öneri</h4>
                                     <p className="text-sm text-slate-600 leading-relaxed">{vis.advice_text || "Görsel kalitesini artırın."}</p>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Aksiyon Alanı (Footer) - UPDATED COLOR */}
                         <div className="bg-indigo-50 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-indigo-100">
                             <div className="text-indigo-900 text-sm flex-1">
                                 <span className="text-amber-600 font-bold mr-2">💡 Fırsat:</span>
                                 Yüksek LQS puanlı yeni görselleri otomatik üretebilirsiniz.
                             </div>
-                            <button
-                                onClick={handleOpenVisualStudio}
-                                className="group relative flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105 shrink-0"
-                            >
+                            <button onClick={handleOpenVisualStudio} className="group relative flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105 shrink-0">
                                 <span>Sihirbazı Başlat</span>
                                 <Wand2 size={20} className="group-hover:rotate-12 transition-transform" />
                                 <div className="absolute inset-0 rounded-lg bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
@@ -205,7 +227,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                         </div>
                     </div>
 
-                    {/* --- C. SEO DIAGNOSIS (Classic Card) --- */}
+                    {/* --- C. SEO DIAGNOSIS --- */}
                     <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-5 relative overflow-hidden">
                         <div className="absolute top-5 right-5 font-black text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full border border-blue-100">{product.seo_score}/35</div>
                         <div className="font-bold text-sm text-blue-900 flex items-center gap-2 mb-4"><RefreshCw size={18} className="text-blue-500" /> SEO & Bulunabilirlik</div>
