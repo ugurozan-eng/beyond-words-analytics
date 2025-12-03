@@ -310,7 +310,7 @@ const Dashboard = () => {
             </div>
 
             {/* RIGHT SIDE: DRAWER (Fixed Width 550px) */}
-            <div className={`transition-all duration-300 ease-in-out border-l border-gray-200 bg-white flex-shrink-0 ${isDrawerOpen ? 'w-[550px] translate-x-0' : 'w-0 translate-x-full overflow-hidden'}`}>
+            <div className={`transition-all duration-300 ease-in-out border-l border-gray-200 bg-white flex-shrink-0 z-30 ${isDrawerOpen ? 'w-[900px] translate-x-0 shadow-2xl' : 'w-0 translate-x-full overflow-hidden'}`}>
                 <OptimizationDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} product={selectedProduct} onApply={() => setIsDrawerOpen(false)} />
             </div>
         </div>
