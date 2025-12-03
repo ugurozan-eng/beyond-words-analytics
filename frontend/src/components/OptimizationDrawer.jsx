@@ -76,149 +76,120 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS (Refactored Accordion) --- */}
-                    <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden mb-4 transition-all duration-300">
+                    {/* --- A. COMPETITOR SPYGLASS (Refined Accordion) --- */}
+                    <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden mb-4 transition-all duration-300 group">
                         <div
                             onClick={() => setShowBenchmark(!showBenchmark)}
-                            className="flex items-center justify-between p-3 cursor-pointer bg-slate-50 hover:bg-slate-100 select-none"
+                            className="flex items-center justify-between p-3 cursor-pointer bg-slate-50 hover:bg-white hover:shadow-md transition-all select-none"
                         >
-                            {/* Left Side: Title & Summary */}
+                            {/* Left Side: Title & Teaser */}
                             <div className="flex items-center gap-3">
-                                <span className="font-bold text-slate-700 flex items-center gap-1 text-sm">
+                                <span className="font-bold text-slate-700 flex items-center gap-2">
                                     <Trophy size={16} className="text-amber-500" /> Kategori Lideri
                                 </span>
 
-                                {/* Summary (Only when CLOSED) */}
+                                {/* Teaser Summary (Only when CLOSED) */}
                                 {!showBenchmark && (
-                                    <div className="flex items-center gap-2 text-sm text-slate-500 animate-in fade-in slide-in-from-left-2 duration-300">
+                                    <div className="hidden sm:flex items-center gap-2 text-sm text-slate-500 animate-in fade-in slide-in-from-left-2 duration-300">
                                         <span className="w-px h-4 bg-slate-300 mx-1"></span>
-                                        <span className="font-semibold text-slate-800 text-xs">{comp.shop_name || "ArtPrintStudio"}</span>
-                                        <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded border border-green-200">
-                                            {comp.revenue_monthly || "₺145K/Ay"}
-                                        </span>
+                                        <span className="font-semibold text-slate-800">{comp.shop_name || "ArtPrintStudio"}</span>
+                                        <span className="text-xs text-slate-400">•</span>
+                                        <span className="text-green-600 font-medium">{comp.revenue_monthly || "₺145K Ciro"}</span>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Right Side: Arrow */}
-                            <div className={`transform transition-transform duration-300 text-slate-400 ${showBenchmark ? 'rotate-180' : ''}`}>
-                                <ChevronDown size={16} />
+                            {/* Right Side: CTA & Arrow */}
+                            <div className="flex items-center gap-2">
+                                {/* CTA (Only when CLOSED) */}
+                                {!showBenchmark && (
+                                    <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        Analizi Göster
+                                    </span>
+                                )}
+
+                                <div className={`transform transition-transform duration-300 text-slate-400 ${showBenchmark ? 'rotate-180' : ''}`}>
+                                    <ChevronDown size={16} />
+                                </div>
                             </div>
                         </div>
 
                         {showBenchmark && (
-                            <div className="p-4 border-t border-slate-100 bg-white space-y-5 animate-in slide-in-from-top-2 duration-200">
+                            <div className="p-4 border-t border-slate-100 bg-white space-y-4 animate-in slide-in-from-top-2 duration-200">
 
-                                {/* 1. Identity & Visual Score */}
+                                {/* 1. Identity & Basic Stats */}
                                 <div className="flex gap-4">
-                                    <div className="relative shrink-0">
-                                        <img src={comp.img} className="w-20 h-20 object-cover rounded-lg border border-gray-100 shadow-sm" alt="Benchmark" />
-                                        {/* Visual LQS Badge */}
-                                        <div className="absolute -bottom-2 -right-2 bg-indigo-50 text-indigo-700 text-[9px] font-black px-1.5 py-0.5 rounded border border-indigo-100 shadow-sm z-10">
-                                            Vis {comp.lqs_visual || 32}
-                                        </div>
+                                    {/* Clean Image (No Badges) */}
+                                    <div className="relative w-24 h-24 bg-gray-100 rounded-md shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden">
+                                        <img src={comp.img} className="w-full h-full object-cover" alt="Benchmark" />
                                     </div>
 
-                                    <div className="space-y-2 flex-1 min-w-0">
-                                        <div className="flex flex-wrap gap-2 items-center">
-                                            <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">${comp.price}</span>
-                                            <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">{comp.sales} Satış</span>
-                                            {/* Trend Score Badge */}
-                                            <span className="text-[9px] font-black text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Trend {comp.lqs_trend || 28}</span>
+                                    <div className="flex-1 min-w-0">
+                                        {/* Stats Row */}
+                                        <div className="flex flex-wrap gap-2 mb-1">
+                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">${comp.price}</span>
+                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">{comp.sales} Satış</span>
                                         </div>
 
-                                        {/* Linkable Title */}
-                                        <a
-                                            href={comp.url || "#"}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline leading-snug flex items-start gap-1"
-                                        >
-                                            {comp.title} <ExternalLink size={10} className="mt-0.5 shrink-0" />
-                                        </a>
-                                    </div>
-                                </div>
+                                        {/* Title */}
+                                        <h4 className="font-bold text-blue-600 text-sm leading-snug truncate pr-4 mb-2">
+                                            <a href={comp.url || "#"} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                                {comp.title}
+                                            </a>
+                                        </h4>
 
-                                {/* --- LQS SCORE BAR --- */}
-                                <div className="bg-slate-50 border border-slate-200 rounded-md p-3 flex items-center justify-between mb-4">
-                                    {/* Left Side: Score Equation */}
-                                    <div className="flex items-center flex-wrap gap-x-2 text-sm text-slate-700">
-                                        {/* Main Score (LQS) */}
-                                        <div className="flex items-baseline gap-1 mr-2 border-r border-slate-300 pr-3">
-                                            <span className="font-bold text-slate-900 text-lg">LQS</span>
-                                            <span className="font-bold text-indigo-600 text-lg">{comp.lqs_total || 92}</span>
-                                            <span className="text-xs text-slate-400">/100</span>
-                                            <span className="text-slate-400 ml-1">=</span>
-                                        </div>
+                                        {/* --- LQS BAR (New Hero) --- */}
+                                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
+                                            {/* Main Equation */}
+                                            <div className="flex items-center gap-1 text-sm text-slate-700">
+                                                <div className="flex items-baseline gap-1 mr-3 border-r border-slate-300 pr-3">
+                                                    <span className="font-bold text-slate-900 text-base">LQS</span>
+                                                    <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
+                                                    <span className="text-xs text-slate-400">/100</span>
+                                                </div>
 
-                                        {/* Sub Scores (Equation) */}
-                                        <div className="flex items-center gap-1 text-xs sm:text-sm">
-                                            {/* Vis Score */}
-                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
-                                                <span className="font-medium text-slate-600">Vis</span>
-                                                <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-100 font-semibold">
-                                                    {comp.lqs_visual || 32}<span className="text-[10px] text-indigo-400">/35</span>
-                                                </span>
+                                                {/* Parts */}
+                                                <div className="flex items-center gap-2 text-xs">
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                        Vis <b className="text-indigo-600">{comp.lqs_visual || 32}</b>
+                                                    </span>
+                                                    <span className="text-slate-300">+</span>
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                        SEO <b className="text-indigo-600">{comp.lqs_seo || 33}</b>
+                                                    </span>
+                                                    <span className="text-slate-300">+</span>
+                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                        Trend <b className="text-pink-600">{comp.lqs_trend || 27}</b>
+                                                    </span>
+                                                </div>
                                             </div>
 
-                                            <span className="text-slate-300 font-light text-lg">+</span>
-
-                                            {/* SEO Score */}
-                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
-                                                <span className="font-medium text-slate-600">SEO</span>
-                                                <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-100 font-semibold">
-                                                    {comp.lqs_seo || 33}<span className="text-[10px] text-indigo-400">/35</span>
-                                                </span>
+                                            {/* Tooltip */}
+                                            <div className="relative group cursor-help">
+                                                <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs hover:bg-indigo-600 hover:text-white transition-colors">?</div>
+                                                <div className="absolute right-0 bottom-full mb-2 w-64 p-3 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                                                    <p className="font-bold mb-1 text-yellow-400">LQS (Listing Quality Score)</p>
+                                                    <p>Rakiplerinizin kalite puanı analizi.</p>
+                                                </div>
                                             </div>
-
-                                            <span className="text-slate-300 font-light text-lg">+</span>
-
-                                            {/* Trend Score */}
-                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
-                                                <span className="font-medium text-slate-600">Trend</span>
-                                                <span className="bg-pink-50 text-pink-700 px-1.5 py-0.5 rounded border border-pink-100 font-semibold">
-                                                    {comp.lqs_trend || 27}<span className="text-[10px] text-pink-400">/30</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Right Side: Tooltip (Question Mark) */}
-                                    <div className="relative group cursor-help ml-2">
-                                        <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold hover:bg-indigo-600 hover:text-white transition-colors">
-                                            ?
-                                        </div>
-
-                                        {/* Tooltip Content */}
-                                        <div className="absolute right-0 bottom-full mb-2 w-64 p-3 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                            <p className="font-bold mb-1 text-yellow-400">LQS (Listing Quality Score) Nedir?</p>
-                                            <p>Ürününüzün genel kalite puanıdır. Şu kriterlerin toplamından oluşur:</p>
-                                            <ul className="mt-2 space-y-1 list-disc list-inside text-gray-300">
-                                                <li><strong>Vis (Görsel):</strong> Ana görselin çekiciliği (Max: 35).</li>
-                                                <li><strong>SEO:</strong> Başlık ve etiket uyumu (Max: 35).</li>
-                                                <li><strong>Trend:</strong> Son dönem satış ivmesi (Max: 30).</li>
-                                            </ul>
-                                            <div className="absolute -bottom-1 right-2 w-3 h-3 bg-gray-800 transform rotate-45"></div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* 2. Description & SEO Score */}
+                                {/* 2. Description (Cleaned) */}
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-[9px] font-bold text-gray-400 uppercase flex items-center gap-1"><FileText size={10} /> Açıklama</span>
-                                        {/* SEO Score Badge */}
-                                        <span className="text-[9px] font-black text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">SEO {comp.lqs_seo || 34}</span>
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ürün Açıklaması</span>
                                     </div>
-                                    <div className="text-xs text-gray-600 italic bg-amber-50/20 p-2.5 rounded border border-amber-100/50 leading-relaxed">
+                                    <p className="text-sm text-gray-600 italic bg-slate-50 p-3 rounded border border-slate-100 border-l-4 border-l-blue-200 leading-relaxed">
                                         "{compDescSnippet}..."
-                                    </div>
+                                    </p>
                                 </div>
 
-                                {/* 3. ALL TAGS (Click to Copy) */}
+                                {/* 3. Tags (Cleaned) */}
                                 <div>
                                     <div className="flex justify-between items-end mb-2">
-                                        <span className="text-[9px] font-bold text-gray-400 uppercase flex items-center gap-1"><Tag size={10} /> Rakip Etiketleri ({fullCompTags.length})</span>
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
                                         <button
                                             onClick={handleCopyAllTags}
                                             className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
@@ -227,15 +198,15 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                             {allTagsCopied ? "Tümü Kopyalandı!" : "Tümünü Kopyala"}
                                         </button>
                                     </div>
-                                    <div className="flex flex-wrap gap-1.5 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="flex flex-wrap gap-2">
                                         {fullCompTags.map((tag, i) => (
                                             <button
                                                 key={i}
                                                 onClick={() => handleCopySingleTag(tag, i)}
-                                                className={`text-[10px] font-medium px-2 py-1 rounded border shadow-sm transition-all select-none
-                               ${copiedTagId === i
+                                                className={`text-xs border px-2 py-1 rounded transition-all select-none
+                                                    ${copiedTagId === i
                                                         ? 'bg-green-500 text-white border-green-600 scale-105'
-                                                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:text-blue-600 active:scale-95'}`}
+                                                        : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600 active:scale-95'}`}
                                             >
                                                 {copiedTagId === i ? "Kopyalandı!" : tag}
                                             </button>
