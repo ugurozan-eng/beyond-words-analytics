@@ -5,7 +5,7 @@ import {
     ChevronDown, ChevronUp, Trophy, TrendingUp,
     AlertTriangle, Globe, HelpCircle, Calendar, Zap, Tag, Copy, FileText, Check, ExternalLink, Lightbulb
 } from 'lucide-react';
-import VisualStudioModal from './modals/VisualStudioModal';
+import VisualArchitectModal from './VisualArchitectModal';
 
 const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
@@ -306,7 +306,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
             </div>
 
             {/* MODALS */}
-            <VisualStudioModal
+            <VisualArchitectModal
                 isOpen={showVisualStudio}
                 onClose={() => setShowVisualStudio(false)}
                 product={product}
