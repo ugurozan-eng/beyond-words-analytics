@@ -23,14 +23,13 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const fullCompTags = comp.tags || [];
     const compDescSnippet = comp.description_snippet || "Description unavailable...";
 
-    // --- CALCULATIONS ---
+    // Calculations
     const monthlySales = Math.floor((parseFloat(comp.daily_sales || 5) * 30));
-    // Revenue Calculation
     const priceVal = parseFloat(comp.price || "0");
     const salesVal = parseInt(comp.sales || "0", 10);
     const totalRevenue = (priceVal * salesVal).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
-    // --- HANDLERS ---
+    // Handlers
     const handleOpenVisualStudio = () => setShowVisualStudio(true);
     const handleOpenSEOEditor = () => console.log("OPEN: SEO Editor Modal");
 
@@ -41,37 +40,48 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     };
 
     return (
-        <div className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        // MASTER CONTAINER: Fixed to viewport, High Z-Index to prevent locking behind other elements
+        <div
+            className={`fixed inset-0 z-[100] flex justify-end transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            aria-hidden={!isOpen}
+        >
 
-            {/* Backdrop - Click to Close */}
+            {/* BACKDROP: Click to Close */}
             <div
-                className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"
+                className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity cursor-pointer"
                 onClick={onClose}
             ></div>
 
-            {/* DRAWER PANEL - WIDTH SET TO 900px */}
-            <div className={`relative w-full max-w-[900px] h-full bg-white shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out border-l border-gray-100 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            {/* DRAWER: Width set to 850px */}
+            <div
+                className={`relative w-full max-w-[850px] h-full bg-white shadow-2xl flex flex-col transform transition-transform duration-300 ease-out border-l border-gray-100 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            >
 
                 {/* 1. HEADER */}
-                <div className="px-6 py-4 bg-white border-b border-gray-100 flex-shrink-0 flex justify-between items-center relative z-10">
-                    <div className="flex items-center gap-3">
+                <div className="px-6 py-5 bg-white border-b border-gray-100 flex-shrink-0 flex justify-between items-center relative z-10">
+                    <div className="flex items-center gap-4">
                         <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">
-                            <span className="text-xs font-black text-slate-500 block leading-none">ID</span>
+                            <span className="text-[10px] font-black text-slate-400 block leading-none tracking-wider">ID</span>
                             <span className="text-sm font-black text-slate-800 leading-none">#{product.listing_id}</span>
                         </div>
                         <div>
-                            <h3 className="text-lg font-black text-slate-900 leading-none">Operasyon Merkezi</h3>
-                            <span className={`text-[10px] font-bold uppercase tracking-wider ${product.status === 'urgent' ? 'text-rose-600' : 'text-blue-600'}`}>
-                                {product.status === 'urgent' ? 'Acil Müdahale Protokolü' : 'Standart İyileştirme'}
-                            </span>
+                            <h3 className="text-xl font-bold text-slate-900 leading-none tracking-tight">Operasyon Merkezi</h3>
+                            <div className="flex items-center gap-2 mt-1">
+                                <span className={`w-2 h-2 rounded-full ${product.status === 'urgent' ? 'bg-rose-500' : 'bg-blue-500'}`}></span>
+                                <span className={`text-[11px] font-bold uppercase tracking-wider ${product.status === 'urgent' ? 'text-rose-600' : 'text-blue-600'}`}>
+                                    {product.status === 'urgent' ? 'Acil Müdahale Protokolü' : 'Standart İyileştirme'}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    {/* CLOSE BUTTON - Z-Index Boosted */}
+
+                    {/* CLOSE BUTTON: Explicitly clickable */}
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600 cursor-pointer"
+                        className="p-2 bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-700 rounded-full transition-colors cursor-pointer"
+                        aria-label="Close Drawer"
                     >
-                        <X size={28} />
+                        <X size={24} />
                     </button>
                 </div>
 
@@ -80,27 +90,23 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
 
                     {/* --- FRAME 1-2: CATEGORY LEADER CARD --- */}
                     <div className="border border-slate-200 rounded-xl bg-white shadow-sm overflow-hidden transition-all duration-300 group">
-
-                        {/* Header (Closed State) */}
                         <div
                             onClick={() => setShowBenchmark(!showBenchmark)}
                             className="flex items-center justify-between p-4 cursor-pointer bg-slate-50 hover:bg-white hover:shadow-md transition-all select-none"
                         >
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-3">
                                 <span className="font-bold text-slate-700 flex items-center gap-2 text-base">
                                     <Trophy size={18} className="text-amber-500" /> Kategori Lideri
                                 </span>
-
                                 {!showBenchmark && (
                                     <div className="hidden sm:flex items-center gap-3 text-sm text-slate-500 animate-fadeIn">
                                         <span className="w-px h-5 bg-slate-300 mx-1"></span>
-                                        <span className="font-semibold text-slate-800 line-clamp-1 max-w-[200px]">{comp.title}</span>
+                                        <span className="font-semibold text-slate-800 line-clamp-1 max-w-[250px]">{comp.title}</span>
                                         <span className="text-xs text-slate-400">•</span>
                                         <span className="text-green-600 font-black text-base">{totalRevenue} Ciro</span>
                                     </div>
                                 )}
                             </div>
-
                             <div className="flex items-center gap-3">
                                 {!showBenchmark && (
                                     <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -111,44 +117,30 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             </div>
                         </div>
 
-                        {/* Body (Open State) */}
+                        {/* Expanded Body */}
                         {showBenchmark && (
                             <div className="p-6 border-t border-slate-100 bg-white space-y-6">
-
                                 <div className="flex gap-6">
                                     {/* Clean Image */}
-                                    <div className="relative w-32 h-32 bg-gray-100 rounded-lg shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden shadow-sm">
+                                    <div className="relative w-32 h-32 bg-gray-100 rounded-xl shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden shadow-sm">
                                         <img src={comp.img} alt="Benchmark" className="w-full h-full object-cover" />
                                     </div>
-
                                     <div className="flex-1 min-w-0">
-                                        {/* Stats Row */}
-                                        <div className="flex flex-wrap gap-3 mb-3">
-                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2.5 py-1 rounded font-semibold">
-                                                Ürün Fiyatı: ${comp.price}
-                                            </span>
-                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2.5 py-1 rounded font-semibold">
-                                                {comp.sales} Satış
-                                            </span>
-                                            <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2.5 py-1 rounded font-semibold">
-                                                Aylık Ort: {monthlySales}
-                                            </span>
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2.5 py-1 rounded font-semibold">Ürün Fiyatı: ${comp.price}</span>
+                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2.5 py-1 rounded font-semibold">{comp.sales} Satış</span>
+                                            <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2.5 py-1 rounded font-semibold">Aylık Ort: {monthlySales}</span>
                                         </div>
-
                                         <a href={comp.url || "#"} target="_blank" rel="noopener noreferrer" className="font-bold text-blue-600 hover:underline text-base leading-snug truncate pr-4 flex items-center gap-1 mb-3">
-                                            {comp.title} <ExternalLink size={12} />
+                                            {comp.title} <ExternalLink size={14} />
                                         </a>
-
                                         {/* LQS Bar */}
                                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-y-2">
                                             <div className="flex items-center gap-2 text-sm text-slate-700">
-
-                                                {/* Main Score */}
                                                 <div className="flex items-center gap-2 mr-4 border-r border-slate-300 pr-4">
                                                     <span className="font-bold text-slate-900 text-lg">LQS</span>
                                                     <span className="font-black text-indigo-600 text-lg">{comp.lqs_total || 92}</span>
                                                     <span className="text-xs text-slate-400 self-end mb-1">/100</span>
-
                                                     <div className="group relative ml-1 flex items-center justify-center cursor-help">
                                                         <HelpCircle size={16} className="text-slate-400 hover:text-indigo-600 transition-colors" />
                                                         <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 bg-gray-900 text-white text-xs leading-snug rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
@@ -156,31 +148,23 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                {/* Breakdown */}
                                                 <div className="flex items-center gap-3 text-xs">
                                                     <span className="bg-white border border-slate-200 px-2 py-1 rounded text-slate-600">Vis <b className="text-indigo-600 text-sm">{comp.lqs_visual || 32}</b></span>
-                                                    <span className="text-slate-300 text-lg">+</span>
+                                                    <span className="text-slate-300">+</span>
                                                     <span className="bg-white border border-slate-200 px-2 py-1 rounded text-slate-600">SEO <b className="text-indigo-600 text-sm">{comp.lqs_seo || 33}</b></span>
-                                                    <span className="text-slate-300 text-lg">+</span>
+                                                    <span className="text-slate-300">+</span>
                                                     <span className="bg-white border border-slate-200 px-2 py-1 rounded text-slate-600">Trend <b className="text-pink-600 text-sm">{comp.lqs_trend || 27}</b></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Description */}
                                 <div>
-                                    <div className="flex justify-between items-center mb-1">
+                                    <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ürün Açıklaması</span>
                                     </div>
-                                    <p className="text-sm text-gray-600 italic bg-slate-50 p-4 rounded border border-slate-100 border-l-4 border-l-blue-200 leading-relaxed">
-                                        "{compDescSnippet}"
-                                    </p>
+                                    <p className="text-sm text-gray-600 italic bg-slate-50 p-4 rounded-lg border border-slate-100 border-l-4 border-l-blue-200 leading-relaxed">"{compDescSnippet}"</p>
                                 </div>
-
-                                {/* Tags */}
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
@@ -193,7 +177,6 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                         ))}
                                     </div>
                                 </div>
-
                             </div>
                         )}
                     </div>
