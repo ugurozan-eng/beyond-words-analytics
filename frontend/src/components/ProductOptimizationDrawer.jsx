@@ -61,7 +61,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
             ></div>
 
             {/* DRAWER PANEL */}
-            <div className={`relative w-full max-w-[600px] h-full bg-white shadow-2xl flex flex-col pointer-events-auto transform transition-transform duration-300 ease-in-out border-l border-gray-100 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`relative w-full max-w-[900px] h-full bg-white shadow-2xl flex flex-col pointer-events-auto transform transition-transform duration-300 ease-in-out border-l border-gray-100 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 
                 {/* 1. HEADER */}
                 <div className="px-6 py-4 bg-white border-b border-gray-100 flex-shrink-0 flex justify-between items-center">
