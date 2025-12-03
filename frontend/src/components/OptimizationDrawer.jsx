@@ -76,26 +76,38 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS (With LQS Scores) --- */}
-                    <div className="bg-white border border-amber-100 rounded-xl shadow-sm overflow-hidden">
-                        <button
+                    {/* --- A. COMPETITOR SPYGLASS (Refactored Accordion) --- */}
+                    <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden mb-4 transition-all duration-300">
+                        <div
                             onClick={() => setShowBenchmark(!showBenchmark)}
-                            className="w-full px-5 py-4 flex justify-between items-center hover:bg-amber-50/30 transition-colors group"
+                            className="flex items-center justify-between p-3 cursor-pointer bg-slate-50 hover:bg-slate-100 select-none"
                         >
-                            <div className="flex items-center gap-2.5 text-amber-900/80 font-bold text-sm">
-                                <Trophy size={16} className="text-amber-500" /> Kategori Lideri (Referans)
-                            </div>
+                            {/* Left Side: Title & Summary */}
                             <div className="flex items-center gap-3">
-                                {/* Total LQS Badge */}
-                                <span className="text-[10px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded border border-amber-200">
-                                    LQS {comp.lqs_total || 95}
+                                <span className="font-bold text-slate-700 flex items-center gap-1 text-sm">
+                                    <Trophy size={16} className="text-amber-500" /> Kategori Lideri
                                 </span>
-                                {showBenchmark ? <ChevronUp size={16} className="text-amber-400" /> : <ChevronDown size={16} className="text-amber-400" />}
+
+                                {/* Summary (Only when CLOSED) */}
+                                {!showBenchmark && (
+                                    <div className="flex items-center gap-2 text-sm text-slate-500 animate-in fade-in slide-in-from-left-2 duration-300">
+                                        <span className="w-px h-4 bg-slate-300 mx-1"></span>
+                                        <span className="font-semibold text-slate-800 text-xs">{comp.shop_name || "ArtPrintStudio"}</span>
+                                        <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded border border-green-200">
+                                            {comp.revenue_monthly || "₺145K/Ay"}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
-                        </button>
+
+                            {/* Right Side: Arrow */}
+                            <div className={`transform transition-transform duration-300 text-slate-400 ${showBenchmark ? 'rotate-180' : ''}`}>
+                                <ChevronDown size={16} />
+                            </div>
+                        </div>
 
                         {showBenchmark && (
-                            <div className="p-5 border-t border-amber-50 animate-in slide-in-from-top-1 space-y-5">
+                            <div className="p-4 border-t border-slate-100 bg-white space-y-5 animate-in slide-in-from-top-2 duration-200">
 
                                 {/* 1. Identity & Visual Score */}
                                 <div className="flex gap-4">
