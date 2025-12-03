@@ -21,10 +21,15 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const fullCompTags = comp.tags || [];
     const compDescSnippet = comp.description_snippet || "Description unavailable...";
 
-    // Calculations
+    // --- CALCULATIONS ---
+    // Monthly Sales Estimate
     const monthlySales = Math.floor((parseFloat(comp.daily_sales || 5) * 30));
-    const revenueValue = (parseFloat(comp.price || 0) * (comp.sales || 0));
-    const totalRevenue = revenueValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+    // Revenue Calculation (Price * Sales)
+    const priceVal = parseFloat(comp.price || 0);
+    const salesVal = parseInt(comp.sales || 0);
+    const revenueRaw = priceVal * salesVal;
+    const totalRevenue = revenueRaw.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
     // --- HANDLERS ---
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
@@ -68,10 +73,10 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS --- */}
+                    {/* --- FRAME 1-2: CATEGORY LEADER CARD (FIXED) --- */}
                     <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden transition-all duration-300 group">
 
-                        {/* Header */}
+                        {/* Header (Closed State) */}
                         <div
                             onClick={() => setShowBenchmark(!showBenchmark)}
                             className="flex items-center justify-between p-3 cursor-pointer bg-slate-50 hover:bg-white hover:shadow-md transition-all select-none"
@@ -86,6 +91,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                         <span className="w-px h-4 bg-slate-300 mx-1"></span>
                                         <span className="font-semibold text-slate-800 line-clamp-1 max-w-[150px]">{comp.title}</span>
                                         <span className="text-xs text-slate-400">•</span>
+                                        {/* TOTAL REVENUE DISPLAY */}
                                         <span className="text-green-600 font-black">{totalRevenue} Ciro</span>
                                     </div>
                                 )}
@@ -103,19 +109,21 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             </div>
                         </div>
 
-                        {/* Body */}
+                        {/* Body (Open State) */}
                         {showBenchmark && (
                             <div className="p-4 border-t border-slate-100 bg-white space-y-4">
 
                                 <div className="flex gap-4">
+                                    {/* CLEAN IMAGE: No Badges Here! */}
                                     <div className="relative w-24 h-24 bg-gray-100 rounded-md shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden">
-                                        <img src={comp.img} alt="Competitor" className="w-full h-full object-cover" />
+                                        <img src={comp.img} alt="Benchmark" className="w-full h-full object-cover" />
                                     </div>
 
                                     <div className="flex-1 min-w-0">
+                                        {/* STATS ROW */}
                                         <div className="flex flex-wrap gap-2 mb-2">
                                             <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">
-                                                Fiyat: ${comp.price}
+                                                Ürün Fiyatı: ${comp.price}
                                             </span>
                                             <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">
                                                 {comp.sales} Satış
@@ -129,21 +137,20 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                             {comp.title} <ExternalLink size={10} />
                                         </a>
 
-                                        {/* --- LQS BAR (STRICTLY ISOLATED TOOLTIP) --- */}
+                                        {/* LQS Bar with Tooltip */}
                                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
                                             <div className="flex items-center gap-1 text-sm text-slate-700">
 
-                                                {/* 1. Main Score Block (NO GROUP HERE) */}
+                                                {/* Main Score */}
                                                 <div className="flex items-center gap-1 mr-3 border-r border-slate-300 pr-3">
                                                     <span className="font-bold text-slate-900 text-base">LQS</span>
                                                     <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
                                                     <span className="text-[10px] text-slate-400 self-end mb-0.5">/100</span>
 
-                                                    {/* 2. Isolated Tooltip Wrapper (GROUP HERE) */}
-                                                    <div className="group relative ml-1 flex items-center">
-                                                        <HelpCircle size={14} className="text-slate-400 hover:text-indigo-600 transition-colors cursor-help" />
-
-                                                        {/* Tooltip Content */}
+                                                    {/* Tooltip Icon (Strictly Scoped) */}
+                                                    <div className="group relative ml-1 flex items-center justify-center cursor-help">
+                                                        <HelpCircle size={14} className="text-slate-400 hover:text-indigo-600 transition-colors" />
+                                                        {/* The Popup */}
                                                         <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-gray-900 text-white text-[10px] leading-snug rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                                                             LQS (Listing Quality Score): Görsel, SEO ve Trend başarısının 100 üzerinden puanıdır.
                                                             <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"></div>
@@ -174,7 +181,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                     </p>
                                 </div>
 
-                                {/* Tags */}
+                                {/* Tags (NO COPY ALL BUTTON) */}
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
@@ -192,7 +199,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                         )}
                     </div>
 
-                    {/* --- B. VISUAL ANALYSIS (User Product) --- */}
+                    {/* --- FRAME 1-3: VISUAL ANALYSIS --- */}
                     <div className="border-2 border-blue-400 bg-blue-50 rounded-xl overflow-hidden shadow-sm">
                         <div className="p-4 flex gap-4 bg-blue-100/50 border-b border-blue-200">
                             <div className="w-20 h-20 bg-white rounded-lg border border-blue-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden relative">
