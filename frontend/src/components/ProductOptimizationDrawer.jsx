@@ -5,11 +5,13 @@ import {
     ChevronDown, ChevronUp, Trophy, TrendingUp,
     AlertTriangle, Globe, HelpCircle, Calendar, Zap, Tag, Copy, FileText, Check, ExternalLink, Lightbulb
 } from 'lucide-react';
+import VisualStudioModal from './modals/VisualStudioModal';
 
 const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
     const [showBenchmark, setShowBenchmark] = useState(false);
     const [copiedTagId, setCopiedTagId] = useState(null);
+    const [showVisualStudio, setShowVisualStudio] = useState(false);
 
     if (!product) return null;
 
@@ -29,7 +31,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const totalRevenue = (priceVal * salesVal).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
     // --- HANDLERS ---
-    const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
+    const handleOpenVisualStudio = () => setShowVisualStudio(true);
     const handleOpenSEOEditor = () => console.log("OPEN: SEO Editor Modal");
 
     const handleCopySingleTag = (tag, index) => {
@@ -300,6 +302,13 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 )}
 
             </div>
+
+            {/* MODALS */}
+            <VisualStudioModal
+                isOpen={showVisualStudio}
+                onClose={() => setShowVisualStudio(false)}
+                product={product}
+            />
         </div>
     );
 };
