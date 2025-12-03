@@ -127,6 +127,70 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                     </div>
                                 </div>
 
+                                {/* --- LQS SCORE BAR --- */}
+                                <div className="bg-slate-50 border border-slate-200 rounded-md p-3 flex items-center justify-between mb-4">
+                                    {/* Left Side: Score Equation */}
+                                    <div className="flex items-center flex-wrap gap-x-2 text-sm text-slate-700">
+                                        {/* Main Score (LQS) */}
+                                        <div className="flex items-baseline gap-1 mr-2 border-r border-slate-300 pr-3">
+                                            <span className="font-bold text-slate-900 text-lg">LQS</span>
+                                            <span className="font-bold text-indigo-600 text-lg">{comp.lqs_total || 92}</span>
+                                            <span className="text-xs text-slate-400">/100</span>
+                                            <span className="text-slate-400 ml-1">=</span>
+                                        </div>
+
+                                        {/* Sub Scores (Equation) */}
+                                        <div className="flex items-center gap-1 text-xs sm:text-sm">
+                                            {/* Vis Score */}
+                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
+                                                <span className="font-medium text-slate-600">Vis</span>
+                                                <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-100 font-semibold">
+                                                    {comp.lqs_visual || 32}<span className="text-[10px] text-indigo-400">/35</span>
+                                                </span>
+                                            </div>
+
+                                            <span className="text-slate-300 font-light text-lg">+</span>
+
+                                            {/* SEO Score */}
+                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
+                                                <span className="font-medium text-slate-600">SEO</span>
+                                                <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-100 font-semibold">
+                                                    {comp.lqs_seo || 33}<span className="text-[10px] text-indigo-400">/35</span>
+                                                </span>
+                                            </div>
+
+                                            <span className="text-slate-300 font-light text-lg">+</span>
+
+                                            {/* Trend Score */}
+                                            <div className="flex flex-col sm:flex-row items-center sm:gap-1">
+                                                <span className="font-medium text-slate-600">Trend</span>
+                                                <span className="bg-pink-50 text-pink-700 px-1.5 py-0.5 rounded border border-pink-100 font-semibold">
+                                                    {comp.lqs_trend || 27}<span className="text-[10px] text-pink-400">/30</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Right Side: Tooltip (Question Mark) */}
+                                    <div className="relative group cursor-help ml-2">
+                                        <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold hover:bg-indigo-600 hover:text-white transition-colors">
+                                            ?
+                                        </div>
+
+                                        {/* Tooltip Content */}
+                                        <div className="absolute right-0 bottom-full mb-2 w-64 p-3 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                                            <p className="font-bold mb-1 text-yellow-400">LQS (Listing Quality Score) Nedir?</p>
+                                            <p>Ürününüzün genel kalite puanıdır. Şu kriterlerin toplamından oluşur:</p>
+                                            <ul className="mt-2 space-y-1 list-disc list-inside text-gray-300">
+                                                <li><strong>Vis (Görsel):</strong> Ana görselin çekiciliği (Max: 35).</li>
+                                                <li><strong>SEO:</strong> Başlık ve etiket uyumu (Max: 35).</li>
+                                                <li><strong>Trend:</strong> Son dönem satış ivmesi (Max: 30).</li>
+                                            </ul>
+                                            <div className="absolute -bottom-1 right-2 w-3 h-3 bg-gray-800 transform rotate-45"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* 2. Description & SEO Score */}
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
