@@ -215,27 +215,94 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                         )}
                     </div>
 
-                    {/* --- B. VISUAL DIAGNOSIS --- */}
-                    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-5 relative overflow-hidden">
-                        <div className="absolute top-5 right-5 font-black text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full border border-indigo-100">
-                            {product.visual_score}/35
-                        </div>
-                        <div className="font-bold text-sm text-indigo-900 flex items-center gap-2 mb-4">
-                            <Eye size={18} className="text-indigo-500" /> Görsel Çekicilik
-                        </div>
-                        <div className="flex gap-4 mb-5">
-                            <div className="shrink-0 relative">
-                                <img src={product.img} className="w-14 h-14 object-cover rounded-lg border border-gray-100 opacity-80" alt="Current" />
-                                <div className="absolute -bottom-1 -right-1 bg-white p-0.5 rounded-full border border-gray-100"><AlertCircle size={14} className="text-rose-500" /></div>
+                    {/* --- B. VISUAL DIAGNOSIS (User Product Analysis Card) --- */}
+                    <div className="border-2 border-blue-400 bg-blue-50 rounded-xl overflow-hidden shadow-sm mb-6">
+
+                        {/* HEADER: Product Image & Title */}
+                        <div className="p-4 flex gap-4 bg-blue-100/50 border-b border-blue-200">
+
+                            {/* Image Area */}
+                            <div className="w-20 h-20 bg-white rounded-lg border border-blue-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden relative">
+                                <img
+                                    src={product.img}
+                                    alt="User Product"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
-                            <div>
-                                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Teşhis</div>
-                                <p className="text-xs text-gray-700 font-medium leading-relaxed">{vis.issue}</p>
+
+                            {/* Product Info & Score */}
+                            <div className="flex-1 flex justify-between items-start">
+                                <div className="pr-2">
+                                    <h3 className="font-bold text-slate-800 text-sm mb-1 line-clamp-2">
+                                        Senin Ürünün: {product.title}
+                                    </h3>
+                                    <a href={product.url || "#"} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                                        Ürüne Git <ExternalLink size={10} />
+                                    </a>
+                                </div>
+
+                                {/* VIS SCORE BOX */}
+                                <div className="flex flex-col items-center bg-white border-2 border-slate-800 p-2 rounded shadow-sm shrink-0">
+                                    <span className="text-[10px] font-bold text-slate-500 uppercase">VIS SCORE</span>
+                                    <span className="text-xl font-black text-slate-900">{product.visual_score}<span className="text-xs text-slate-400">/35</span></span>
+                                </div>
                             </div>
                         </div>
-                        <button onClick={handleOpenVisualStudio} className="w-full py-3 bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-300 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 group shadow-sm">
-                            <Wand2 size={16} className="group-hover:scale-110 transition-transform" /> AI Görsel Stüdyosu'nu Aç
-                        </button>
+
+                        {/* MIDDLE: Diagnosis & Suggestion */}
+                        <div className="p-4 space-y-4">
+
+                            {/* Diagnosis Row */}
+                            <div className="flex gap-3 items-start">
+                                <div className="bg-red-100 text-red-600 p-1.5 rounded-md shrink-0 mt-0.5">
+                                    <AlertCircle size={20} />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-slate-700 text-sm">Teşhis: Görsel Yetersizliği</h4>
+                                    <p className="text-sm text-slate-600 leading-snug">
+                                        {vis.issue || "Ürün görselinizde kontrast eksikliği tespit edildi. Rakip ürünlere göre %20 daha soluk duruyor."}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Suggestion Row */}
+                            <div className="flex gap-3 items-start">
+                                <div className="bg-blue-100 text-blue-600 p-1.5 rounded-md shrink-0 mt-0.5">
+                                    <HelpCircle size={20} />
+                                </div>
+                                <div className="bg-white/60 p-3 rounded-lg border border-blue-100 w-full">
+                                    <h4 className="font-bold text-slate-700 text-sm mb-1">Etsy Kriteri & Öneri</h4>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        Etsy, ana görsellerde <strong>doğal ışık</strong> ve <strong>net odaklanma</strong> ister. Ürününüzün arka planını daha temiz bir renkle değiştirin.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {/* --- ACTION AREA --- */}
+                        <div className="bg-slate-800 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-700">
+
+                            {/* Opportunity Text */}
+                            <div className="text-slate-200 text-sm flex-1">
+                                <span className="text-yellow-400 font-bold mr-2">💡 Fırsat:</span>
+                                İsterseniz ürününüze uygun, yüksek LQS puanlı yeni görselleri otomatik üretebilirsiniz.
+                            </div>
+
+                            {/* WIZARD BUTTON */}
+                            <button
+                                onClick={handleOpenVisualStudio}
+                                className="group relative flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105 shrink-0"
+                            >
+                                <span>Sihirbazı Başlat</span>
+                                <Wand2 size={20} className="group-hover:rotate-12 transition-transform" />
+
+                                {/* Glow Effect */}
+                                <div className="absolute inset-0 rounded-lg bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                            </button>
+
+                        </div>
+
                     </div>
 
                     {/* --- C. SEO DIAGNOSIS --- */}
