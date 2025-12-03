@@ -10,7 +10,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
     const [showBenchmark, setShowBenchmark] = useState(false);
     const [copiedTagId, setCopiedTagId] = useState(null); // Track which tag was copied
-    const [allTagsCopied, setAllTagsCopied] = useState(false);
+    const [copiedTagId, setCopiedTagId] = useState(null); // Track which tag was copied
 
     if (!product) return null;
 
@@ -29,13 +29,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
     const handleOpenSEOEditor = () => console.log("OPEN: SEO Editor Modal");
 
-    const handleCopyAllTags = (e) => {
-        e.stopPropagation();
-        const textToCopy = fullCompTags.join(", ");
-        navigator.clipboard.writeText(textToCopy);
-        setAllTagsCopied(true);
-        setTimeout(() => setAllTagsCopied(false), 2000);
-    };
+
 
     const handleCopySingleTag = (tag, index) => {
         navigator.clipboard.writeText(tag);
@@ -126,9 +120,16 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
 
                                     <div className="flex-1 min-w-0">
                                         {/* Stats Row */}
-                                        <div className="flex flex-wrap gap-2 mb-1">
-                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">${comp.price}</span>
-                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">{comp.sales} Satış</span>
+                                        <div className="flex flex-wrap gap-2 mb-2">
+                                            <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                Ürün Fiyatı: ${comp.price}
+                                            </span>
+                                            <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                {comp.sales} Satış
+                                            </span>
+                                            <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2 py-0.5 rounded font-semibold">
+                                                Aylık Ort: {Math.round(comp.daily_sales * 30) || 124}
+                                            </span>
                                         </div>
 
                                         {/* Title */}
@@ -138,65 +139,61 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                             </a>
                                         </h4>
 
-                                        {/* --- LQS BAR (New Hero) --- */}
-                                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
-                                            {/* Main Equation */}
-                                            <div className="flex items-center gap-1 text-sm text-slate-700">
-                                                <div className="flex items-baseline gap-1 mr-3 border-r border-slate-300 pr-3">
-                                                    <span className="font-bold text-slate-900 text-base">LQS</span>
-                                                    <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
-                                                    <span className="text-xs text-slate-400">/100</span>
-                                                </div>
+                                        {/* --- LQS BAR (Compact) --- */}
+                                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 flex items-center gap-2 text-sm overflow-x-auto">
+                                            {/* Main LQS Block + Question Mark */}
+                                            <div className="flex items-center relative pr-3 border-r border-slate-300 gap-1 shrink-0">
+                                                <span className="font-bold text-slate-900 text-base">LQS</span>
+                                                <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
+                                                <span className="text-xs text-slate-400 self-end mb-1">/100</span>
 
-                                                {/* Parts */}
-                                                <div className="flex items-center gap-2 text-xs">
-                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
-                                                        Vis <b className="text-indigo-600">{comp.lqs_visual || 32}</b>
-                                                    </span>
-                                                    <span className="text-slate-300">+</span>
-                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
-                                                        SEO <b className="text-indigo-600">{comp.lqs_seo || 33}</b>
-                                                    </span>
-                                                    <span className="text-slate-300">+</span>
-                                                    <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
-                                                        Trend <b className="text-pink-600">{comp.lqs_trend || 27}</b>
-                                                    </span>
+                                                {/* Mini Question Mark */}
+                                                <div className="group relative ml-1">
+                                                    <div className="w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] font-bold cursor-help hover:bg-indigo-600 hover:text-white transition-colors">
+                                                        ?
+                                                    </div>
+                                                    {/* Tooltip */}
+                                                    <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-800 text-white text-xs rounded hidden group-hover:block z-20">
+                                                        Listing Quality Score: Görsel, SEO ve Trend puanlarınızın toplamıdır.
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/* Tooltip */}
-                                            <div className="relative group cursor-help">
-                                                <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs hover:bg-indigo-600 hover:text-white transition-colors">?</div>
-                                                <div className="absolute right-0 bottom-full mb-2 w-64 p-3 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                                    <p className="font-bold mb-1 text-yellow-400">LQS (Listing Quality Score)</p>
-                                                    <p>Rakiplerinizin kalite puanı analizi.</p>
-                                                </div>
+                                            {/* Equation Parts */}
+                                            <div className="flex items-center gap-2 text-xs whitespace-nowrap">
+                                                <span className="text-slate-400">=</span>
+                                                <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                    Vis <b className="text-indigo-600">{comp.lqs_visual || 32}</b>
+                                                </span>
+                                                <span className="text-slate-300">+</span>
+                                                <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                    SEO <b className="text-indigo-600">{comp.lqs_seo || 33}</b>
+                                                </span>
+                                                <span className="text-slate-300">+</span>
+                                                <span className="bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600">
+                                                    Trend <b className="text-pink-600">{comp.lqs_trend || 27}</b>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* 2. Description (Cleaned) */}
-                                <div>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ürün Açıklaması</span>
-                                    </div>
+                                <div className="mt-4">
+                                    <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+                                        Ürün Açıklaması
+                                    </h5>
                                     <p className="text-sm text-gray-600 italic bg-slate-50 p-3 rounded border border-slate-100 border-l-4 border-l-blue-200 leading-relaxed">
                                         "{compDescSnippet}..."
                                     </p>
                                 </div>
 
-                                {/* 3. Tags (Cleaned) */}
-                                <div>
-                                    <div className="flex justify-between items-end mb-2">
-                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
-                                        <button
-                                            onClick={handleCopyAllTags}
-                                            className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
-                                        >
-                                            {allTagsCopied ? <Check size={12} /> : <Copy size={12} />}
-                                            {allTagsCopied ? "Tümü Kopyalandı!" : "Tümünü Kopyala"}
-                                        </button>
+                                {/* 3. Tags (Cleaned - No Copy All) */}
+                                <div className="mt-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                            Rakip Etiketleri ({fullCompTags.length})
+                                        </span>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
                                         {fullCompTags.map((tag, i) => (
