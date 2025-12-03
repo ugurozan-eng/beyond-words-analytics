@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import OptimizationDrawer from '../components/OptimizationDrawer';
 
-// --- MOCK DATA 6.0: WAR ROOM INTELLIGENCE ---
+// --- MOCK DATA 6.1: FULL COMPETITOR INTELLIGENCE ---
 const generateMockInventory = () => {
     const titles = [
         "Minimalist Beige Wall Art Printable Abstract Line Drawing",
@@ -36,23 +36,24 @@ const generateMockInventory = () => {
         "Travel Journal Notebook Refillable Leather Cover"
     ];
 
-    const categories = {
-        art: ["Wall Art", "Digital Print", "Home Decor", "Abstract", "Boho"],
-        wedding: ["Wedding", "Invitation", "Template", "Bridal", "Editable"],
-        jewelry: ["Necklace", "Gold", "Custom", "Gift", "Personalized"]
-    };
+    const fullTagPool = [
+        "Boho Decor", "Minimalist Art", "Gift for Her", "Digital Download", "Custom Gift",
+        "Handmade", "Vintage Style", "Home Decor", "Wall Art", "Printable",
+        "Wedding Gift", "Jewelry", "Personalized", "Abstract", "Modern",
+        "Trending 2025", "Etsy Pick", "Best Seller", "Unique Gift", "Craft"
+    ];
 
     return titles.map((title, index) => {
         // 1. Basic Stats
         const price = (Math.random() * 50 + 5).toFixed(2);
         const quantity = Math.floor(Math.random() * 100);
 
-        // 2. LQS Scoring & Status
+        // 2. LQS Scoring
         let lqs;
-        if (index < 5) lqs = Math.floor(Math.random() * 49); // Urgent
-        else if (index < 12) lqs = Math.floor(Math.random() * (74 - 50) + 50); // Improve
-        else if (index < 20) lqs = Math.floor(Math.random() * (89 - 75) + 75); // Potential
-        else lqs = Math.floor(Math.random() * (100 - 90) + 90); // Star
+        if (index < 5) lqs = Math.floor(Math.random() * 49);
+        else if (index < 12) lqs = Math.floor(Math.random() * (74 - 50) + 50);
+        else if (index < 20) lqs = Math.floor(Math.random() * (89 - 75) + 75);
+        else lqs = Math.floor(Math.random() * (100 - 90) + 90);
 
         let status;
         if (lqs < 50) status = "urgent";
@@ -60,14 +61,15 @@ const generateMockInventory = () => {
         else if (lqs < 90) status = "potential";
         else status = "star";
 
-        // 3. Detailed SEO Intelligence (The Missing Link)
-        const tagsPool = ["Boho", "Minimalist", "Gift for Her", "Digital Download", "Custom", "Handmade", "Vintage", "Decor", "Art", "Printable"];
-        const currentTags = tagsPool.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3);
-        const missingTags = tagsPool.filter(t => !currentTags.includes(t)).slice(0, 4);
+        // 3. User's Current Tags (Simulate incomplete tags)
+        const currentTags = fullTagPool.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 6) + 3);
+        const missingTags = fullTagPool.filter(t => !currentTags.includes(t)).slice(0, 5);
 
-        // 4. Competitor Intelligence
+        // 4. Competitor Data (FULL 13 TAGS)
         const compPrice = (parseFloat(price) * (Math.random() < 0.5 ? 0.8 : 1.2)).toFixed(2);
         const compSales = Math.floor(Math.random() * 5000) + 200;
+        // Generate 13 random tags for the competitor
+        const competitorTags = [...fullTagPool].sort(() => 0.5 - Math.random()).slice(0, 13);
 
         return {
             id: index + 1,
@@ -75,36 +77,48 @@ const generateMockInventory = () => {
             title: title,
             img: `https://source.unsplash.com/random/300x300?sig=${index}&product`,
 
-            // Financials
             price: price,
             currency_code: "USD",
             quantity: quantity,
 
-            // LQS Breakdown
             lqs: lqs,
             visual_score: Math.floor(lqs * 0.4),
             seo_score: Math.floor(lqs * 0.35),
             trend_score: Math.floor(lqs * 0.25),
             status: status,
 
-            // --- NEW: WAR ROOM DATA FIELDS ---
+            tags: currentTags, // User's tags
 
-            // A. Competitor Data (Kategori Lideri)
+            // --- WAR ROOM DATA ---
             competitor: {
-                title: "Best Seller: " + title.split(' ').slice(0, 4).join(' ') + "...",
+                title: "Best Seller: " + title + " | High Quality | Free Shipping",
+                description_snippet: "This unique item is crafted with care and perfect for any home. We use only the finest materials to ensure longevity and style...",
                 price: compPrice,
                 sales: compSales,
+                age: "14 Ay",
+                daily_sales: "5.2",
                 img: `https://source.unsplash.com/random/300x300?sig=${index + 500}&bestseller`,
-                tags: ["Trending 2025", "Best Seller", ...missingTags.slice(0, 2)]
+                tags: competitorTags // <--- NOW SENDING 13 TAGS
             },
 
-            // B. SEO Operations
             seo_analysis: {
                 title_issue: "Başlık 'Long Tail' yapısına uymuyor ve çok kısa.",
                 suggested_title: title + " | 2025 Trending Gift Idea (SEO Optimized)",
-
                 description_issue: "Açıklama metni ilk 160 karakterde anahtar kelime içermiyor.",
-                bounce_rate: (Math.random() * 40 + 30).toFixed(1) + "%", // e.g. 45%
+                suggested_description: "Elevate your space with this **" + title + "**... Perfect for modern homes...",
+                missing_tags: missingTags,
+                missing_tagsCount: 13 - currentTags.length
+            },
+
+            visual_analysis: {
+                issue: "Görsel karanlık (Low Exposure) ve ürün odaklı değil.",
+                advice_text: "Etsy standartlarına göre görseliniz temiz, aydınlık ve ürünün kullanım alanını gösteren (Lifestyle) yapıda olmalıdır. Karmaşık arka planlardan kaçının.",
+            },
+
+            external_data: {
+                google_impressions: Math.floor(Math.random() * 2000) + 100,
+                ctr: (Math.random() * 3 + 0.5).toFixed(1) + "%",
+                bounce_rate: (Math.random() * 40 + 30).toFixed(1) + "%",
                 market_advice: lqs < 50
                     ? "Google verilerine göre bu ürün aranmıyor. 'Phoenix Protokolü' (Sil-Yükle) önerilir."
                     : "Görüntülenme yüksek ama Tıklama (CTR) düşük. Görseli değiştirin."
@@ -115,7 +129,7 @@ const generateMockInventory = () => {
             sales: Math.floor(Math.random() * 10),
             revenue: (Math.floor(Math.random() * 10) * price).toFixed(2),
             issues: lqs < 90 ? ["Optimization Needed"] : [],
-            missingTagsCount: missingTags.length
+            missingTagsCount: 13 - currentTags.length
         };
     });
 };
