@@ -10,7 +10,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
     const [showBenchmark, setShowBenchmark] = useState(false);
     const [copiedTagId, setCopiedTagId] = useState(null); // Track which tag was copied
-    const [copiedTagId, setCopiedTagId] = useState(null); // Track which tag was copied
+
 
     if (!product) return null;
 
