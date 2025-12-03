@@ -20,7 +20,10 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
 
     const fullCompTags = comp.tags || [];
     const compDescSnippet = comp.description_snippet || "Description unavailable...";
+
+    // Calculations
     const monthlySales = Math.floor((parseFloat(comp.daily_sales || 5) * 30));
+    const totalRevenue = (parseFloat(comp.price || 0) * (comp.sales || 0)).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
     // --- HANDLERS ---
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
@@ -64,7 +67,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. CATEGORY LEADER CARD (SYNCED & CLEANED) --- */}
+                    {/* --- A. COMPETITOR SPYGLASS (FINAL POLISH) --- */}
                     <div className="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden transition-all duration-300 group">
 
                         {/* Header (CTA Logic) */}
@@ -82,7 +85,8 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                         <span className="w-px h-4 bg-slate-300 mx-1"></span>
                                         <span className="font-semibold text-slate-800 line-clamp-1 max-w-[150px]">{comp.title}</span>
                                         <span className="text-xs text-slate-400">•</span>
-                                        <span className="text-green-600 font-medium">${comp.price}</span>
+                                        {/* WOW FACTOR: Total Revenue */}
+                                        <span className="text-green-600 font-black">{totalRevenue} Ciro</span>
                                     </div>
                                 )}
                             </div>
@@ -90,7 +94,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             <div className="flex items-center gap-2">
                                 {!showBenchmark && (
                                     <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                        Analizi Göster
+                                        Rakibini İncele
                                     </span>
                                 )}
                                 <div className={`transform transition-transform duration-300 text-slate-400 ${showBenchmark ? 'rotate-180' : ''}`}>
@@ -104,46 +108,44 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             <div className="p-4 border-t border-slate-100 bg-white space-y-4">
 
                                 <div className="flex gap-4">
-                                    {/* CLEAN IMAGE (No Badges, No Tooltips) */}
+                                    {/* Image */}
                                     <div className="relative w-24 h-24 bg-gray-100 rounded-md shrink-0 flex items-center justify-center border border-gray-200 overflow-hidden">
-                                        <img src={comp.img} alt="Benchmark" className="w-full h-full object-cover" />
+                                        <img src={comp.img} alt="Competitor" className="w-full h-full object-cover" />
                                     </div>
 
                                     <div className="flex-1 min-w-0">
-                                        {/* STATS ROW (Updated) */}
+                                        {/* Stats Row */}
                                         <div className="flex flex-wrap gap-2 mb-2">
                                             <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded font-semibold">
-                                                Ürün Fiyatı: ${comp.price}
+                                                Fiyat: ${comp.price}
                                             </span>
                                             <span className="bg-orange-50 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded font-semibold">
                                                 {comp.sales} Satış
                                             </span>
-                                            {/* NEW: Monthly Sales */}
                                             <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2 py-0.5 rounded font-semibold">
                                                 Aylık Ort: {monthlySales}
                                             </span>
                                         </div>
 
-                                        {/* Title with Link */}
+                                        {/* Title Link */}
                                         <a href={comp.url || "#"} target="_blank" rel="noopener noreferrer" className="font-bold text-blue-600 hover:underline text-sm leading-snug truncate pr-4 flex items-center gap-1 mb-2">
                                             {comp.title} <ExternalLink size={10} />
                                         </a>
 
-                                        {/* --- LQS BAR (COMPACT) --- */}
+                                        {/* LQS Bar */}
                                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex flex-wrap items-center justify-between gap-y-2">
                                             <div className="flex items-center gap-1 text-sm text-slate-700">
-                                                {/* Main Score + Tooltip on same line */}
-                                                <div className="flex items-center gap-1 mr-3 border-r border-slate-300 pr-3">
+
+                                                {/* Main Score + Tooltip */}
+                                                <div className="flex items-center gap-1 mr-3 border-r border-slate-300 pr-3 group relative cursor-help">
                                                     <span className="font-bold text-slate-900 text-base">LQS</span>
+                                                    <HelpCircle size={10} className="text-slate-400 mb-2" />
                                                     <span className="font-bold text-indigo-600 text-base">{comp.lqs_total || 92}</span>
                                                     <span className="text-[10px] text-slate-400 self-end mb-0.5">/100</span>
 
-                                                    {/* Mini Tooltip */}
-                                                    <div className="group relative ml-1 cursor-help">
-                                                        <div className="w-3.5 h-3.5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[9px] font-bold hover:bg-indigo-600 hover:text-white transition-colors">?</div>
-                                                        <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-800 text-white text-[10px] rounded hidden group-hover:block z-20 shadow-lg pointer-events-none">
-                                                            LQS Puanı: Görsel, SEO ve Trend başarısının toplamıdır.
-                                                        </div>
+                                                    {/* Tooltip on Hover */}
+                                                    <div className="absolute left-0 bottom-full mb-1 w-48 p-2 bg-gray-800 text-white text-[10px] rounded hidden group-hover:block z-20 shadow-lg pointer-events-none">
+                                                        LQS (Listing Quality Score): Görsel, SEO ve Trend başarısının 100 üzerinden puanıdır.
                                                     </div>
                                                 </div>
 
@@ -170,7 +172,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                     </p>
                                 </div>
 
-                                {/* Tags (Clean - No Copy All Button) */}
+                                {/* Tags (Individual Copy Only) */}
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rakip Etiketleri ({fullCompTags.length})</span>
@@ -188,7 +190,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                         )}
                     </div>
 
-                    {/* --- B. VISUAL ANALYSIS --- */}
+                    {/* --- B. VISUAL ANALYSIS (User Product) --- */}
                     <div className="border-2 border-blue-400 bg-blue-50 rounded-xl overflow-hidden shadow-sm">
                         <div className="p-4 flex gap-4 bg-blue-100/50 border-b border-blue-200">
                             <div className="w-20 h-20 bg-white rounded-lg border border-blue-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden relative">
