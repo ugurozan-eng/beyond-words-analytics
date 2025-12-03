@@ -4,7 +4,7 @@ import {
     TrendingUp, AlertTriangle, Hammer, Star,
     LayoutGrid, RotateCcw, CheckCircle, Zap, RefreshCw, Play, Link, ScanLine
 } from 'lucide-react';
-import OptimizationDrawer from '../components/OptimizationDrawer';
+import OptimizationDrawer from '../components/ProductOptimizationDrawer';
 
 // --- MOCK DATA 6.1: FULL COMPETITOR INTELLIGENCE ---
 const generateMockInventory = () => {
