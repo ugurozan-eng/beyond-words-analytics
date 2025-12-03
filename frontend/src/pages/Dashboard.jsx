@@ -98,7 +98,12 @@ const generateMockInventory = () => {
                 age: "14 Ay",
                 daily_sales: "5.2",
                 img: `https://source.unsplash.com/random/300x300?sig=${index + 500}&bestseller`,
-                tags: competitorTags // <--- NOW SENDING 13 TAGS
+                tags: competitorTags, // <--- NOW SENDING 13 TAGS
+                lqs_total: 92,
+                lqs_visual: 32, // out of 35
+                lqs_seo: 33,    // out of 35
+                lqs_trend: 27,  // out of 30
+                url: "https://www.etsy.com/search?q=" + encodeURIComponent(title)
             },
 
             seo_analysis: {

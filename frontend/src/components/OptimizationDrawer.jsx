@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import {
     X, Wand2, AlertCircle, Eye, RefreshCw, Flame,
     ChevronDown, ChevronUp, Trophy, TrendingUp,
-    AlertTriangle, Globe, HelpCircle, Calendar, Zap, Tag, Copy, FileText, Check
+    AlertTriangle, Globe, HelpCircle, Calendar, Zap, Tag, Copy, FileText, Check, ExternalLink
 } from 'lucide-react';
 
 const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const { t } = useTranslation();
     const [showBenchmark, setShowBenchmark] = useState(false);
-    const [copiedTags, setCopiedTags] = useState(false);
+    const [copiedTagId, setCopiedTagId] = useState(null); // Track which tag was copied
+    const [allTagsCopied, setAllTagsCopied] = useState(false);
 
     if (!product) return null;
 
@@ -18,26 +19,28 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
     const ext = product.external_data || {};
     const vis = product.visual_analysis || {};
 
-    // --- MOCK DATA FOR NEW FIELDS ---
+    // Mock data fallbacks
     const compAge = comp.age || "14 Ay";
     const compDaily = comp.daily_sales || "5.2";
-    // Simulate full tag list if not present
-    const fullCompTags = comp.tags && comp.tags.length > 3 ? comp.tags : [
-        "Boho Wall Art", "Abstract Print", "Minimalist Decor", "Digital Download",
-        "Beige Aesthetic", "Living Room Art", "Printable Art", "Line Drawing",
-        "Neutral Tones", "Modern Home", "Gift for Her", "Instant Download", "DIY Decor"
-    ];
-    const compDescSnippet = comp.description_snippet || "Elevate your living space with this unique bohemian wall art. Perfect for modern minimalist homes, this digital download allows you to...";
+    const compDescSnippet = comp.description_snippet || "Description unavailable...";
+    const fullCompTags = comp.tags || ["Mock Tag 1", "Mock Tag 2"];
 
     // --- HANDLERS ---
     const handleOpenVisualStudio = () => console.log("OPEN: Visual Studio Modal");
     const handleOpenSEOEditor = () => console.log("OPEN: SEO Editor Modal");
 
-    const handleCopyTags = () => {
+    const handleCopyAllTags = (e) => {
+        e.stopPropagation();
         const textToCopy = fullCompTags.join(", ");
         navigator.clipboard.writeText(textToCopy);
-        setCopiedTags(true);
-        setTimeout(() => setCopiedTags(false), 2000);
+        setAllTagsCopied(true);
+        setTimeout(() => setAllTagsCopied(false), 2000);
+    };
+
+    const handleCopySingleTag = (tag, index) => {
+        navigator.clipboard.writeText(tag);
+        setCopiedTagId(index);
+        setTimeout(() => setCopiedTagId(null), 1500);
     };
 
     return (
@@ -73,7 +76,7 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                 {/* 2. DIAGNOSTIC STREAM */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FAFC]">
 
-                    {/* --- A. COMPETITOR SPYGLASS (Expanded) --- */}
+                    {/* --- A. COMPETITOR SPYGLASS (With LQS Scores) --- */}
                     <div className="bg-white border border-amber-100 rounded-xl shadow-sm overflow-hidden">
                         <button
                             onClick={() => setShowBenchmark(!showBenchmark)}
@@ -82,53 +85,84 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                             <div className="flex items-center gap-2.5 text-amber-900/80 font-bold text-sm">
                                 <Trophy size={16} className="text-amber-500" /> Kategori Lideri (Referans)
                             </div>
-                            {showBenchmark ? <ChevronUp size={16} className="text-amber-400" /> : <ChevronDown size={16} className="text-amber-400" />}
+                            <div className="flex items-center gap-3">
+                                {/* Total LQS Badge */}
+                                <span className="text-[10px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded border border-amber-200">
+                                    LQS {comp.lqs_total || 95}
+                                </span>
+                                {showBenchmark ? <ChevronUp size={16} className="text-amber-400" /> : <ChevronDown size={16} className="text-amber-400" />}
+                            </div>
                         </button>
 
                         {showBenchmark && (
                             <div className="p-5 border-t border-amber-50 animate-in slide-in-from-top-1 space-y-5">
 
-                                {/* 1. Identity & Stats */}
+                                {/* 1. Identity & Visual Score */}
                                 <div className="flex gap-4">
-                                    <img src={comp.img} className="w-20 h-20 object-cover rounded-lg border border-gray-100 shadow-sm shrink-0" alt="Benchmark" />
-                                    <div className="space-y-2 flex-1">
-                                        <div className="flex flex-wrap gap-2">
+                                    <div className="relative shrink-0">
+                                        <img src={comp.img} className="w-20 h-20 object-cover rounded-lg border border-gray-100 shadow-sm" alt="Benchmark" />
+                                        {/* Visual LQS Badge */}
+                                        <div className="absolute -bottom-2 -right-2 bg-indigo-50 text-indigo-700 text-[9px] font-black px-1.5 py-0.5 rounded border border-indigo-100 shadow-sm z-10">
+                                            Vis {comp.lqs_visual || 32}
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 flex-1 min-w-0">
+                                        <div className="flex flex-wrap gap-2 items-center">
                                             <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">${comp.price}</span>
                                             <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">{comp.sales} Satış</span>
-                                            <span className="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">{compAge}</span>
+                                            {/* Trend Score Badge */}
+                                            <span className="text-[9px] font-black text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Trend {comp.lqs_trend || 28}</span>
                                         </div>
-                                        {/* Full Title */}
-                                        <div className="text-xs font-medium text-gray-900 leading-snug bg-gray-50 p-2 rounded border border-gray-100">
-                                            {comp.title}
-                                        </div>
+
+                                        {/* Linkable Title */}
+                                        <a
+                                            href={comp.url || "#"}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline leading-snug flex items-start gap-1"
+                                        >
+                                            {comp.title} <ExternalLink size={10} className="mt-0.5 shrink-0" />
+                                        </a>
                                     </div>
                                 </div>
 
-                                {/* 2. Description Snippet */}
+                                {/* 2. Description & SEO Score */}
                                 <div>
-                                    <span className="text-[9px] font-bold text-gray-400 uppercase block mb-1 flex items-center gap-1"><FileText size={10} /> Açıklama (İlk 120 Karakter)</span>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="text-[9px] font-bold text-gray-400 uppercase flex items-center gap-1"><FileText size={10} /> Açıklama</span>
+                                        {/* SEO Score Badge */}
+                                        <span className="text-[9px] font-black text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">SEO {comp.lqs_seo || 34}</span>
+                                    </div>
                                     <div className="text-xs text-gray-600 italic bg-amber-50/20 p-2.5 rounded border border-amber-100/50 leading-relaxed">
                                         "{compDescSnippet}..."
                                     </div>
                                 </div>
 
-                                {/* 3. ALL TAGS (The Spy Tool) */}
+                                {/* 3. ALL TAGS (Click to Copy) */}
                                 <div>
                                     <div className="flex justify-between items-end mb-2">
                                         <span className="text-[9px] font-bold text-gray-400 uppercase flex items-center gap-1"><Tag size={10} /> Rakip Etiketleri ({fullCompTags.length})</span>
                                         <button
-                                            onClick={handleCopyTags}
+                                            onClick={handleCopyAllTags}
                                             className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
                                         >
-                                            {copiedTags ? <Check size={12} /> : <Copy size={12} />}
-                                            {copiedTags ? "Kopyalandı!" : "Tümünü Kopyala"}
+                                            {allTagsCopied ? <Check size={12} /> : <Copy size={12} />}
+                                            {allTagsCopied ? "Tümü Kopyalandı!" : "Tümünü Kopyala"}
                                         </button>
                                     </div>
                                     <div className="flex flex-wrap gap-1.5 p-3 bg-gray-50 rounded-xl border border-gray-100">
                                         {fullCompTags.map((tag, i) => (
-                                            <span key={i} className="text-[10px] font-medium bg-white text-gray-700 px-2 py-1 rounded border border-gray-200 shadow-sm select-all">
-                                                {tag}
-                                            </span>
+                                            <button
+                                                key={i}
+                                                onClick={() => handleCopySingleTag(tag, i)}
+                                                className={`text-[10px] font-medium px-2 py-1 rounded border shadow-sm transition-all select-none
+                               ${copiedTagId === i
+                                                        ? 'bg-green-500 text-white border-green-600 scale-105'
+                                                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:text-blue-600 active:scale-95'}`}
+                                            >
+                                                {copiedTagId === i ? "Kopyalandı!" : tag}
+                                            </button>
                                         ))}
                                     </div>
                                 </div>
