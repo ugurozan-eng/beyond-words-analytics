@@ -150,11 +150,11 @@ const OptimizationDrawer = ({ isOpen, onClose, product }) => {
                                                     <span className="text-xs text-slate-400 self-end mb-1">/100</span>
 
                                                     {/* ISOLATED Tooltip Trigger */}
-                                                    <div className="group relative ml-1 flex items-center justify-center cursor-help">
-                                                        <HelpCircle size={16} className="text-slate-400 hover:text-indigo-600 transition-colors" />
-                                                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 bg-gray-900 text-white text-xs leading-snug rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                                                    <div className="relative ml-1 flex items-center justify-center cursor-help">
+                                                        <HelpCircle size={16} className="text-slate-400 hover:text-indigo-600 transition-colors peer" />
+                                                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 bg-blue-100 text-blue-900 text-xs leading-snug rounded shadow-xl opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none z-50 font-medium text-center border border-blue-200">
                                                             LQS (Listing Quality Score): Görsel, SEO ve Trend başarısının 100 üzerinden puanıdır.
-                                                            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"></div>
+                                                            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-blue-100"></div>
                                                         </div>
                                                     </div>
                                                 </div>
