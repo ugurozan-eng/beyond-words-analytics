@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2 } from 'lucide-react';
+import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
 // --- GHOST KEY STRATEGY ---
 const partA = "AIzaSyBApcuj1vK1Ipt8";
@@ -23,9 +23,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [copiedTool, setCopiedTool] = useState(null);
 
-    // CREDITS
-    const MAX_ATTEMPTS = 3;
     const [generationCount, setGenerationCount] = useState(0);
 
     useEffect(() => {
@@ -35,65 +34,86 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
     }, [product.id]);
 
-    const remainingCredits = Math.max(0, MAX_ATTEMPTS - generationCount);
-
-    // GENERATION LOGIC
+    // --- VAP v4.0 ALGORITHM: HIERARCHY OF TRUTH ---
     const handleGenerate = async () => {
-        if (generationCount >= MAX_ATTEMPTS) return;
         setIsGenerating(true);
         setErrorMsg('');
 
         try {
-            console.log("Gemini 2.5: İstek başlatılıyor...");
+            console.log("Gemini VAP v4.0 (DeepSearch Logic): Başlatılıyor...");
 
-            // FIX: Using the CURRENT active model for Dec 2025
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-            const cleanTitle = product.title.substring(0, 80);
+            // 1. DECOUPLING: Remove "Wall" from title to break the bias
+            let cleanTitle = product.title.substring(0, 80);
+            if (visualConcept.toLowerCase().includes("table") || visualConcept.toLowerCase().includes("desk") || visualConcept.toLowerCase().includes("flat")) {
+                cleanTitle = cleanTitle.replace(/wall/gi, "").trim(); // Remove 'Wall' keyword
+            }
+
+            const lqsIssue = product.visual_analysis?.issue || '';
 
             const prompt = `
-          ACT AS: Expert Midjourney Prompt Engineer.
-          PRODUCT: "${cleanTitle}"
-          ISSUE: "${product.visual_analysis?.issue || 'General improvement'}"
-          CONTEXT: Style: ${style}, Light: ${lighting}, Brand: ${brandName}
-          CONCEPT: ${visualConcept || "Professional showcase"}
-          PROPS: ${includedObjects || "Minimal props"}
-          TEXT: ${signatureText || "None"}
+          ACT AS: The "Visual Architect", an advanced Midjourney v6 Prompt Engine.
+          GOAL: Enforce "Concept Dominance". The User's Concept is the absolute truth; the Product must adapt to it.
+
+          INPUT DATA:
+          - RAW PRODUCT: "${product.title}"
+          - DECOUPLED PRODUCT: "${cleanTitle}" (Use this to avoid category bias)
+          - USER CONCEPT (GOVERNOR): "${visualConcept}" 
+          - PROPS: "${includedObjects}"
+          - STYLE: ${style}
+          - LIGHT: ${lighting}
           
-          OUTPUT: Single optimized /imagine prompt with parameters (--ar 4:3 --v 6.0 --q 2).
+          ALGORITHM RULES (VAP v4.0):
+          1. **HIERARCHY OF TRUTH (Multi-Prompting):**
+             - Segment 1: The Scene/Concept (e.g. "A rustic breakfast table") gets weight ::3
+             - Segment 2: The Product (e.g. "A physical art print lying flat") gets weight ::2
+             - Segment 3: The Vibes/Light gets weight ::1
+          
+          2. **ANTI-WALL PROTOCOL:** - IF User Concept implies a horizontal surface (Table, Desk, Floor), you MUST inject the negative cluster: "--no wall hanging mounted drywall vertical".
+             - Describe the product as "laying flat", "resting on", or "leaning against" (if on a shelf).
+          
+          3. **MATERIALIZATION:** - Convert "Digital/PDF" terms into physical descriptions like "Heavyweight matte paper", "Cardstock print", "Framed canvas".
+          
+          OUTPUT FORMAT:
+          - Provide ONLY the raw prompt string.
+          - Use :: notation for weights.
+          - End with parameters: --ar 4:5 --style raw --v 6.0 --q 2
         `;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
-            const text = response.text();
+            let text = response.text();
+
+            // Cleanup
+            text = text.replace(/\/imagine prompt:/gi, "").trim();
+            text = text.replace(/"/g, "");
 
             setGeneratedPrompt(text);
+
             const newCount = generationCount + 1;
             setGenerationCount(newCount);
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
 
         } catch (error) {
             console.error("Gemini Error:", error);
-
             let msg = error.message || error.toString();
-            // Hata Mesajı Çevirileri
-            if (msg.includes("404")) msg = "HATA: Model Bulunamadı (SDK'yı güncellememiz gerekebilir).";
+            if (msg.includes("404")) msg = "HATA: Model Bulunamadı.";
             if (msg.includes("403")) msg = "HATA: Yetki Sorunu.";
-            if (msg.includes("429")) msg = "HATA: Kota Doldu.";
-
             setErrorMsg(msg);
         }
 
         setIsGenerating(false);
     };
 
-    const handleCopy = (text, index) => {
+    const handleCopy = (text, toolName) => {
         navigator.clipboard.writeText(text);
+        setCopiedTool(toolName);
+        setTimeout(() => setCopiedTool(null), 2000);
     };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4 overflow-y-auto">
-            {/* NARROW SINGLE COLUMN CARD */}
             <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn my-4">
 
                 {/* HEADER */}
@@ -101,14 +121,15 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                     <div>
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>Gemini 2.5 Hazır</span>
+                            <Zap size={12} className="text-indigo-500 fill-indigo-500" />
+                            <span className="font-bold text-indigo-600">Gemini 2.5 (VAP v4.0)</span>
+                            <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><X size={20} className="text-slate-400" /></button>
                 </div>
 
-                {/* SCROLLABLE BODY */}
+                {/* BODY */}
                 <div className="p-6 space-y-6 overflow-y-auto max-h-[75vh]">
 
                     {/* 1. DIAGNOSIS */}
@@ -128,8 +149,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                             <input type="text" value={signatureText} onChange={(e) => setSignatureText(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="İmza Metni" />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri</label>
-                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm h-20 resize-none" placeholder="Minimalist bir ortam..." />
+                            <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Dominant)</label>
+                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500 placeholder-indigo-300" placeholder="Örn: Masanın üzerinde duran renk paleti, yanında kahve..." />
+                            <p className="text-[10px] text-slate-400 pl-1">*Buraya yazdığınız sahne, ürünün kategorisinden (Duvar vb.) baskındır.</p>
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
@@ -155,20 +177,36 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
                     {/* 4. BUTTON */}
                     <div className="pt-2">
-                        <button onClick={handleGenerate} disabled={isGenerating || remainingCredits === 0} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
-                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : remainingCredits === 0 ? <><Lock size={16} /> Limit Doldu</> : <><Wand2 size={16} /> Prompt Oluştur ({remainingCredits})</>}
+                        <button onClick={handleGenerate} disabled={isGenerating} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
+                            {isGenerating ? <><Loader2 className="animate-spin" /> VAP v4.0 Çalışıyor...</> : <><Wand2 size={16} /> Master Prompt Oluştur</>}
                         </button>
                         {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
 
-                    {/* 5. OUTPUT */}
+                    {/* 5. OUTPUT & TOOLS */}
                     {generatedPrompt && (
-                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn mt-4">
-                            <div className="flex justify-between mb-2 pb-2 border-b border-white/10">
-                                <span className="text-green-400 font-bold">SUCCESS</span>
-                                <button onClick={() => navigator.clipboard.writeText(generatedPrompt)} className="text-white hover:text-indigo-400"><Copy size={14} /></button>
+                        <div className="animate-fadeIn mt-4 space-y-4">
+                            {/* Prompt Box */}
+                            <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 relative group">
+                                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => handleCopy(generatedPrompt, 'raw')} className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg flex items-center gap-2 text-[10px] font-bold"><Copy size={12} /> COPY RAW</button>
+                                </div>
+                                {generatedPrompt}
                             </div>
-                            {generatedPrompt}
+
+                            {/* Tools List (Expanded) */}
+                            <div className="grid grid-cols-2 gap-2">
+                                {['Midjourney v6', 'DALL-E 3', 'Leonardo AI', 'Flux.1', 'Flow', 'Stable Diffusion'].map((tool) => (
+                                    <button
+                                        key={tool}
+                                        onClick={() => handleCopy(generatedPrompt, tool)}
+                                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg border text-xs font-bold transition-all ${copiedTool === tool ? 'bg-green-50 border-green-500 text-green-700' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600'}`}
+                                    >
+                                        <span className="flex items-center gap-2"><Layers size={14} className="opacity-50" /> {tool}</span>
+                                        {copiedTool === tool ? <Check size={14} /> : <Copy size={14} className="opacity-0 group-hover:opacity-100" />}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>
