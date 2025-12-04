@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2 } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY (NEW KEY) ---
-// Key: AIzaSyBApcuj1vK1Ipt8sjhdvgAx8OCtsOdoJ9U
+// --- GHOST KEY STRATEGY ---
 const partA = "AIzaSyBApcuj1vK1Ipt8";
 const partB = "sjhdvgAx8OCtsOdoJ9U";
 const API_KEY = partA + partB;
@@ -45,10 +44,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini: İstek başlatılıyor...");
+            console.log("Gemini Pro: İstek başlatılıyor...");
 
-            // FIX: Using specific version ID to avoid 404 on aliases
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
+            // FIX: Switch to the stable 'gemini-pro' model
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
             const cleanTitle = product.title.substring(0, 80);
 
@@ -77,10 +76,11 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             console.error("Gemini Error:", error);
 
             let msg = error.message || error.toString();
-            // Hata mesajlarını Türkçeleştirme
-            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı. (API sürümü veya Bölge sorunu).";
-            if (msg.includes("403")) msg = "HATA 403: API Key Yetkisi Yok (Referrer ayarını kontrol edin).";
+            // Hata Mesajı Çevirileri
+            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı (Bölgesel kısıtlama olabilir).";
+            if (msg.includes("403")) msg = "HATA 403: Yetki Sorunu (Referrer Kısıtlaması).";
             if (msg.includes("429")) msg = "HATA 429: Kota Doldu.";
+            if (msg.includes("fetch")) msg = "HATA: Ağ Bağlantısı Sorunu.";
 
             setErrorMsg(msg);
         }
@@ -103,7 +103,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>Gemini 1.5 Hazır</span>
+                            <span>Gemini Pro Hazır</span>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><X size={20} className="text-slate-400" /></button>
@@ -121,19 +121,17 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         </div>
                     </div>
 
-                    {/* 2. INPUTS (STACKED) */}
+                    {/* 2. INPUTS */}
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500">Marka & İmza</label>
                             <input type="text" value={brandName} onChange={(e) => setBrandName(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm mb-2" placeholder="Marka Adı" />
                             <input type="text" value={signatureText} onChange={(e) => setSignatureText(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="İmza Metni" />
                         </div>
-
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri</label>
                             <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm h-20 resize-none" placeholder="Minimalist bir ortam..." />
                         </div>
-
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
                             <input type="text" value={includedObjects} onChange={(e) => setIncludedObjects(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="Vazo, kitap..." />
@@ -161,14 +159,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <button onClick={handleGenerate} disabled={isGenerating || remainingCredits === 0} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
                             {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : remainingCredits === 0 ? <><Lock size={16} /> Limit Doldu</> : <><Wand2 size={16} /> Prompt Oluştur ({remainingCredits})</>}
                         </button>
-
-                        {/* DEBUG ERROR MESSAGE DISPLAY */}
-                        {errorMsg && (
-                            <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all">
-                                <strong>HATA DETAYI:</strong><br />
-                                {errorMsg}
-                            </div>
-                        )}
+                        {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
 
                     {/* 5. OUTPUT */}
