@@ -24,11 +24,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
-    // UNLIMITED MODE
+    // UNLIMITED COUNTER
     const [generationCount, setGenerationCount] = useState(0);
 
     useEffect(() => {
-        // Just tracking count for fun, no limits
         const savedCount = localStorage.getItem(`cyclear_credits_${product.id}`);
         setGenerationCount(savedCount ? parseInt(savedCount, 10) : 0);
         setGeneratedPrompt('');
@@ -41,37 +40,33 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini Pro: VAP v3.0 Başlatılıyor...");
+            console.log("Gemini 2.5 Flash: İstek gönderiliyor...");
 
-            // STABLE MODEL
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            // --- CORRECT MODEL FOR 2025 ---
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const cleanTitle = product.title.substring(0, 80);
 
-            // --- VAP v3.0 ALGORITHM: USER INPUT FIRST ---
-            // We instruct Gemini to prioritize the User's Concept over the Product Title if provided.
+            // --- VAP v3.0: USER CONCEPT FIRST ---
             const prompt = `
           ACT AS: World-Class Midjourney v6 Prompt Engineer.
           
-          INPUT DATA:
+          INPUTS:
           - PRODUCT: "${cleanTitle}"
-          - USER_CONCEPT: "${visualConcept}" (If not empty, THIS IS THE MAIN SUBJECT).
+          - USER_CONCEPT: "${visualConcept}" (PRIORITY: HIGH).
           - PROPS: "${includedObjects}"
           - STYLE: ${style}
           - LIGHT: ${lighting}
           - BRAND: ${brandName}
           
           INSTRUCTIONS:
-          1. IF 'USER_CONCEPT' is provided, the prompt MUST start with that concept composition, integrating the product into it.
-             (Example: User says "On a coffee table" -> Prompt: "A cozy coffee table scene featuring [Product]...")
-          2. IF 'USER_CONCEPT' is empty, use a standard professional product photography composition.
-          3. Inject "${product.visual_analysis?.issue || ''}" as a problem to solve (e.g. if issue is 'dark', force 'bright lighting').
-          4. Include "${signatureText}" as a subtle watermark text request if provided.
+          1. IF 'USER_CONCEPT' is present, the prompt MUST start with it (e.g., "A color palette arrangement featuring...").
+          2. IF 'USER_CONCEPT' is empty, focus on the Product.
+          3. Incorporate "${includedObjects}" naturally into the scene.
+          4. Inject "${product.visual_analysis?.issue || ''}" as a visual fix.
           
-          OUTPUT FORMAT:
-          Single "/imagine prompt: ..." string.
-          Must include: --ar 4:3 --v 6.0 --q 2 --style raw.
-          Keywords: 8k, highly detailed, photorealistic.
+          OUTPUT: Single "/imagine prompt: ..." string. 
+          Technical tags: --ar 4:3 --v 6.0 --q 2 --style raw.
         `;
 
             const result = await model.generateContent(prompt);
@@ -80,7 +75,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
             setGeneratedPrompt(text);
 
-            // Update stats (no limit check)
             const newCount = generationCount + 1;
             setGenerationCount(newCount);
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
@@ -88,9 +82,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         } catch (error) {
             console.error("Gemini Error:", error);
             let msg = error.message || error.toString();
-            if (msg.includes("404")) msg = "HATA: Model Bulunamadı.";
-            if (msg.includes("403")) msg = "HATA: Yetki Sorunu (Referrer).";
-            if (msg.includes("429")) msg = "HATA: Kota Doldu.";
+            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı (gemini-2.5-flash).";
+            if (msg.includes("403")) msg = "HATA 403: Yetki/Bölge Sorunu.";
             setErrorMsg(msg);
         }
 
@@ -103,7 +96,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4 overflow-y-auto">
-            {/* CARD */}
             <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn my-4">
 
                 {/* HEADER */}
@@ -111,9 +103,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                     <div>
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>Gemini Pro Hazır</span>
-                            <span className="text-indigo-600 bg-indigo-50 px-2 rounded font-bold ml-2">Sınırsız Mod</span>
+                            <Zap size={12} className="text-indigo-500 fill-indigo-500" />
+                            <span className="font-bold text-indigo-600">Gemini 2.5 Flash</span>
+                            <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><X size={20} className="text-slate-400" /></button>
@@ -140,7 +132,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Öncelikli)</label>
-                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500" placeholder="Örn: Renk paleti düzeni, masanın üstünde dağınık duruş..." />
+                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-50 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500" placeholder="Örn: Renk paleti düzeni, masanın üstünde dağınık duruş..." />
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
@@ -164,10 +156,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         </div>
                     </div>
 
-                    {/* 4. BUTTON (UNLIMITED) */}
+                    {/* 4. BUTTON */}
                     <div className="pt-2">
                         <button onClick={handleGenerate} disabled={isGenerating} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
-                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : <><Wand2 size={16} /> Master Prompt Oluştur (Sınırsız)</>}
+                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : <><Wand2 size={16} /> Master Prompt Oluştur</>}
                         </button>
                         {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
