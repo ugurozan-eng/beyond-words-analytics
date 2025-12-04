@@ -40,38 +40,44 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini 2.5 Flash: İstek gönderiliyor...");
+            console.log("Gemini VAP v3.1: İstek gönderiliyor...");
 
-            // --- CORRECT MODEL FOR 2025 ---
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
             const cleanTitle = product.title.substring(0, 80);
+            const lqsIssue = product.visual_analysis?.issue || '';
 
-            // --- VAP v3.0: USER CONCEPT FIRST ---
+            // --- VAP v3.1 PROMPT ENGINEERING ---
             const prompt = `
           ACT AS: World-Class Midjourney v6 Prompt Engineer.
           
           INPUTS:
           - PRODUCT: "${cleanTitle}"
-          - USER_CONCEPT: "${visualConcept}" (PRIORITY: HIGH).
+          - USER_CONCEPT: "${visualConcept}" (High Priority).
           - PROPS: "${includedObjects}"
           - STYLE: ${style}
           - LIGHT: ${lighting}
           - BRAND: ${brandName}
+          - PROBLEM_TO_FIX: "${lqsIssue}"
           
           INSTRUCTIONS:
-          1. IF 'USER_CONCEPT' is present, the prompt MUST start with it (e.g., "A color palette arrangement featuring...").
-          2. IF 'USER_CONCEPT' is empty, focus on the Product.
-          3. Incorporate "${includedObjects}" naturally into the scene.
-          4. Inject "${product.visual_analysis?.issue || ''}" as a visual fix.
+          1. START with the main subject. If 'USER_CONCEPT' is provided, use that composition. If not, focus on the Product.
+          2. CRITICAL: Analyze 'PROBLEM_TO_FIX'. Do NOT output the text of the problem. Instead, add keywords to SOLVE it.
+             (Example: If problem is "Görsel karanlık", add "Bright, high exposure, softbox lighting").
+          3. Incorporate "${includedObjects}" naturally.
+          4. Add professional keywords: 8k, highly detailed, photorealistic, sharp focus.
           
-          OUTPUT: Single "/imagine prompt: ..." string. 
-          Technical tags: --ar 4:3 --v 6.0 --q 2 --style raw.
+          OUTPUT FORMAT:
+          - Provide ONLY the raw prompt text.
+          - Do NOT include "/imagine prompt:" prefix.
+          - End with: --ar 4:3 --v 6.0 --q 2 --style raw
         `;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
-            const text = response.text();
+            let text = response.text();
+
+            // Clean up if AI adds prefix anyway
+            text = text.replace(/\/imagine prompt:/gi, "").trim();
 
             setGeneratedPrompt(text);
 
@@ -82,16 +88,16 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         } catch (error) {
             console.error("Gemini Error:", error);
             let msg = error.message || error.toString();
-            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı (gemini-2.5-flash).";
-            if (msg.includes("403")) msg = "HATA 403: Yetki/Bölge Sorunu.";
+            if (msg.includes("404")) msg = "HATA: Model Bulunamadı.";
+            if (msg.includes("403")) msg = "HATA: Yetki Sorunu.";
             setErrorMsg(msg);
         }
 
         setIsGenerating(false);
     };
 
-    const handleCopy = (text, index) => {
-        navigator.clipboard.writeText(text);
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text); // Copy ONLY the raw text
     };
 
     return (
@@ -132,7 +138,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Öncelikli)</label>
-                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-50 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500" placeholder="Örn: Renk paleti düzeni, masanın üstünde dağınık duruş..." />
+                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500" placeholder="Örn: Renk paleti düzeni, masanın üstünde dağınık duruş..." />
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
@@ -166,10 +172,14 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
                     {/* 5. OUTPUT */}
                     {generatedPrompt && (
-                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn mt-4">
+                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn mt-4 relative group">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onClick={() => handleCopy(generatedPrompt)} className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg flex items-center gap-2 text-[10px] font-bold">
+                                    <Copy size={12} /> COPY RAW
+                                </button>
+                            </div>
                             <div className="flex justify-between mb-2 pb-2 border-b border-white/10">
-                                <span className="text-green-400 font-bold flex items-center gap-2"><Check size={14} /> PROMPT HAZIR</span>
-                                <button onClick={() => navigator.clipboard.writeText(generatedPrompt)} className="text-white hover:text-indigo-400"><Copy size={14} /></button>
+                                <span className="text-green-400 font-bold flex items-center gap-2"><Check size={14} /> HAZIR</span>
                             </div>
                             {generatedPrompt}
                         </div>
