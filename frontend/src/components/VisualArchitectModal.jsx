@@ -44,10 +44,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini Pro: İstek başlatılıyor...");
+            console.log("Gemini 2.5: İstek başlatılıyor...");
 
-            // FIX: Switch to the stable 'gemini-pro' model
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            // FIX: Using the CURRENT active model for Dec 2025
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const cleanTitle = product.title.substring(0, 80);
 
@@ -77,10 +77,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
             let msg = error.message || error.toString();
             // Hata Mesajı Çevirileri
-            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı (Bölgesel kısıtlama olabilir).";
-            if (msg.includes("403")) msg = "HATA 403: Yetki Sorunu (Referrer Kısıtlaması).";
-            if (msg.includes("429")) msg = "HATA 429: Kota Doldu.";
-            if (msg.includes("fetch")) msg = "HATA: Ağ Bağlantısı Sorunu.";
+            if (msg.includes("404")) msg = "HATA: Model Bulunamadı (SDK'yı güncellememiz gerekebilir).";
+            if (msg.includes("403")) msg = "HATA: Yetki Sorunu.";
+            if (msg.includes("429")) msg = "HATA: Kota Doldu.";
 
             setErrorMsg(msg);
         }
@@ -103,7 +102,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>Gemini Pro Hazır</span>
+                            <span>Gemini 2.5 Hazır</span>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><X size={20} className="text-slate-400" /></button>
