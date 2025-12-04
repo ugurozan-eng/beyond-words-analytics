@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// Force Deployment Trigger: Visual Architect UI Update
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, Info, PenTool, Box, Type, Loader2 } from 'lucide-react';
 
