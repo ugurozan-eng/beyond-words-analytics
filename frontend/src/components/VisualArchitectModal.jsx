@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity } from 'lucide-react';
+import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
 // --- GHOST KEY STRATEGY ---
 const partA = "AIzaSyBApcuj1vK1Ipt8";
@@ -23,6 +23,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [copiedTool, setCopiedTool] = useState(null);
 
     // UNLIMITED COUNTER
     const [generationCount, setGenerationCount] = useState(0);
@@ -34,50 +35,49 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
     }, [product.id]);
 
-    // GENERATION LOGIC
+    // GENERATION LOGIC (VAP v3.2)
     const handleGenerate = async () => {
         setIsGenerating(true);
         setErrorMsg('');
 
         try {
-            console.log("Gemini VAP v3.1: İstek gönderiliyor...");
+            console.log("Gemini VAP v3.2: İstek gönderiliyor...");
 
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
             const cleanTitle = product.title.substring(0, 80);
             const lqsIssue = product.visual_analysis?.issue || '';
 
-            // --- VAP v3.1 PROMPT ENGINEERING ---
             const prompt = `
-          ACT AS: World-Class Midjourney v6 Prompt Engineer.
+          ACT AS: World-Class AI Art Prompt Engineer (Specializing in Midjourney/Flux).
           
           INPUTS:
-          - PRODUCT: "${cleanTitle}"
-          - USER_CONCEPT: "${visualConcept}" (High Priority).
+          - PRODUCT TITLE: "${cleanTitle}"
+          - USER CONCEPT: "${visualConcept}" (!!! CRITICAL PRIORITY !!!)
           - PROPS: "${includedObjects}"
           - STYLE: ${style}
           - LIGHT: ${lighting}
           - BRAND: ${brandName}
-          - PROBLEM_TO_FIX: "${lqsIssue}"
+          - ISSUE_TO_SOLVE: "${lqsIssue}"
           
-          INSTRUCTIONS:
-          1. START with the main subject. If 'USER_CONCEPT' is provided, use that composition. If not, focus on the Product.
-          2. CRITICAL: Analyze 'PROBLEM_TO_FIX'. Do NOT output the text of the problem. Instead, add keywords to SOLVE it.
-             (Example: If problem is "Görsel karanlık", add "Bright, high exposure, softbox lighting").
-          3. Incorporate "${includedObjects}" naturally.
-          4. Add professional keywords: 8k, highly detailed, photorealistic, sharp focus.
+          STRICT COMPOSITION RULES:
+          1. IF 'USER CONCEPT' IS PROVIDED: You MUST follow it exactly. If the user says "on a table", PUT IT ON A TABLE. Do NOT force it onto a wall just because the title says "Wall Art". The User Concept overrides the Product Category.
+          2. IF 'USER CONCEPT' IS EMPTY: Use a standard professional product photography setup suitable for the item.
+          3. INTEGRATION: The product ("${cleanTitle}") must be the focal point within the User's Concept scene.
+          4. LQS FIX: Solve the 'ISSUE_TO_SOLVE' with positive keywords (e.g. if 'Dark', use 'Bright Studio Light').
           
           OUTPUT FORMAT:
           - Provide ONLY the raw prompt text.
-          - Do NOT include "/imagine prompt:" prefix.
-          - End with: --ar 4:3 --v 6.0 --q 2 --style raw
+          - NO prefixes like "/imagine".
+          - End with: --ar 4:3 --v 6.0 --style raw --q 2
         `;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
             let text = response.text();
 
-            // Clean up if AI adds prefix anyway
+            // Cleanup
             text = text.replace(/\/imagine prompt:/gi, "").trim();
+            text = text.replace(/"/g, ""); // Remove quotes
 
             setGeneratedPrompt(text);
 
@@ -96,8 +96,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setIsGenerating(false);
     };
 
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text); // Copy ONLY the raw text
+    const handleCopy = (text, toolName) => {
+        navigator.clipboard.writeText(text);
+        setCopiedTool(toolName);
+        setTimeout(() => setCopiedTool(null), 2000);
     };
 
     return (
@@ -110,7 +112,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-indigo-500 fill-indigo-500" />
-                            <span className="font-bold text-indigo-600">Gemini 2.5 Flash</span>
+                            <span className="font-bold text-indigo-600">Gemini 2.5</span>
                             <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
@@ -138,7 +140,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Öncelikli)</label>
-                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500" placeholder="Örn: Renk paleti düzeni, masanın üstünde dağınık duruş..." />
+                            <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500 placeholder-indigo-300" placeholder="Örn: Masanın üzerinde duran renk paleti, yanında kahve..." />
+                            <p className="text-[10px] text-slate-400 pl-1">*Buraya yazdığınız sahne, ürünün kategorisinden daha önceliklidir.</p>
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
@@ -170,18 +173,30 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
 
-                    {/* 5. OUTPUT */}
+                    {/* 5. OUTPUT & TOOLS LIST */}
                     {generatedPrompt && (
-                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn mt-4 relative group">
-                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onClick={() => handleCopy(generatedPrompt)} className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg flex items-center gap-2 text-[10px] font-bold">
-                                    <Copy size={12} /> COPY RAW
-                                </button>
+                        <div className="animate-fadeIn mt-4 space-y-4">
+                            {/* Prompt Box */}
+                            <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 relative group">
+                                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => handleCopy(generatedPrompt, 'raw')} className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg flex items-center gap-2 text-[10px] font-bold"><Copy size={12} /> COPY RAW</button>
+                                </div>
+                                {generatedPrompt}
                             </div>
-                            <div className="flex justify-between mb-2 pb-2 border-b border-white/10">
-                                <span className="text-green-400 font-bold flex items-center gap-2"><Check size={14} /> HAZIR</span>
+
+                            {/* Tools List */}
+                            <div className="grid grid-cols-2 gap-2">
+                                {['Midjourney v6', 'DALL-E 3', 'Leonardo AI', 'Flux.1', 'Flow', 'Stable Diffusion'].map((tool) => (
+                                    <button
+                                        key={tool}
+                                        onClick={() => handleCopy(generatedPrompt, tool)}
+                                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg border text-xs font-bold transition-all ${copiedTool === tool ? 'bg-green-50 border-green-500 text-green-700' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600'}`}
+                                    >
+                                        <span className="flex items-center gap-2"><Layers size={14} className="opacity-50" /> {tool}</span>
+                                        {copiedTool === tool ? <Check size={14} /> : <Copy size={14} className="opacity-0 group-hover:opacity-100" />}
+                                    </button>
+                                ))}
                             </div>
-                            {generatedPrompt}
                         </div>
                     )}
                 </div>
