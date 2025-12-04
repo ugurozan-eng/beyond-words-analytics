@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2 } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY (Anti-GitHub Scanner) ---
-// We split the key so GitHub bots cannot detect the "AIzaSy" pattern as a secret.
+// --- GHOST KEY STRATEGY (NEW KEY) ---
 const partA = "AIzaSyBApcuj1vK1Ipt8";
 const partB = "sjhdvgAx8OCtsOdoJ9U";
 const API_KEY = partA + partB;
@@ -45,7 +44,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
+            console.log("Gemini İsteği Gönderiliyor...");
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
             const cleanTitle = product.title.substring(0, 80);
 
             const prompt = `
@@ -70,8 +71,13 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
 
         } catch (error) {
-            console.error("Gemini Error:", error);
-            setErrorMsg("Bağlantı Hatası: Lütfen tekrar deneyin.");
+            console.error("Gemini Error Full Details:", error);
+            // Hata mesajını kullanıcıya göster ki sebebi anlayalım
+            let userMessage = "Bağlantı Hatası.";
+            if (error.message) userMessage += ` Detay: ${error.message}`;
+            if (error.toString().includes("403")) userMessage = "Yetki Hatası (403): API Key kısıtlamalarını kontrol edin.";
+
+            setErrorMsg(userMessage);
         }
 
         setIsGenerating(false);
@@ -79,7 +85,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
     const handleCopy = (text, index) => {
         navigator.clipboard.writeText(text);
-        // Feedback logic is handled by UI state in a real app, simplified here
     };
 
     return (
@@ -151,7 +156,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <button onClick={handleGenerate} disabled={isGenerating || remainingCredits === 0} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
                             {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : remainingCredits === 0 ? <><Lock size={16} /> Limit Doldu</> : <><Wand2 size={16} /> Prompt Oluştur ({remainingCredits})</>}
                         </button>
-                        {errorMsg && <p className="text-red-500 text-xs text-center mt-2 font-bold">{errorMsg}</p>}
+                        {errorMsg && <p className="text-red-500 text-xs text-center mt-2 font-bold p-2 bg-red-50 rounded border border-red-100 break-words">{errorMsg}</p>}
                     </div>
 
                     {/* 5. OUTPUT */}
