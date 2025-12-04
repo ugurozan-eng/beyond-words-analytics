@@ -23,7 +23,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const [activeModelName, setActiveModelName] = useState('Gemini 2.5 Flash');
 
     // COUNTER (Unlimited)
     const [generationCount, setGenerationCount] = useState(0);
@@ -41,9 +40,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini: İstek başlatılıyor...");
+            console.log("Gemini 2.5 Flash: İstek başlatılıyor...");
 
-            // SAFETY SETTINGS
+            // SAFETY SETTINGS (BLOCK_NONE to prevent 403 False Positives)
             const safetySettings = [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -65,23 +64,11 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
           OUTPUT: Single optimized /imagine prompt with parameters (--ar 4:3 --v 6.0 --q 2).
         `;
 
-            // ATTEMPT 1: Gemini 2.5 Flash
-            try {
-                const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", safetySettings });
-                const result = await model.generateContent(prompt);
-                const response = await result.response;
-                setGeneratedPrompt(response.text());
-                setActiveModelName('Gemini 2.5 Flash');
-            } catch (err25) {
-                console.warn("Gemini 2.5 failed, trying 1.5...", err25);
-
-                // ATTEMPT 2: Gemini 1.5 Flash (Fallback)
-                const modelFallback = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
-                const resultFallback = await modelFallback.generateContent(prompt);
-                const responseFallback = await resultFallback.response;
-                setGeneratedPrompt(responseFallback.text());
-                setActiveModelName('Gemini 1.5 Flash (Fallback)');
-            }
+            // STRICT GEMINI 2.5 FLASH
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", safetySettings });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            setGeneratedPrompt(response.text());
 
             const newCount = generationCount + 1;
             setGenerationCount(newCount);
@@ -91,10 +78,11 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             console.error("Gemini Error:", error);
 
             let msg = error.message || error.toString();
-            // Hata Mesajı Çevirileri
-            if (msg.includes("404")) msg = "HATA: Model Bulunamadı.";
-            if (msg.includes("403")) msg = "HATA: Yetki Sorunu (API Key veya Bölge).";
-            if (msg.includes("429")) msg = "HATA: Kota Doldu.";
+            // Detailed Error Mapping
+            if (msg.includes("404")) msg = "HATA: Model Bulunamadı (gemini-2.5-flash). API Key veya Bölge sorunu olabilir.";
+            else if (msg.includes("403")) msg = "HATA: Yetki Reddedildi (403). API Key'iniz bu modeli desteklemiyor olabilir.";
+            else if (msg.includes("429")) msg = "HATA: Kota Doldu (429).";
+            else msg = `HATA: ${msg}`;
 
             setErrorMsg(msg);
         }
@@ -117,7 +105,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>{activeModelName}</span>
+                            <span>Gemini 2.5 Flash</span>
                             <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
