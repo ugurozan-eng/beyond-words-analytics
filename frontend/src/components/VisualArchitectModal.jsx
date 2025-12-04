@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2 } from 'lucide-react';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity } from 'lucide-react';
 
 // --- GHOST KEY STRATEGY ---
 const partA = "AIzaSyBApcuj1vK1Ipt8";
@@ -24,8 +24,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
-    // CREDITS
-    const MAX_ATTEMPTS = 3;
+    // COUNTER (Unlimited)
     const [generationCount, setGenerationCount] = useState(0);
 
     useEffect(() => {
@@ -35,19 +34,27 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
     }, [product.id]);
 
-    const remainingCredits = Math.max(0, MAX_ATTEMPTS - generationCount);
-
     // GENERATION LOGIC
     const handleGenerate = async () => {
-        if (generationCount >= MAX_ATTEMPTS) return;
         setIsGenerating(true);
         setErrorMsg('');
 
         try {
             console.log("Gemini 2.5: İstek başlatılıyor...");
 
+            // SAFETY SETTINGS (Prevent 403 Errors)
+            const safetySettings = [
+                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+            ];
+
             // FIX: Using the CURRENT active model for Dec 2025
-            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const model = genAI.getGenerativeModel({
+                model: "gemini-2.5-flash",
+                safetySettings: safetySettings
+            });
 
             const cleanTitle = product.title.substring(0, 80);
 
@@ -78,7 +85,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             let msg = error.message || error.toString();
             // Hata Mesajı Çevirileri
             if (msg.includes("404")) msg = "HATA: Model Bulunamadı (SDK'yı güncellememiz gerekebilir).";
-            if (msg.includes("403")) msg = "HATA: Yetki Sorunu.";
+            if (msg.includes("403")) msg = "HATA: Yetki Sorunu (Safety Filter).";
             if (msg.includes("429")) msg = "HATA: Kota Doldu.";
 
             setErrorMsg(msg);
@@ -103,6 +110,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-green-500 fill-green-500" />
                             <span>Gemini 2.5 Hazır</span>
+                            <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><X size={20} className="text-slate-400" /></button>
@@ -155,8 +163,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
                     {/* 4. BUTTON */}
                     <div className="pt-2">
-                        <button onClick={handleGenerate} disabled={isGenerating || remainingCredits === 0} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
-                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : remainingCredits === 0 ? <><Lock size={16} /> Limit Doldu</> : <><Wand2 size={16} /> Prompt Oluştur ({remainingCredits})</>}
+                        <button onClick={handleGenerate} disabled={isGenerating} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
+                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : <><Wand2 size={16} /> Prompt Oluştur</>}
                         </button>
                         {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
