@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY (YENİ TEMİZ KEY) ---
+// --- GHOST KEY STRATEGY (CLEAN KEY) ---
 // Full Key: AIzaSyDd576Dohqi2wVSgxY4-A4Ak3w79ipUxRg
 const partA = "AIzaSyDd576Dohqi2wVSgxY4";
 const partB = "-A4Ak3w79ipUxRg";
@@ -44,7 +44,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             console.log("Gemini 2.5 Flash (VAP v4.0): İstek gönderiliyor...");
 
             // 1. GÜVENLİK AYARLARI (ZORUNLU)
-            // İçerik temiz olsa bile Google'ın varsayılan filtrelerine takılmamak için.
             const safetySettings = [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -65,8 +64,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             }
 
             const prompt = `
-          ACT AS: The "Visual Architect", an advanced Midjourney v6 Prompt Engine.
-          GOAL: Enforce "Concept Dominance".
+          ACT AS: The "Visual Architect", an elite Midjourney v6 Prompt Engineer.
+          GOAL: Take the user's raw input (which might be in Turkish) and architect a high-end, detailed visual prompt in English.
 
           INPUT DATA:
           - RAW PRODUCT: "${product.title}"
@@ -77,9 +76,21 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
           - LIGHT: ${lighting}
           
           ALGORITHM RULES (VAP v4.0):
-          1. **HIERARCHY OF TRUTH:** Concept ::3 > Product ::2 > Atmosphere ::1.
-          2. **ANTI-WALL PROTOCOL:** IF Concept is horizontal, inject "--no wall hanging mounted".
-          3. **MATERIALIZATION:** Convert Digital to Physical (Paper/Cardstock).
+          1. **INTELLIGENT TRANSLATION & EXPANSION (CRITICAL):**
+             - The Input Concept might be simple (e.g., "Big wooden palette").
+             - DO NOT just translate it. ENHANCE it.
+             - Example: If input is "Tahta palet", output should be "A rustic, weathered oak artist palette with rich wood grain texture".
+             - Use adjectives that match the selected style (${style}).
+             - ENSURE the final prompt is 100% English.
+
+          2. **HIERARCHY OF TRUTH:** - The Enhanced Concept gets weight ::3 (It is the boss).
+             - The Product gets weight ::2.
+             - The Atmosphere/Light gets weight ::1.
+          
+          3. **ANTI-WALL PROTOCOL:** - IF the concept implies a horizontal surface (Table, Desk, Floor), inject "--no wall hanging mounted drywall vertical".
+             - Describe the product as "laying flat", "resting on", or "leaning against".
+          
+          4. **MATERIALIZATION:** Convert Digital/PDF terms into physical descriptions like "Heavyweight matte paper", "Cardstock print".
           
           OUTPUT FORMAT:
           - Provide ONLY the raw prompt string.
@@ -90,7 +101,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             const result = await model.generateContent(prompt);
             const response = await result.response;
 
-            // Block Kontrolü
             if (result.promptFeedback && result.promptFeedback.blockReason) {
                 throw new Error(`BLOCKED: ${result.promptFeedback.blockReason}`);
             }
@@ -109,12 +119,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
         } catch (error) {
             console.error("Gemini Error:", error);
-
-            // Hata Detayı Gösterimi
             let msg = error.message || error.toString();
-            // Leaked Key hatasını daha net gösterelim ki anlaşılsın
-            if (msg.includes("leaked")) msg = "KRİTİK HATA: Bu API Anahtarı Google tarafından 'Sızdırılmış' olarak işaretlendi ve iptal edildi. Lütfen yeni bir anahtar alın.";
-            else if (msg.includes("403")) msg = `HATA (403): Erişim Reddedildi.`;
+
+            if (msg.includes("leaked")) msg = "HATA: API Anahtarı iptal edilmiş. Yeni anahtar alın.";
+            else if (msg.includes("403")) msg = `HATA (403): Erişim Reddedildi (Yetki/Kota).`;
             else setErrorMsg(`HATA DETAYI: ${msg}`);
 
             setErrorMsg(msg);
