@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2 } from 'lucide-react';
 
 // --- GHOST KEY STRATEGY (NEW KEY) ---
+// Key: AIzaSyBApcuj1vK1Ipt8sjhdvgAx8OCtsOdoJ9U
 const partA = "AIzaSyBApcuj1vK1Ipt8";
 const partB = "sjhdvgAx8OCtsOdoJ9U";
 const API_KEY = partA + partB;
@@ -44,8 +45,10 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini İsteği Gönderiliyor...");
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            console.log("Gemini: İstek başlatılıyor...");
+
+            // FIX: Using specific version ID to avoid 404 on aliases
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
 
             const cleanTitle = product.title.substring(0, 80);
 
@@ -71,13 +74,15 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
 
         } catch (error) {
-            console.error("Gemini Error Full Details:", error);
-            // Hata mesajını kullanıcıya göster ki sebebi anlayalım
-            let userMessage = "Bağlantı Hatası.";
-            if (error.message) userMessage += ` Detay: ${error.message}`;
-            if (error.toString().includes("403")) userMessage = "Yetki Hatası (403): API Key kısıtlamalarını kontrol edin.";
+            console.error("Gemini Error:", error);
 
-            setErrorMsg(userMessage);
+            let msg = error.message || error.toString();
+            // Hata mesajlarını Türkçeleştirme
+            if (msg.includes("404")) msg = "HATA 404: Model Bulunamadı. (API sürümü veya Bölge sorunu).";
+            if (msg.includes("403")) msg = "HATA 403: API Key Yetkisi Yok (Referrer ayarını kontrol edin).";
+            if (msg.includes("429")) msg = "HATA 429: Kota Doldu.";
+
+            setErrorMsg(msg);
         }
 
         setIsGenerating(false);
@@ -156,12 +161,19 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <button onClick={handleGenerate} disabled={isGenerating || remainingCredits === 0} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
                             {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : remainingCredits === 0 ? <><Lock size={16} /> Limit Doldu</> : <><Wand2 size={16} /> Prompt Oluştur ({remainingCredits})</>}
                         </button>
-                        {errorMsg && <p className="text-red-500 text-xs text-center mt-2 font-bold p-2 bg-red-50 rounded border border-red-100 break-words">{errorMsg}</p>}
+
+                        {/* DEBUG ERROR MESSAGE DISPLAY */}
+                        {errorMsg && (
+                            <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all">
+                                <strong>HATA DETAYI:</strong><br />
+                                {errorMsg}
+                            </div>
+                        )}
                     </div>
 
                     {/* 5. OUTPUT */}
                     {generatedPrompt && (
-                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn">
+                        <div className="bg-slate-900 rounded-xl p-4 text-slate-300 font-mono text-xs leading-relaxed border border-slate-800 animate-fadeIn mt-4">
                             <div className="flex justify-between mb-2 pb-2 border-b border-white/10">
                                 <span className="text-green-400 font-bold">SUCCESS</span>
                                 <button onClick={() => navigator.clipboard.writeText(generatedPrompt)} className="text-white hover:text-indigo-400"><Copy size={14} /></button>
