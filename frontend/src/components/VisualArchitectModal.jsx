@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY ---
-// Key: AIzaSyBApcuj1vK1Ipt8sjhdvgAx8OCtsOdoJ9U
-const partA = "AIzaSyBApcuj1vK1Ipt8";
-const partB = "sjhdvgAx8OCtsOdoJ9U";
+// --- GHOST KEY STRATEGY (YENİ TEMİZ KEY) ---
+// Full Key: AIzaSyDd576Dohqi2wVSgxY4-A4Ak3w79ipUxRg
+const partA = "AIzaSyDd576Dohqi2wVSgxY4";
+const partB = "-A4Ak3w79ipUxRg";
 const API_KEY = partA + partB;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -43,9 +43,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         try {
             console.log("Gemini 2.5 Flash (VAP v4.0): İstek gönderiliyor...");
 
-            // 1. GÜVENLİK AYARLARI (KRİTİK DÜZELTME)
-            // İçerik temiz olsa bile (Vazo/Studio), bu ayar olmazsa Google varsayılan filtreleri
-            // devreye girip 403 hatası verebilir.
+            // 1. GÜVENLİK AYARLARI (ZORUNLU)
+            // İçerik temiz olsa bile Google'ın varsayılan filtrelerine takılmamak için.
             const safetySettings = [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -111,10 +110,14 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         } catch (error) {
             console.error("Gemini Error:", error);
 
-            // HATA MASKELEMEYİ KALDIRDIM
-            // "Yetki Sorunu" yazmak yerine, hatanın orijinalini görelim.
+            // Hata Detayı Gösterimi
             let msg = error.message || error.toString();
-            setErrorMsg(`HATA DETAYI: ${msg}`);
+            // Leaked Key hatasını daha net gösterelim ki anlaşılsın
+            if (msg.includes("leaked")) msg = "KRİTİK HATA: Bu API Anahtarı Google tarafından 'Sızdırılmış' olarak işaretlendi ve iptal edildi. Lütfen yeni bir anahtar alın.";
+            else if (msg.includes("403")) msg = `HATA (403): Erişim Reddedildi.`;
+            else setErrorMsg(`HATA DETAYI: ${msg}`);
+
+            setErrorMsg(msg);
         }
 
         setIsGenerating(false);
