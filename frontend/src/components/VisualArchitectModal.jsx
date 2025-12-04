@@ -25,7 +25,6 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [errorMsg, setErrorMsg] = useState('');
     const [copiedTool, setCopiedTool] = useState(null);
 
-    // UNLIMITED COUNTER
     const [generationCount, setGenerationCount] = useState(0);
 
     useEffect(() => {
@@ -35,40 +34,51 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
     }, [product.id]);
 
-    // GENERATION LOGIC (VAP v3.2)
+    // --- VAP v4.0 ALGORITHM: HIERARCHY OF TRUTH ---
     const handleGenerate = async () => {
         setIsGenerating(true);
         setErrorMsg('');
 
         try {
-            console.log("Gemini VAP v3.2: İstek gönderiliyor...");
+            console.log("Gemini VAP v4.0 (DeepSearch Logic): Başlatılıyor...");
 
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-            const cleanTitle = product.title.substring(0, 80);
+
+            // 1. DECOUPLING: Remove "Wall" from title to break the bias
+            let cleanTitle = product.title.substring(0, 80);
+            if (visualConcept.toLowerCase().includes("table") || visualConcept.toLowerCase().includes("desk") || visualConcept.toLowerCase().includes("flat")) {
+                cleanTitle = cleanTitle.replace(/wall/gi, "").trim(); // Remove 'Wall' keyword
+            }
+
             const lqsIssue = product.visual_analysis?.issue || '';
 
             const prompt = `
-          ACT AS: World-Class AI Art Prompt Engineer (Specializing in Midjourney/Flux).
-          
-          INPUTS:
-          - PRODUCT TITLE: "${cleanTitle}"
-          - USER CONCEPT: "${visualConcept}" (!!! CRITICAL PRIORITY !!!)
+          ACT AS: The "Visual Architect", an advanced Midjourney v6 Prompt Engine.
+          GOAL: Enforce "Concept Dominance". The User's Concept is the absolute truth; the Product must adapt to it.
+
+          INPUT DATA:
+          - RAW PRODUCT: "${product.title}"
+          - DECOUPLED PRODUCT: "${cleanTitle}" (Use this to avoid category bias)
+          - USER CONCEPT (GOVERNOR): "${visualConcept}" 
           - PROPS: "${includedObjects}"
           - STYLE: ${style}
           - LIGHT: ${lighting}
-          - BRAND: ${brandName}
-          - ISSUE_TO_SOLVE: "${lqsIssue}"
           
-          STRICT COMPOSITION RULES:
-          1. IF 'USER CONCEPT' IS PROVIDED: You MUST follow it exactly. If the user says "on a table", PUT IT ON A TABLE. Do NOT force it onto a wall just because the title says "Wall Art". The User Concept overrides the Product Category.
-          2. IF 'USER CONCEPT' IS EMPTY: Use a standard professional product photography setup suitable for the item.
-          3. INTEGRATION: The product ("${cleanTitle}") must be the focal point within the User's Concept scene.
-          4. LQS FIX: Solve the 'ISSUE_TO_SOLVE' with positive keywords (e.g. if 'Dark', use 'Bright Studio Light').
+          ALGORITHM RULES (VAP v4.0):
+          1. **HIERARCHY OF TRUTH (Multi-Prompting):**
+             - Segment 1: The Scene/Concept (e.g. "A rustic breakfast table") gets weight ::3
+             - Segment 2: The Product (e.g. "A physical art print lying flat") gets weight ::2
+             - Segment 3: The Vibes/Light gets weight ::1
+          
+          2. **ANTI-WALL PROTOCOL:** - IF User Concept implies a horizontal surface (Table, Desk, Floor), you MUST inject the negative cluster: "--no wall hanging mounted drywall vertical".
+             - Describe the product as "laying flat", "resting on", or "leaning against" (if on a shelf).
+          
+          3. **MATERIALIZATION:** - Convert "Digital/PDF" terms into physical descriptions like "Heavyweight matte paper", "Cardstock print", "Framed canvas".
           
           OUTPUT FORMAT:
-          - Provide ONLY the raw prompt text.
-          - NO prefixes like "/imagine".
-          - End with: --ar 4:3 --v 6.0 --style raw --q 2
+          - Provide ONLY the raw prompt string.
+          - Use :: notation for weights.
+          - End with parameters: --ar 4:5 --style raw --v 6.0 --q 2
         `;
 
             const result = await model.generateContent(prompt);
@@ -77,7 +87,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
             // Cleanup
             text = text.replace(/\/imagine prompt:/gi, "").trim();
-            text = text.replace(/"/g, ""); // Remove quotes
+            text = text.replace(/"/g, "");
 
             setGeneratedPrompt(text);
 
@@ -112,7 +122,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-indigo-500 fill-indigo-500" />
-                            <span className="font-bold text-indigo-600">Gemini 2.5</span>
+                            <span className="font-bold text-indigo-600">Gemini 2.5 (VAP v4.0)</span>
                             <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
@@ -139,9 +149,9 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                             <input type="text" value={signatureText} onChange={(e) => setSignatureText(e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="İmza Metni" />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Öncelikli)</label>
+                            <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><PenTool size={12} /> Görsel Fikri (Dominant)</label>
                             <textarea value={visualConcept} onChange={(e) => setVisualConcept(e.target.value)} className="w-full p-3 bg-slate-50 border border-indigo-200 ring-1 ring-indigo-100 rounded-lg text-sm h-20 resize-none focus:ring-2 focus:ring-indigo-500 placeholder-indigo-300" placeholder="Örn: Masanın üzerinde duran renk paleti, yanında kahve..." />
-                            <p className="text-[10px] text-slate-400 pl-1">*Buraya yazdığınız sahne, ürünün kategorisinden daha önceliklidir.</p>
+                            <p className="text-[10px] text-slate-400 pl-1">*Buraya yazdığınız sahne, ürünün kategorisinden (Duvar vb.) baskındır.</p>
                         </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Box size={12} /> Objeler</label>
@@ -168,12 +178,12 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                     {/* 4. BUTTON */}
                     <div className="pt-2">
                         <button onClick={handleGenerate} disabled={isGenerating} className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
-                            {isGenerating ? <><Loader2 className="animate-spin" /> Üretiliyor...</> : <><Wand2 size={16} /> Master Prompt Oluştur</>}
+                            {isGenerating ? <><Loader2 className="animate-spin" /> VAP v4.0 Çalışıyor...</> : <><Wand2 size={16} /> Master Prompt Oluştur</>}
                         </button>
                         {errorMsg && <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-700 text-xs font-mono break-all"><strong>HATA:</strong> {errorMsg}</div>}
                     </div>
 
-                    {/* 5. OUTPUT & TOOLS LIST */}
+                    {/* 5. OUTPUT & TOOLS */}
                     {generatedPrompt && (
                         <div className="animate-fadeIn mt-4 space-y-4">
                             {/* Prompt Box */}
@@ -184,7 +194,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                                 {generatedPrompt}
                             </div>
 
-                            {/* Tools List */}
+                            {/* Tools List (Expanded) */}
                             <div className="grid grid-cols-2 gap-2">
                                 {['Midjourney v6', 'DALL-E 3', 'Leonardo AI', 'Flux.1', 'Flow', 'Stable Diffusion'].map((tool) => (
                                     <button
