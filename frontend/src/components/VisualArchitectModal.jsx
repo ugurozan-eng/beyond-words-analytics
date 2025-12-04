@@ -23,6 +23,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [activeModelName, setActiveModelName] = useState('Gemini 2.5 Flash');
 
     // COUNTER (Unlimited)
     const [generationCount, setGenerationCount] = useState(0);
@@ -40,21 +41,15 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
 
         try {
-            console.log("Gemini 2.5: İstek başlatılıyor...");
+            console.log("Gemini: İstek başlatılıyor...");
 
-            // SAFETY SETTINGS (Prevent 403 Errors)
+            // SAFETY SETTINGS
             const safetySettings = [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
             ];
-
-            // FIX: Using the CURRENT active model for Dec 2025
-            const model = genAI.getGenerativeModel({
-                model: "gemini-2.5-flash",
-                safetySettings: safetySettings
-            });
 
             const cleanTitle = product.title.substring(0, 80);
 
@@ -70,11 +65,24 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
           OUTPUT: Single optimized /imagine prompt with parameters (--ar 4:3 --v 6.0 --q 2).
         `;
 
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
+            // ATTEMPT 1: Gemini 2.5 Flash
+            try {
+                const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", safetySettings });
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                setGeneratedPrompt(response.text());
+                setActiveModelName('Gemini 2.5 Flash');
+            } catch (err25) {
+                console.warn("Gemini 2.5 failed, trying 1.5...", err25);
 
-            setGeneratedPrompt(text);
+                // ATTEMPT 2: Gemini 1.5 Flash (Fallback)
+                const modelFallback = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
+                const resultFallback = await modelFallback.generateContent(prompt);
+                const responseFallback = await resultFallback.response;
+                setGeneratedPrompt(responseFallback.text());
+                setActiveModelName('Gemini 1.5 Flash (Fallback)');
+            }
+
             const newCount = generationCount + 1;
             setGenerationCount(newCount);
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
@@ -84,8 +92,8 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
 
             let msg = error.message || error.toString();
             // Hata Mesajı Çevirileri
-            if (msg.includes("404")) msg = "HATA: Model Bulunamadı (SDK'yı güncellememiz gerekebilir).";
-            if (msg.includes("403")) msg = "HATA: Yetki Sorunu (Safety Filter).";
+            if (msg.includes("404")) msg = "HATA: Model Bulunamadı.";
+            if (msg.includes("403")) msg = "HATA: Yetki Sorunu (API Key veya Bölge).";
             if (msg.includes("429")) msg = "HATA: Kota Doldu.";
 
             setErrorMsg(msg);
@@ -109,7 +117,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-green-500 fill-green-500" />
-                            <span>Gemini 2.5 Hazır</span>
+                            <span>{activeModelName}</span>
                             <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
