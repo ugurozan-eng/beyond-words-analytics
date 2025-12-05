@@ -10,6 +10,7 @@ router = APIRouter()
 # TODO: Move to .env in production
 API_KEY = "AIzaSyDd576Dohqi2wVSgxY4-A4Ak3w79ipUxRg" 
 
+print("✅ Visual Architect Module Loaded")
 genai.configure(api_key=API_KEY)
 
 class VisualArchitectRequest(BaseModel):
