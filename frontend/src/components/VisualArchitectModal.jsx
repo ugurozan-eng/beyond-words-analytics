@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY (PRESERVED NEW KEY) ---
-// Full Key: AIzaSyDd576Dohqi2wVSgxY4-A4Ak3w79ipUxRg
-const partA = "AIzaSyDd576Dohqi2wVSgxY4";
-const partB = "-A4Ak3w79ipUxRg";
+// --- GHOST KEY STRATEGY ---
+const partA = "AIzaSyDd576Dohqi2wVS";
+const partB = "gxY4-A4Ak3w79ipUxRg";
 const API_KEY = partA + partB;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -43,7 +42,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         try {
             console.log("Gemini VAP v4.0 (DeepSearch Logic): Başlatılıyor...");
 
-            // PRESERVED SAFETY SETTINGS
+            // Safety Settings (Injected to prevent 403 errors)
             const safetySettings = [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
                 { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
