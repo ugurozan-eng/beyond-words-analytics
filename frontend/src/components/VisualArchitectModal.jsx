@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
 // API BASE URL (Dynamic)
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://cyclear-backend.onrender.com/api/v1';
 
 const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     if (!isOpen || !product) return null;
