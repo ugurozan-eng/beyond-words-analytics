@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { X, Wand2, Copy, Terminal, Sun, Palette, AlertTriangle, Zap, Lock, Check, PenTool, Box, Loader2, Infinity, Layers } from 'lucide-react';
 
-// --- GHOST KEY STRATEGY ---
-const partA = "AIzaSyDd576Dohqi2wVS";
-const partB = "gxY4-A4Ak3w79ipUxRg";
-const API_KEY = partA + partB;
-
-const genAI = new GoogleGenerativeAI(API_KEY);
+// API BASE URL (Dynamic)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 const VisualArchitectModal = ({ isOpen, onClose, product }) => {
     if (!isOpen || !product) return null;
@@ -34,90 +29,49 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
         setErrorMsg('');
     }, [product.id]);
 
-    // --- VAP v4.0 ALGORITHM: HIERARCHY OF TRUTH ---
+    // --- VAP v4.0 ALGORITHM (BACKEND PROXY) ---
     const handleGenerate = async () => {
         setIsGenerating(true);
         setErrorMsg('');
 
         try {
-            console.log("Gemini VAP v4.0 (DeepSearch Logic): Başlatılıyor...");
+            console.log("Visual Architect: Backend isteği gönderiliyor...");
 
-            // Safety Settings (Injected to prevent 403 errors)
-            const safetySettings = [
-                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-            ];
+            const payload = {
+                product_title: product.title,
+                visual_concept: visualConcept,
+                included_objects: includedObjects,
+                style: style,
+                lighting: lighting
+            };
 
-            const model = genAI.getGenerativeModel({
-                model: "gemini-2.5-flash",
-                safetySettings: safetySettings
+            const response = await fetch(`${API_BASE_URL}/visual-architect/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
             });
 
-            // 1. DECOUPLING: Remove "Wall" from title to break the bias
-            let cleanTitle = product.title.substring(0, 80);
-            if (visualConcept.toLowerCase().includes("table") || visualConcept.toLowerCase().includes("desk") || visualConcept.toLowerCase().includes("flat")) {
-                cleanTitle = cleanTitle.replace(/wall/gi, "").trim(); // Remove 'Wall' keyword
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || 'Generation failed');
             }
 
-            const lqsIssue = product.visual_analysis?.issue || '';
-
-            const prompt = `
-          ACT AS: The "Visual Architect", an advanced Midjourney v6 Prompt Engine.
-          GOAL: Enforce "Concept Dominance". The User's Concept is the absolute truth; the Product must adapt to it.
-
-          INPUT DATA:
-          - RAW PRODUCT: "${product.title}"
-          - DECOUPLED PRODUCT: "${cleanTitle}" (Use this to avoid category bias)
-          - USER CONCEPT (GOVERNOR): "${visualConcept}" 
-          - PROPS: "${includedObjects}"
-          - STYLE: ${style}
-          - LIGHT: ${lighting}
-          
-          ALGORITHM RULES (VAP v4.0):
-          1. **HIERARCHY OF TRUTH (Multi-Prompting):**
-             - Segment 1: The Scene/Concept (e.g. "A rustic breakfast table") gets weight ::3
-             - Segment 2: The Product (e.g. "A physical art print lying flat") gets weight ::2
-             - Segment 3: The Vibes/Light gets weight ::1
-          
-          2. **ANTI-WALL PROTOCOL:** - IF User Concept implies a horizontal surface (Table, Desk, Floor), you MUST inject the negative cluster: "--no wall hanging mounted drywall vertical".
-             - Describe the product as "laying flat", "resting on", or "leaning against" (if on a shelf).
-          
-          3. **MATERIALIZATION:** - Convert "Digital/PDF" terms into physical descriptions like "Heavyweight matte paper", "Cardstock print", "Framed canvas".
-          
-          OUTPUT FORMAT:
-          - Provide ONLY the raw prompt string.
-          - Use :: notation for weights.
-          - End with parameters: --ar 4:5 --style raw --v 6.0 --q 2
-        `;
-
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            let text = response.text();
-
-            // Cleanup
-            text = text.replace(/\/imagine prompt:/gi, "").trim();
-            text = text.replace(/"/g, "");
-
-            setGeneratedPrompt(text);
+            setGeneratedPrompt(data.prompt);
 
             const newCount = generationCount + 1;
             setGenerationCount(newCount);
             localStorage.setItem(`cyclear_credits_${product.id}`, newCount);
 
         } catch (error) {
-            console.error("Gemini Error:", error);
+            console.error("Visual Architect Error:", error);
             let msg = error.message || error.toString();
 
-            // Detailed Error Handling for Debugging
-            if (msg.includes("403")) {
-                msg = `HATA (403): Yetki Sorunu. API Key'iniz 'gemini-2.5-flash' modelini desteklemiyor veya faturalandırma hesabı gerektiriyor olabilir. (Google Yanıtı: ${msg})`;
-            } else if (msg.includes("404")) {
-                msg = `HATA (404): Model Bulunamadı. 'gemini-2.5-flash' henüz bu bölgede aktif olmayabilir. (Google Yanıtı: ${msg})`;
-            } else if (msg.includes("429")) {
-                msg = `HATA (429): Çok fazla istek. Lütfen biraz bekleyin.`;
-            }
+            if (msg.includes("403")) msg = "HATA (403): Sunucu Yetki Sorunu (Backend Key).";
+            else if (msg.includes("404")) msg = "HATA (404): Model/Endpoint Bulunamadı.";
+            else if (msg.includes("Failed to fetch")) msg = "HATA: Sunucuya bağlanılamadı. Backend çalışıyor mu?";
 
             setErrorMsg(msg);
         }
@@ -141,7 +95,7 @@ const VisualArchitectModal = ({ isOpen, onClose, product }) => {
                         <h2 className="text-lg font-black text-slate-900">Visual Architect</h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Zap size={12} className="text-indigo-500 fill-indigo-500" />
-                            <span className="font-bold text-indigo-600">Gemini 2.5 (VAP v4.0)</span>
+                            <span className="font-bold text-indigo-600">Gemini 2.5 (Backend Proxy)</span>
                             <span className="bg-green-100 text-green-700 px-2 rounded font-bold text-[10px] ml-2 flex items-center gap-1"><Infinity size={10} /> SINIRSIZ</span>
                         </div>
                     </div>
